@@ -1,4 +1,6 @@
-<html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -174,7 +176,7 @@
 <header>
   <div class="header-left">
     <h1>💰 Ram's Wealth Dashboard</h1>
-    <p>Comprehensive view of assets, investments, income &amp; liabilities</p>
+    <p>Comprehensive view of assets, investments, income & liabilities</p>
     <div class="header-badges">
       <span class="badge badge-role">Principal Engineer · Autodesk SG</span>
       <span class="badge badge-co">Employee #460962</span>
@@ -302,13 +304,13 @@
     <div class="card">
       <h3>By Asset Class</h3>
       <div class="chart-wrap">
-        <canvas id="assetChart" width="1224" height="520" style="display: block; box-sizing: border-box; height: 260px; width: 612px;"></canvas>
+        <canvas id="assetChart"></canvas>
       </div>
     </div>
     <div class="card">
       <h3>By Geography</h3>
       <div class="chart-wrap">
-        <canvas id="geoChart" width="1224" height="520" style="display: block; box-sizing: border-box; height: 260px; width: 612px;"></canvas>
+        <canvas id="geoChart"></canvas>
       </div>
     </div>
   </div>
@@ -439,7 +441,7 @@
     <div class="card">
       <h3>📊 Debt Overview</h3>
       <div class="chart-wrap" style="height: 220px;">
-        <canvas id="debtChart" width="1224" height="440" style="display: block; box-sizing: border-box; height: 220px; width: 612px;"></canvas>
+        <canvas id="debtChart"></canvas>
       </div>
       <div style="margin-top: 12px; font-size: 0.78rem; color: var(--muted); text-align: center;">
         Net new liability: SGD 86,300 vs previous SGD 42,700 · Offset by lower interest rate (2.05%)
@@ -487,7 +489,7 @@
     </div>
 
     <div class="card">
-      <h3>🇮🇳 India — SIP, PPF &amp; Lending</h3>
+      <h3>🇮🇳 India — SIP, PPF & Lending</h3>
       <ul class="inv-list">
         <li class="inv-item">
           <div class="inv-name">📈 Mutual Fund SIP <span class="inv-badge badge-active">Active</span></div>
@@ -521,7 +523,7 @@
     <div class="card">
       <h3>📊 Annual Income Breakdown</h3>
       <div class="chart-wrap" style="height: 220px;">
-        <canvas id="incomeChart" width="1224" height="440" style="display: block; box-sizing: border-box; height: 220px; width: 612px;"></canvas>
+        <canvas id="incomeChart"></canvas>
       </div>
     </div>
   </div>
@@ -620,7 +622,7 @@
 <button id="edit-fab" onclick="document.getElementById('edit-overlay').style.display='block'" style="position:fixed;bottom:28px;right:28px;z-index:9999;background:#6c63ff;color:#fff;border:none;border-radius:50px;padding:14px 26px;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 4px 24px rgba(108,99,255,0.6);">✏️ Edit</button>
 
 <!-- EDIT OVERLAY -->
-<div id="edit-overlay" style="display: block; position: fixed; inset: 0px; z-index: 10000; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(4px); overflow-y: auto;">
+<div id="edit-overlay" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.75);backdrop-filter:blur(4px);overflow-y:auto;">
   <div style="background:#1a1d27;border:1px solid #2a2d3e;border-radius:16px;max-width:560px;margin:40px auto;padding:28px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
       <h2 style="font-size:1.1rem;color:#fff;">✏️ Edit Dashboard</h2>
@@ -669,12 +671,15 @@
       <div style="font-size:0.7rem;font-weight:700;color:#6c63ff;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">🚀 Deploy to GitHub Pages</div>
       <div style="font-size:0.75rem;color:#94a3b8;margin-bottom:10px;">
         Paste your GitHub token to deploy directly from here — no Terminal needed.
-        <a href="https://github.com/settings/tokens/new?scopes=repo&amp;description=WealthDashboard" target="_blank" style="color:#6c63ff;text-decoration:none;">Generate token ↗</a>
+        <a href="https://github.com/settings/tokens/new?scopes=repo&description=WealthDashboard" target="_blank" style="color:#6c63ff;text-decoration:none;">Generate token ↗</a>
       </div>
-      <input id="ef-gh-token" type="password" placeholder="ghp_xxxxxxxxxxxx (repo scope)" style="width:100%;background:#0f1117;border:1px solid #2a2d3e;border-radius:8px;color:#e2e8f0;padding:9px 12px;font-size:0.85rem;margin-bottom:10px;" data-keeper-lock-id="k-evpyb4jjzlh">
-      <button onclick="deployToGitHub()" id="deploy-btn" style="width:100%;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:none;border-radius:10px;padding:13px;font-size:0.95rem;font-weight:700;cursor:pointer;" disabled="">Deploying...</button>
-      <div id="deploy-status" style="margin-top: 8px; font-size: 0.78rem; text-align: center; display: block; color: rgb(148, 163, 184);">Step 1/3 - Building file...</div>
-    <keeper-lock class="focus-visible keeper-lock-disabled" tabindex="-1" id="k-evpyb4jjzlh" aria-label="Open Keeper Popup" role="button" style="background-image: url(&quot;chrome-extension://bfogiafebfohielmmehodmfbbebbbpei/images/ico-field-fill-lock-disabled.svg&quot;) !important; background-size: 24px 24px !important; cursor: pointer !important; width: 24px !important; position: absolute !important; opacity: 0 !important; margin-top: auto !important; min-width: 24px !important; top: 697px; left: 1062px; z-index: 1; padding: 0px; height: 24px !important;"></keeper-lock></div>
+      <input id="ef-gh-token" type="password" placeholder="ghp_xxxxxxxxxxxx (repo scope)" 
+        style="width:100%;background:#0f1117;border:1px solid #2a2d3e;border-radius:8px;color:#e2e8f0;padding:9px 12px;font-size:0.85rem;margin-bottom:10px;">
+      <button onclick="deployToGitHub()" id="deploy-btn" style="width:100%;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:none;border-radius:10px;padding:13px;font-size:0.95rem;font-weight:700;cursor:pointer;">
+        🚀 Save &amp; Deploy to GitHub Pages
+      </button>
+      <div id="deploy-status" style="margin-top:8px;font-size:0.78rem;text-align:center;display:none;"></div>
+    </div>
   </div>
 </div>
 
@@ -686,7 +691,12 @@
 
 <script>
 // ── EDIT FUNCTIONS (global, defined first) ──────────────────
-var EDIT_DEFAULTS = {"base_salary":14480,"bonus":29167,"rsu_grant":32400,"etrade_inr":2.5,"saxo_usd":40000,"sip_monthly":50000,"lending_inr":10,"loan_sgd":129000,"loan_rate":2.05,"loan_months":24,"re_total":3.74,"rental_mo":52000,"lending_mo":17000};
+var EDIT_DEFAULTS = {
+  base_salary: 14380, bonus: 29167, rsu_grant: 32400,
+  etrade_inr: 2.5, saxo_usd: 40000, sip_monthly: 50000, lending_inr: 10,
+  loan_sgd: 129000, loan_rate: 2.05, loan_months: 24,
+  re_total: 3.74, rental_mo: 52000, lending_mo: 17000
+};
 
 function getVal(key) {
   return parseFloat(document.getElementById('ef-' + key).value) || 0;
@@ -809,8 +819,5 @@ window.addEventListener('load', function() {
   }); } catch(e){ console.error('incomeChart:',e); }
 });
 </script>
-
-
-<style>input[data-keeper-lock-id="k-evpyb4jjzlh"]:hover ~ keeper-lock#k-evpyb4jjzlh {opacity: 1;}
-input[data-keeper-lock-id="k-evpyb4jjzlh"]:not(:hover) ~ keeper-lock#k-evpyb4jjzlh {animation-name: hide-lock; animation-duration: .5s;}
-</style></body></html>
+</body>
+</html>

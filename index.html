@@ -767,11 +767,8 @@ const DEFAULTS = {
   re_total: 3.74, rental_mo: 52000, lending_mo: 17000
 };
 
-function loadData() {
-  try { return JSON.parse(localStorage.getItem('wealthData')) || {...DEFAULTS}; }
-  catch(e) { return {...DEFAULTS}; }
-}
-function saveData(d) { localStorage.setItem('wealthData', JSON.stringify(d)); }
+function loadData() { return {...DEFAULTS}; }
+function saveData(d) { /* no-op: use Download to persist */ }
 
 // Build edit panel
 const editBtn = document.createElement('button');
@@ -819,7 +816,7 @@ panel.innerHTML = `
   </div>
   <div style="font-size:0.78rem;color:#94a3b8;margin-bottom:18px;padding:10px 14px;background:rgba(108,99,255,0.1);
     border-radius:8px;border-left:3px solid #6c63ff;">
-    Changes are saved in your browser. Use "Save & Download" to get an updated file for redeployment.
+    Edit any values below. Hit "Save & Apply" to preview live, or "Save & Download" to get an updated HTML file you can redeploy.
   </div>
   ${formRows}
   <div style="display:flex;gap:10px;margin-top:24px;flex-wrap:wrap;">
@@ -902,11 +899,7 @@ document.querySelectorAll('.kpi-card').forEach((card, i) => {
   if (keys[i]) card.setAttribute('data-kpi', keys[i]);
 });
 
-// On load, apply saved data if any
-try {
-  const saved = localStorage.getItem('wealthData');
-  if (saved) applyData(JSON.parse(saved));
-} catch(e) { console.warn('Could not restore saved data', e); }
+// Values are baked into DEFAULTS — no localStorage needed
 
 }); // end window.load
 

@@ -659,8 +659,23 @@
 
     <div style="display:flex;gap:10px;margin-top:24px;flex-wrap:wrap;">
       <button onclick="applyEdit()" style="flex:1;background:#6c63ff;color:#fff;border:none;border-radius:10px;padding:13px;font-size:0.9rem;font-weight:700;cursor:pointer;">💾 Save &amp; Apply</button>
-      <button onclick="downloadEdit()" style="flex:1;background:#22c55e;color:#fff;border:none;border-radius:10px;padding:13px;font-size:0.9rem;font-weight:700;cursor:pointer;">⬇️ Save &amp; Download</button>
+      <button onclick="downloadEdit()" style="flex:1;background:#1e2130;color:#94a3b8;border:1px solid #2a2d3e;border-radius:10px;padding:13px;font-size:0.9rem;cursor:pointer;">⬇️ Download</button>
       <button onclick="resetEdit()" style="background:#2a2d3e;color:#94a3b8;border:none;border-radius:10px;padding:13px 16px;font-size:0.85rem;cursor:pointer;">↺ Reset</button>
+    </div>
+
+    <!-- GitHub Deploy -->
+    <div style="margin-top:20px;padding-top:18px;border-top:1px solid #2a2d3e;">
+      <div style="font-size:0.7rem;font-weight:700;color:#6c63ff;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">🚀 Deploy to GitHub Pages</div>
+      <div style="font-size:0.75rem;color:#94a3b8;margin-bottom:10px;">
+        Paste your GitHub token to deploy directly from here — no Terminal needed.
+        <a href="https://github.com/settings/tokens/new?scopes=repo&description=WealthDashboard" target="_blank" style="color:#6c63ff;text-decoration:none;">Generate token ↗</a>
+      </div>
+      <input id="ef-gh-token" type="password" placeholder="ghp_xxxxxxxxxxxx (repo scope)" 
+        style="width:100%;background:#0f1117;border:1px solid #2a2d3e;border-radius:8px;color:#e2e8f0;padding:9px 12px;font-size:0.85rem;margin-bottom:10px;">
+      <button onclick="deployToGitHub()" id="deploy-btn" style="width:100%;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:none;border-radius:10px;padding:13px;font-size:0.95rem;font-weight:700;cursor:pointer;">
+        🚀 Save &amp; Deploy to GitHub Pages
+      </button>
+      <div id="deploy-status" style="margin-top:8px;font-size:0.78rem;text-align:center;display:none;"></div>
     </div>
   </div>
 </div>
@@ -840,6 +855,65 @@ function resetEdit() {
     const el = document.getElementById('ef-' + k);
     if (el) el.value = EDIT_DEFAULTS[k];
   });
+}
+
+async function deployToGitHub() {
+  const token = document.getElementById('ef-gh-token').value.trim();
+  if (!token) { alert('Please paste your GitHub token first.'); return; }
+
+  const btn = document.getElementById('deploy-btn');
+  const status = document.getElementById('deploy-status');
+  btn.textContent = '⏳ Deploying...';
+  btn.disabled = true;
+  status.style.display = 'block';
+  status.style.color = '#94a3b8';
+  status.textContent = 'Building updated dashboard...';
+
+  // Build updated HTML with new defaults baked in
+  const d = {};
+  Object.keys(EDIT_DEFAULTS).forEach(k => d[k] = getVal(k));
+  const updatedHtml = document.documentElement.outerHTML
+    .replace(/const EDIT_DEFAULTS = \{[^}]+\}/, 'const EDIT_DEFAULTS = ' + JSON.stringify(d));
+
+  const OWNER = 'muthuramanathanm';
+  const REPO  = 'wealth-dashboard';
+  const FILE  = 'index.html';
+  const API   = 'https://api.github.com';
+
+  try {
+    // Get current file SHA
+    status.textContent = 'Connecting to GitHub...';
+    const fileRes = await fetch(`${API}/repos/${OWNER}/${REPO}/contents/${FILE}`, {
+      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github+json' }
+    });
+    const fileData = await fileRes.json();
+    if (!fileData.sha) throw new Error(fileData.message || 'Could not get file SHA');
+
+    // Push updated file
+    status.textContent = 'Pushing changes...';
+    const pushRes = await fetch(`${API}/repos/${OWNER}/${REPO}/contents/${FILE}`, {
+      method: 'PUT',
+      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: 'Update wealth dashboard - ' + new Date().toISOString().slice(0,10),
+        content: btoa(unescape(encodeURIComponent(updatedHtml))),
+        sha: fileData.sha
+      })
+    });
+    const pushData = await pushRes.json();
+    if (!pushData.commit) throw new Error(pushData.message || 'Push failed');
+
+    btn.textContent = '✅ Deployed!';
+    btn.style.background = 'linear-gradient(135deg,#22c55e,#16a34a)';
+    status.style.color = '#22c55e';
+    status.innerHTML = '✅ Live at <a href="https://muthuramanathanm.github.io/wealth-dashboard/" target="_blank" style="color:#22c55e;">muthuramanathanm.github.io/wealth-dashboard</a> (may take ~1 min)';
+    setTimeout(() => { btn.textContent = '🚀 Save & Deploy to GitHub Pages'; btn.disabled = false; }, 5000);
+  } catch(err) {
+    btn.textContent = '🚀 Save & Deploy to GitHub Pages';
+    btn.disabled = false;
+    status.style.color = '#ef4444';
+    status.textContent = '❌ Error: ' + err.message;
+  }
 }
 
 function downloadEdit() {

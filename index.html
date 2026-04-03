@@ -1,4 +1,6 @@
-<html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -174,7 +176,7 @@
 <header>
   <div class="header-left">
     <h1>💰 Ram's Wealth Dashboard</h1>
-    <p>Comprehensive view of assets, investments, income &amp; liabilities</p>
+    <p>Comprehensive view of assets, investments, income & liabilities</p>
     <div class="header-badges">
       <span class="badge badge-role">Principal Engineer · Autodesk SG</span>
       <span class="badge badge-co">Employee #460962</span>
@@ -183,8 +185,8 @@
   </div>
   <div class="header-right">
     <div class="net-worth-label">Estimated Net Worth</div>
-    <div class="net-worth-value">Rs.11.25 Crores</div>
-    <div class="net-worth-sub">Total Assets Rs.12.05Cr  Liabilities SGD 129K approx Rs.80L</div>
+    <div class="net-worth-value">₹6.97 Crores</div>
+    <div class="net-worth-sub">Total Assets ₹7.56Cr &nbsp;·&nbsp; Liabilities SGD 129K ≈ ₹80L</div>
   </div>
 </header>
 
@@ -201,12 +203,12 @@
     <div class="kpi-card" style="--accent-color: #ef4444">
       <div class="kpi-label">Total Liabilities</div>
       <div class="kpi-value" style="color: var(--red)">SGD 129K</div>
-      <div class="kpi-sub">≈ ₹80L · Citi SG Loan · 2.05%</div>
+      <div class="kpi-sub"><span id="kpi-loan-sub">≈ ₹80L · Citi SG Loan · 2.05%</span></div>
       <div class="kpi-icon">🏦</div>
     </div>
     <div class="kpi-card" style="--accent-color: #3b82f6">
       <div class="kpi-label">Passive Income</div>
-      <div class="kpi-value" style="color: var(--blue)">Rs.69K/mo</div>
+      <div class="kpi-value" style="color: var(--blue)">₹69K/mo</div>
       <div class="kpi-sub">₹8.28L/year · Rental + Lending</div>
       <div class="kpi-icon">📥</div>
     </div>
@@ -218,7 +220,7 @@
     </div>
     <div class="kpi-card" style="--accent-color: #eab308">
       <div class="kpi-label">Annual Cash Comp</div>
-      <div class="kpi-value" style="color: var(--yellow)">SGD 202K</div>
+      <div class="kpi-value" style="color: var(--yellow)">SGD 201K</div>
       <div class="kpi-sub">Base ₹172K + Bonus SGD 29K</div>
       <div class="kpi-icon">💰</div>
     </div>
@@ -302,13 +304,13 @@
     <div class="card">
       <h3>By Asset Class</h3>
       <div class="chart-wrap">
-        <canvas id="assetChart" width="1224" height="520" style="display: block; box-sizing: border-box; height: 260px; width: 612px;"></canvas>
+        <canvas id="assetChart"></canvas>
       </div>
     </div>
     <div class="card">
       <h3>By Geography</h3>
       <div class="chart-wrap">
-        <canvas id="geoChart" width="1224" height="520" style="display: block; box-sizing: border-box; height: 260px; width: 612px;"></canvas>
+        <canvas id="geoChart"></canvas>
       </div>
     </div>
   </div>
@@ -349,8 +351,8 @@
     <div class="card">
       <h3>🔴 Monthly Outflows</h3>
       <div class="cashflow-item cashflow-out">
-        <span class="cashflow-label">💳 Citi SG Loan (SGD 129K · 2.05% · 24mo) <span class="tag-new">NEW</span></span>
-        <span class="cashflow-value cf-expense">-SGD 5,491</span>
+        <span class="cashflow-label">💳 Citi SG Loan (<span id="cf-loan-label">SGD 129K · 2.05% · 24mo</span>) <span class="tag-new">NEW</span></span>
+        <span class="cashflow-value cf-expense">-SGD <span id="cf-loan-emi">5,491</span></span>
       </div>
       <div class="cashflow-item cashflow-out">
         <span class="cashflow-label">📈 India SIP (Mutual Fund)</span>
@@ -415,7 +417,7 @@
           <span class="liab-val">SGD 129,000 ≈ ₹80L</span>
         </div>
         <div class="liab-bar-bg"><div class="liab-bar-fill" style="width: 100%"></div></div>
-        <div class="liab-rate">2.05% interest · 24 months · EMI: SGD 5,491/mo · Total interest: SGD 2,773</div>
+        <div class="liab-rate"><span id="liab-rate-text">2.05% interest · 24 months · EMI: SGD 5,491/mo · Total interest: SGD 2,773</span></div>
       </div>
       <div style="margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px;">
         <div class="summary-row total">
@@ -424,7 +426,7 @@
         </div>
         <div class="summary-row">
           <span style="color: var(--muted)">Monthly EMI</span>
-          <span>SGD 5,491/mo</span>
+          <span id="liab-emi-mo">SGD 5,491/mo</span>
         </div>
         <div class="summary-row">
           <span style="color: var(--muted)">Payoff Date</span>
@@ -439,7 +441,7 @@
     <div class="card">
       <h3>📊 Debt Overview</h3>
       <div class="chart-wrap" style="height: 220px;">
-        <canvas id="debtChart" width="1224" height="440" style="display: block; box-sizing: border-box; height: 220px; width: 612px;"></canvas>
+        <canvas id="debtChart"></canvas>
       </div>
       <div style="margin-top: 12px; font-size: 0.78rem; color: var(--muted); text-align: center;">
         Net new liability: SGD 86,300 vs previous SGD 42,700 · Offset by lower interest rate (2.05%)
@@ -487,7 +489,7 @@
     </div>
 
     <div class="card">
-      <h3>🇮🇳 India — SIP, PPF &amp; Lending</h3>
+      <h3>🇮🇳 India — SIP, PPF & Lending</h3>
       <ul class="inv-list">
         <li class="inv-item">
           <div class="inv-name">📈 Mutual Fund SIP <span class="inv-badge badge-active">Active</span></div>
@@ -521,7 +523,7 @@
     <div class="card">
       <h3>📊 Annual Income Breakdown</h3>
       <div class="chart-wrap" style="height: 220px;">
-        <canvas id="incomeChart" width="1224" height="440" style="display: block; box-sizing: border-box; height: 220px; width: 612px;"></canvas>
+        <canvas id="incomeChart"></canvas>
       </div>
     </div>
   </div>
@@ -617,10 +619,10 @@
 </div>
 
 <!-- EDIT BUTTON — always visible -->
-<button id="edit-fab" onclick="document.getElementById('edit-overlay').style.display='block'" style="position:fixed;bottom:28px;right:28px;z-index:9999;background:#6c63ff;color:#fff;border:none;border-radius:50px;padding:14px 26px;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 4px 24px rgba(108,99,255,0.6);">Edit</button>
+<button id="edit-fab" onclick="document.getElementById('edit-overlay').style.display='block'" style="position:fixed;bottom:28px;right:28px;z-index:9999;background:#6c63ff;color:#fff;border:none;border-radius:50px;padding:14px 26px;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 4px 24px rgba(108,99,255,0.6);">✏️ Edit</button>
 
 <!-- EDIT OVERLAY -->
-<div id="edit-overlay" style="display: none; position: fixed; inset: 0px; z-index: 10000; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(4px); overflow-y: auto;">
+<div id="edit-overlay" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.75);backdrop-filter:blur(4px);overflow-y:auto;">
   <div style="background:#1a1d27;border:1px solid #2a2d3e;border-radius:16px;max-width:560px;margin:40px auto;padding:28px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
       <h2 style="font-size:1.1rem;color:#fff;">✏️ Edit Dashboard</h2>
@@ -646,7 +648,7 @@
     <!-- Liabilities -->
     <div style="font-size:0.7rem;font-weight:700;color:#6c63ff;text-transform:uppercase;letter-spacing:1px;margin:18px 0 10px;">🏦 Liabilities</div>
     <div class="ef-row"><label class="ef-label">Citi Loan Balance (SGD)</label><input id="ef-loan_sgd" class="ef-input" type="number" value="129000"></div>
-    <div class="ef-row"><label class="ef-label">Loan Interest Rate (%)</label><input id="ef-loan_rate" class="ef-input" type="number" step="0.01" value="2.06"></div>
+    <div class="ef-row"><label class="ef-label">Loan Interest Rate (%)</label><input id="ef-loan_rate" class="ef-input" type="number" step="0.01" value="2.05"></div>
     <div class="ef-row"><label class="ef-label">Loan Tenure (months)</label><input id="ef-loan_months" class="ef-input" type="number" value="24"></div>
 
     <!-- Real Estate -->
@@ -669,12 +671,17 @@
       <div style="font-size:0.7rem;font-weight:700;color:#6c63ff;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">🚀 Deploy to GitHub Pages</div>
       <div style="font-size:0.75rem;color:#94a3b8;margin-bottom:10px;">
         Paste your GitHub token to deploy directly from here — no Terminal needed.
-        <a href="https://github.com/settings/tokens/new?scopes=repo&amp;description=WealthDashboard" target="_blank" style="color:#6c63ff;text-decoration:none;">Generate token ↗</a>
+        <a href="https://github.com/settings/tokens/new?scopes=repo&description=WealthDashboard" target="_blank" style="color:#6c63ff;text-decoration:none;">Generate token ↗</a>
       </div>
-      <input id="ef-gh-token" type="password" placeholder="ghp_xxxxxxxxxxxx (repo scope)" style="width:100%;background:#0f1117;border:1px solid #2a2d3e;border-radius:8px;color:#e2e8f0;padding:9px 12px;font-size:0.85rem;margin-bottom:10px;" data-keeper-lock-id="k-fvfenf19inm">
-      <button onclick="deployToGitHub()" id="deploy-btn" style="width:100%;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:none;border-radius:10px;padding:13px;font-size:0.95rem;font-weight:700;cursor:pointer;">Deploy to GitHub Pages</button>
-      <div id="deploy-status" style="margin-top: 8px; font-size: 0.78rem; text-align: center; display: block; color: rgb(239, 68, 68);">Error: Auth failed: Bad credentials</div>
-    <keeper-lock class="focus-visible keeper-lock-disabled" tabindex="-1" id="k-fvfenf19inm" aria-label="Open Keeper Popup" role="button" style="background-image: url(&quot;chrome-extension://bfogiafebfohielmmehodmfbbebbbpei/images/ico-field-fill-lock-disabled.svg&quot;) !important; background-size: 24px 24px !important; cursor: pointer !important; width: 24px !important; position: absolute !important; opacity: 0 !important; margin-top: auto !important; min-width: 24px !important; top: 697px; left: 1062px; z-index: 1; padding: 0px; height: 24px !important;"></keeper-lock></div>
+      <input id="ef-gh-token" type="password" placeholder="ghp_xxxxxxxxxxxx (repo scope)" 
+        style="width:100%;background:#0f1117;border:1px solid #2a2d3e;border-radius:8px;color:#e2e8f0;padding:9px 12px;font-size:0.85rem;margin-bottom:6px;"
+        oninput="localStorage.setItem('gh_token', this.value)">
+      <div style="font-size:0.72rem;color:#22c55e;margin-bottom:10px;">🔒 Token saved in your browser only — never in the HTML file</div>
+      <button onclick="deployToGitHub()" id="deploy-btn" style="width:100%;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:none;border-radius:10px;padding:13px;font-size:0.95rem;font-weight:700;cursor:pointer;">
+        🚀 Save &amp; Deploy to GitHub Pages
+      </button>
+      <div id="deploy-status" style="margin-top:8px;font-size:0.78rem;text-align:center;display:none;"></div>
+    </div>
   </div>
 </div>
 
@@ -686,7 +693,12 @@
 
 <script>
 // ── EDIT FUNCTIONS (global, defined first) ──────────────────
-var EDIT_DEFAULTS = {"base_salary":14380,"bonus":29167,"rsu_grant":32400,"etrade_inr":2.5,"saxo_usd":40000,"sip_monthly":50000,"lending_inr":10,"loan_sgd":129000,"loan_rate":2.06,"loan_months":24,"re_total":3.74,"rental_mo":52000,"lending_mo":17000};
+var EDIT_DEFAULTS = {
+  base_salary: 14380, bonus: 29167, rsu_grant: 32400,
+  etrade_inr: 2.5, saxo_usd: 40000, sip_monthly: 50000, lending_inr: 10,
+  loan_sgd: 129000, loan_rate: 2.05, loan_months: 24,
+  re_total: 3.74, rental_mo: 52000, lending_mo: 17000
+};
 
 function getVal(key) {
   return parseFloat(document.getElementById('ef-' + key).value) || 0;
@@ -702,6 +714,16 @@ function applyEdit() {
   if (cards[3]) cards[3].querySelector('.kpi-value').textContent = 'SGD ' + d.base_salary.toLocaleString();
   if (cards[4]) cards[4].querySelector('.kpi-value').textContent = 'SGD ' + Math.round((d.base_salary*12+d.bonus)/1000) + 'K';
   if (cards[2]) { var pm = d.rental_mo+d.lending_mo; cards[2].querySelector('.kpi-value').textContent = 'Rs.' + Math.round(pm/1000) + 'K/mo'; }
+  // Update loan/liability displays
+  var r = (d.loan_rate/100)/12, n = d.loan_months;
+  var emi = Math.round(d.loan_sgd * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1));
+  var totalInt = Math.round(emi * n - d.loan_sgd);
+  var liabInr = Math.round((d.loan_sgd * 62) / 100000);
+  if (document.getElementById('kpi-loan-sub')) document.getElementById('kpi-loan-sub').textContent = 'approx Rs.'+liabInr+'L · Citi SG Loan · '+d.loan_rate+'%';
+  if (document.getElementById('cf-loan-label')) document.getElementById('cf-loan-label').textContent = 'SGD '+Math.round(d.loan_sgd/1000)+'K · '+d.loan_rate+'% · '+d.loan_months+'mo';
+  if (document.getElementById('cf-loan-emi')) document.getElementById('cf-loan-emi').textContent = emi.toLocaleString();
+  if (document.getElementById('liab-rate-text')) document.getElementById('liab-rate-text').textContent = d.loan_rate+'% interest · '+d.loan_months+' months · EMI: SGD '+emi.toLocaleString()+'/mo · Total interest: SGD '+totalInt.toLocaleString();
+  if (document.getElementById('liab-emi-mo')) document.getElementById('liab-emi-mo').textContent = 'SGD '+emi.toLocaleString()+'/mo';
   document.getElementById('edit-overlay').style.display = 'none';
   var btn = document.getElementById('edit-fab'); btn.textContent = 'Saved!';
   setTimeout(function(){ btn.textContent = 'Edit'; }, 2000);
@@ -782,6 +804,9 @@ window.addEventListener('load', function() {
     var el = document.getElementById('ef-'+k);
     if (el) el.value = EDIT_DEFAULTS[k];
   });
+  // Auto-load saved GitHub token from browser storage
+  var savedToken = localStorage.getItem('gh_token');
+  if (savedToken) { var te = document.getElementById('ef-gh-token'); if (te) te.value = savedToken; }
   // Update all KPI displays from EDIT_DEFAULTS
   var d = EDIT_DEFAULTS;
   var assetsL = (d.re_total + d.etrade_inr)*100 + (d.saxo_usd/83) + 66.5 + d.lending_inr + 7.5 + 15;
@@ -791,6 +816,16 @@ window.addEventListener('load', function() {
   if (cards[3]) cards[3].querySelector('.kpi-value').textContent = 'SGD ' + d.base_salary.toLocaleString();
   if (cards[4]) cards[4].querySelector('.kpi-value').textContent = 'SGD ' + Math.round((d.base_salary*12+d.bonus)/1000) + 'K';
   if (cards[2]) { var pm = d.rental_mo+d.lending_mo; cards[2].querySelector('.kpi-value').textContent = 'Rs.' + Math.round(pm/1000) + 'K/mo'; }
+  // Update loan/liability displays
+  var r = (d.loan_rate/100)/12, n = d.loan_months;
+  var emi = Math.round(d.loan_sgd * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1));
+  var totalInt = Math.round(emi * n - d.loan_sgd);
+  var liabInr = Math.round((d.loan_sgd * 62) / 100000);
+  if (document.getElementById('kpi-loan-sub')) document.getElementById('kpi-loan-sub').textContent = 'approx Rs.'+liabInr+'L · Citi SG Loan · '+d.loan_rate+'%';
+  if (document.getElementById('cf-loan-label')) document.getElementById('cf-loan-label').textContent = 'SGD '+Math.round(d.loan_sgd/1000)+'K · '+d.loan_rate+'% · '+d.loan_months+'mo';
+  if (document.getElementById('cf-loan-emi')) document.getElementById('cf-loan-emi').textContent = emi.toLocaleString();
+  if (document.getElementById('liab-rate-text')) document.getElementById('liab-rate-text').textContent = d.loan_rate+'% interest · '+d.loan_months+' months · EMI: SGD '+emi.toLocaleString()+'/mo · Total interest: SGD '+totalInt.toLocaleString();
+  if (document.getElementById('liab-emi-mo')) document.getElementById('liab-emi-mo').textContent = 'SGD '+emi.toLocaleString()+'/mo';
   try { new Chart(document.getElementById('assetChart'), {
     type:'doughnut',
     data:{ labels:['Real Estate','US Equity','SG Equity','SG Insurance','SIP','PPF','Lending'],
@@ -845,10 +880,5 @@ window.addEventListener('load', function() {
   }); } catch(e){ console.error('incomeChart:',e); }
 });
 </script>
-
-
-<style>input[data-keeper-lock-id="k-xf8o85jljbe"]:hover ~ keeper-lock#k-xf8o85jljbe {opacity: 1;}
-input[data-keeper-lock-id="k-xf8o85jljbe"]:not(:hover) ~ keeper-lock#k-xf8o85jljbe {animation-name: hide-lock; animation-duration: .5s;}
-</style><style>input[data-keeper-lock-id="k-fvfenf19inm"]:hover ~ keeper-lock#k-fvfenf19inm {opacity: 1;}
-input[data-keeper-lock-id="k-fvfenf19inm"]:not(:hover) ~ keeper-lock#k-fvfenf19inm {animation-name: hide-lock; animation-duration: .5s;}
-</style></body></html>
+</body>
+</html>

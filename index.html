@@ -184,7 +184,7 @@
   <div class="header-right">
     <div class="net-worth-label">Estimated Net Worth</div>
     <div class="net-worth-value">Rs.11.25 Crores</div>
-    <div class="net-worth-sub">Total Assets ₹7.56Cr &nbsp;·&nbsp; Liabilities SGD 129K ≈ ₹80L</div>
+    <div class="net-worth-sub">Total Assets Rs.12.05Cr  Liabilities SGD 129K approx Rs.80L</div>
   </div>
 </header>
 
@@ -617,7 +617,7 @@
 </div>
 
 <!-- EDIT BUTTON — always visible -->
-<button id="edit-fab" onclick="document.getElementById('edit-overlay').style.display='block'" style="position:fixed;bottom:28px;right:28px;z-index:9999;background:#6c63ff;color:#fff;border:none;border-radius:50px;padding:14px 26px;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 4px 24px rgba(108,99,255,0.6);">✏️ Edit</button>
+<button id="edit-fab" onclick="document.getElementById('edit-overlay').style.display='block'" style="position:fixed;bottom:28px;right:28px;z-index:9999;background:#6c63ff;color:#fff;border:none;border-radius:50px;padding:14px 26px;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 4px 24px rgba(108,99,255,0.6);">Edit</button>
 
 <!-- EDIT OVERLAY -->
 <div id="edit-overlay" style="display: none; position: fixed; inset: 0px; z-index: 10000; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(4px); overflow-y: auto;">
@@ -632,7 +632,7 @@
 
     <!-- Employment -->
     <div style="font-size:0.7rem;font-weight:700;color:#6c63ff;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">💼 Employment</div>
-    <div class="ef-row"><label class="ef-label">Base Salary (SGD/mo)</label><input id="ef-base_salary" class="ef-input" type="number" value="14385"></div>
+    <div class="ef-row"><label class="ef-label">Base Salary (SGD/mo)</label><input id="ef-base_salary" class="ef-input" type="number" value="14380"></div>
     <div class="ef-row"><label class="ef-label">Annual Bonus (SGD)</label><input id="ef-bonus" class="ef-input" type="number" value="29167"></div>
     <div class="ef-row"><label class="ef-label">RSU New Grant (USD, 3yr)</label><input id="ef-rsu_grant" class="ef-input" type="number" value="32400"></div>
 
@@ -688,7 +688,7 @@
 
 <script>
 // ── EDIT FUNCTIONS (global, defined first) ──────────────────
-var EDIT_DEFAULTS = {"base_salary":14385,"bonus":29167,"rsu_grant":32400,"etrade_inr":2.5,"saxo_usd":40000,"sip_monthly":50000,"lending_inr":10,"loan_sgd":129000,"loan_rate":2.05,"loan_months":24,"re_total":3.74,"rental_mo":52000,"lending_mo":17000};
+var EDIT_DEFAULTS = {"base_salary":14380,"bonus":29167,"rsu_grant":32400,"etrade_inr":2.5,"saxo_usd":40000,"sip_monthly":50000,"lending_inr":10,"loan_sgd":129000,"loan_rate":2.05,"loan_months":24,"re_total":3.74,"rental_mo":52000,"lending_mo":17000};
 
 function getVal(key) {
   return parseFloat(document.getElementById('ef-' + key).value) || 0;

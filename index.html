@@ -1,6 +1,9 @@
 <html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Ram's Wealth Dashboard</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
@@ -741,11 +744,12 @@ async function deployToGitHub() {
     var f2 = await r2.json();
     if (!f2.commit) throw new Error(f2.message||'Push failed - check token has repo scope');
     btn.textContent='Deployed!'; status.style.color='#22c55e';
-    status.innerHTML='Live in ~1 min: <a href="https://muthuramanathanm.github.io/wealth-dashboard/" target="_blank" style="color:#22c55e;">Open Dashboard</a>';
+    status.innerHTML='<strong>Pushed to GitHub!</strong> Wait 1-2 min then <strong>press Cmd+Shift+R</strong> (hard refresh) to see changes.<br><a href="https://muthuramanathanm.github.io/wealth-dashboard/" target="_blank" style="color:#22c55e;">Open Dashboard</a>';
     setTimeout(function(){ btn.textContent='Deploy to GitHub Pages'; btn.disabled=false; }, 5000);
   } catch(err) {
     btn.textContent='Deploy to GitHub Pages'; btn.disabled=false;
     status.style.color='#ef4444'; status.textContent='Error: '+err.message;
+    console.error('Deploy error:', err);
   }
 }
 

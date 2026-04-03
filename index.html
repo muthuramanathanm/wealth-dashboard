@@ -738,6 +738,171 @@ new Chart(document.getElementById('incomeChart'), {
     }
   }
 });
-</script>
-</body>
-</html>
+
+// ============================================================
+// EDIT MODE
+// ============================================================
+const FIELDS = [
+  { section: '💼 Employment', key: 'base_salary',    label: 'Base Salary (SGD/mo)',        selector: '#val-base-salary' },
+  { section: '💼 Employment', key: 'bonus',          label: 'Annual Bonus (SGD)',           selector: '#val-bonus' },
+  { section: '💼 Employment', key: 'rsu_grant',      label: 'RSU New Grant (USD, 3yr)',     selector: '#val-rsu-grant' },
+  { section: '📈 Investments', key: 'etrade_inr',   label: 'eTrade Value (₹ Crores)',      selector: '#val-etrade' },
+  { section: '📈 Investments', key: 'saxo_usd',     label: 'Saxo Portfolio (USD)',          selector: '#val-saxo' },
+  { section: '📈 Investments', key: 'sip_monthly',  label: 'SIP Amount (₹/mo)',            selector: '#val-sip' },
+  { section: '📈 Investments', key: 'lending_inr',  label: 'Private Lending (₹ Lakhs)',    selector: '#val-lending' },
+  { section: '🏦 Liabilities', key: 'loan_sgd',     label: 'Citi Loan Balance (SGD)',      selector: '#val-loan' },
+  { section: '🏦 Liabilities', key: 'loan_rate',    label: 'Loan Interest Rate (%)',       selector: '#val-loan-rate' },
+  { section: '🏦 Liabilities', key: 'loan_months',  label: 'Loan Tenure (months)',         selector: '#val-loan-months' },
+  { section: '🏠 Real Estate', key: 're_total',     label: 'Real Estate Total (₹ Crores)', selector: '#val-re' },
+  { section: '💰 Passive',    key: 'rental_mo',     label: 'Rental Income (₹/mo)',         selector: '#val-rental' },
+  { section: '💰 Passive',    key: 'lending_mo',    label: 'Lending Returns (₹/mo)',       selector: '#val-lending-mo' },
+];
+
+// Defaults
+const DEFAULTS = {
+  base_salary: 14380, bonus: 29167, rsu_grant: 32400,
+  etrade_inr: 2.5, saxo_usd: 40000, sip_monthly: 50000, lending_inr: 10,
+  loan_sgd: 129000, loan_rate: 2.05, loan_months: 24,
+  re_total: 3.74, rental_mo: 52000, lending_mo: 17000
+};
+
+function loadData() {
+  try { return JSON.parse(localStorage.getItem('wealthData')) || {...DEFAULTS}; }
+  catch(e) { return {...DEFAULTS}; }
+}
+function saveData(d) { localStorage.setItem('wealthData', JSON.stringify(d)); }
+
+// Build edit panel
+const editBtn = document.createElement('button');
+editBtn.id = 'edit-fab';
+editBtn.innerHTML = '✏️ Edit';
+editBtn.style.cssText = `position:fixed;bottom:28px;right:28px;z-index:9999;background:#6c63ff;color:#fff;
+  border:none;border-radius:50px;padding:12px 22px;font-size:0.9rem;font-weight:700;cursor:pointer;
+  box-shadow:0 4px 20px rgba(108,99,255,0.5);transition:transform 0.15s;`;
+editBtn.onmouseenter = () => editBtn.style.transform = 'scale(1.05)';
+editBtn.onmouseleave = () => editBtn.style.transform = 'scale(1)';
+document.body.appendChild(editBtn);
+
+const overlay = document.createElement('div');
+overlay.id = 'edit-overlay';
+overlay.style.cssText = `display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.7);
+  backdrop-filter:blur(4px);overflow-y:auto;`;
+
+const panel = document.createElement('div');
+panel.style.cssText = `background:#1a1d27;border:1px solid #2a2d3e;border-radius:16px;
+  max-width:580px;margin:40px auto;padding:28px;`;
+
+let lastSection = '';
+const formRows = FIELDS.map(f => {
+  let sectionHeader = '';
+  if (f.section !== lastSection) {
+    sectionHeader = `<div style="font-size:0.72rem;font-weight:700;color:#6c63ff;text-transform:uppercase;
+      letter-spacing:1px;margin:${lastSection ? '18px' : '0'} 0 10px;">${f.section}</div>`;
+    lastSection = f.section;
+  }
+  return `${sectionHeader}
+    <div style="display:flex;justify-content:space-between;align-items:center;
+      padding:9px 0;border-bottom:1px solid #2a2d3e;">
+      <label style="font-size:0.85rem;color:#94a3b8;">${f.label}</label>
+      <input id="ef-${f.key}" type="number" step="any"
+        style="background:#0f1117;border:1px solid #2a2d3e;border-radius:8px;color:#e2e8f0;
+        padding:6px 10px;width:140px;font-size:0.88rem;text-align:right;"
+        value="${loadData()[f.key]}">
+    </div>`;
+}).join('');
+
+panel.innerHTML = `
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+    <h2 style="font-size:1.1rem;color:#fff;">✏️ Edit Dashboard</h2>
+    <button id="edit-close" style="background:none;border:none;color:#94a3b8;font-size:1.3rem;cursor:pointer;">✕</button>
+  </div>
+  <div style="font-size:0.78rem;color:#94a3b8;margin-bottom:18px;padding:10px 14px;background:rgba(108,99,255,0.1);
+    border-radius:8px;border-left:3px solid #6c63ff;">
+    Changes are saved in your browser. Use "Save & Download" to get an updated file for redeployment.
+  </div>
+  ${formRows}
+  <div style="display:flex;gap:10px;margin-top:24px;flex-wrap:wrap;">
+    <button id="edit-save" style="flex:1;background:#6c63ff;color:#fff;border:none;border-radius:10px;
+      padding:12px;font-size:0.9rem;font-weight:700;cursor:pointer;">💾 Save & Apply</button>
+    <button id="edit-download" style="flex:1;background:#22c55e;color:#fff;border:none;border-radius:10px;
+      padding:12px;font-size:0.9rem;font-weight:700;cursor:pointer;">⬇️ Save & Download</button>
+    <button id="edit-reset" style="background:#2a2d3e;color:#94a3b8;border:none;border-radius:10px;
+      padding:12px 16px;font-size:0.85rem;cursor:pointer;">↺ Reset</button>
+  </div>`;
+
+overlay.appendChild(panel);
+document.body.appendChild(overlay);
+
+editBtn.onclick = () => {
+  overlay.style.display = 'block';
+  const d = loadData();
+  FIELDS.forEach(f => { document.getElementById('ef-' + f.key).value = d[f.key]; });
+};
+document.getElementById('edit-close').onclick = () => overlay.style.display = 'none';
+overlay.onclick = (e) => { if (e.target === overlay) overlay.style.display = 'none'; };
+
+document.getElementById('edit-reset').onclick = () => {
+  FIELDS.forEach(f => { document.getElementById('ef-' + f.key).value = DEFAULTS[f.key]; });
+};
+
+function applyData(d) {
+  // Net worth header
+  const assets = (d.re_total + d.etrade_inr) * 100 + (d.saxo_usd / 83) + 66.5 + d.lending_inr + 7.5 + 15;
+  const liabInr = (d.loan_sgd * 62) / 1e5;
+  const nw = (assets / 100 - liabInr / 100).toFixed(2);
+  document.querySelector('.net-worth-value').textContent = '₹' + nw + ' Crores';
+  document.querySelector('.net-worth-sub').textContent =
+    'Total Assets ₹' + (assets/100).toFixed(2) + 'Cr · Liabilities SGD ' + (d.loan_sgd/1000).toFixed(0) + 'K ≈ ₹' + liabInr.toFixed(0) + 'L';
+
+  // KPI: base salary
+  document.querySelector('[data-kpi="salary"] .kpi-value').textContent = 'SGD ' + d.base_salary.toLocaleString();
+  const annualCash = d.base_salary * 12 + d.bonus;
+  document.querySelector('[data-kpi="annual"] .kpi-value').textContent = 'SGD ' + Math.round(annualCash/1000) + 'K';
+
+  // KPI: passive income
+  const passiveMo = d.rental_mo + d.lending_mo;
+  document.querySelector('[data-kpi="passive"] .kpi-value').textContent = '₹' + (passiveMo/1000).toFixed(0) + 'K/mo';
+  document.querySelector('[data-kpi="passive"] .kpi-sub').textContent = '₹' + (passiveMo*12/100000).toFixed(2) + 'L/year · Rental + Lending';
+
+  // Loan EMI
+  const r = (d.loan_rate/100)/12, n = d.loan_months;
+  const emi = d.loan_sgd * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1);
+  document.querySelector('[data-kpi="outflows"] .kpi-sub').textContent =
+    'SIP + PPF + Insurance + Loan EMI SGD ' + Math.round(emi).toLocaleString();
+
+  saveData(d);
+}
+
+document.getElementById('edit-save').onclick = () => {
+  const d = {};
+  FIELDS.forEach(f => { d[f.key] = parseFloat(document.getElementById('ef-' + f.key).value) || 0; });
+  applyData(d);
+  overlay.style.display = 'none';
+  // Flash confirmation
+  editBtn.innerHTML = '✅ Saved!';
+  setTimeout(() => editBtn.innerHTML = '✏️ Edit', 2000);
+};
+
+document.getElementById('edit-download').onclick = () => {
+  const d = {};
+  FIELDS.forEach(f => { d[f.key] = parseFloat(document.getElementById('ef-' + f.key).value) || 0; });
+  saveData(d);
+  // Inject updated defaults into a copy of this page
+  const html = document.documentElement.outerHTML
+    .replace(/const DEFAULTS = \{[^}]+\}/, 'const DEFAULTS = ' + JSON.stringify(d));
+  const blob = new Blob([html], {type: 'text/html'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'finance-dashboard-' + new Date().toISOString().slice(0,10) + '.html';
+  a.click();
+};
+
+// Add data-kpi attributes to KPI cards for targeting
+document.querySelectorAll('.kpi-card').forEach((card, i) => {
+  const keys = ['assets','liabilities','passive','salary','annual','outflows'];
+  if (keys[i]) card.setAttribute('data-kpi', keys[i]);
+});
+
+// On load, apply saved data if any
+const saved = localStorage.getItem('wealthData');
+if (saved) applyData(JSON.parse(saved));
+

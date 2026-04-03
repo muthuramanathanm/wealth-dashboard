@@ -742,6 +742,7 @@ new Chart(document.getElementById('incomeChart'), {
 // ============================================================
 // EDIT MODE
 // ============================================================
+window.addEventListener('load', function() {
 const FIELDS = [
   { section: '💼 Employment', key: 'base_salary',    label: 'Base Salary (SGD/mo)',        selector: '#val-base-salary' },
   { section: '💼 Employment', key: 'bonus',          label: 'Annual Bonus (SGD)',           selector: '#val-bonus' },
@@ -887,7 +888,6 @@ document.getElementById('edit-download').onclick = () => {
   const d = {};
   FIELDS.forEach(f => { d[f.key] = parseFloat(document.getElementById('ef-' + f.key).value) || 0; });
   saveData(d);
-  // Inject updated defaults into a copy of this page
   const html = document.documentElement.outerHTML
     .replace(/const DEFAULTS = \{[^}]+\}/, 'const DEFAULTS = ' + JSON.stringify(d));
   const blob = new Blob([html], {type: 'text/html'});
@@ -896,13 +896,17 @@ document.getElementById('edit-download').onclick = () => {
   a.click();
 };
 
-// Add data-kpi attributes to KPI cards for targeting
+// Set data-kpi attributes FIRST before applyData tries to use them
 document.querySelectorAll('.kpi-card').forEach((card, i) => {
   const keys = ['assets','liabilities','passive','salary','annual','outflows'];
   if (keys[i]) card.setAttribute('data-kpi', keys[i]);
 });
 
 // On load, apply saved data if any
-const saved = localStorage.getItem('wealthData');
-if (saved) applyData(JSON.parse(saved));
+try {
+  const saved = localStorage.getItem('wealthData');
+  if (saved) applyData(JSON.parse(saved));
+} catch(e) { console.warn('Could not restore saved data', e); }
+
+}); // end window.load
 

@@ -449,39 +449,77 @@
   <div class="section-title">📈 Investment Portfolio</div>
   <div class="grid-3">
     <div class="card">
-      <h3>🇺🇸 US Equity — eTrade</h3>
+      <h3>🇺🇸 US Equity — eTrade (Morgan Stanley)</h3>
       <ul class="inv-list">
         <li class="inv-item">
-          <div class="inv-name">📊 Autodesk RSUs <span class="inv-badge badge-active">Active</span></div>
-          <div class="inv-value" id="inv-etrade-val">₹2.7Cr</div>
+          <div class="inv-name">🏷️ ESPP <span class="inv-badge badge-active">Sellable</span></div>
+          <div class="inv-value" style="color:var(--green)">319 shares<div class="inv-sub" id="inv-espp-sub">≈ USD 75,948 · ₹63L</div></div>
+        </li>
+        <li class="inv-item">
+          <div class="inv-name">📊 RSU Granted <span class="inv-badge badge-active">601 total</span></div>
+          <div class="inv-value">
+            <div style="font-size:0.78rem;">Vested: <strong>413</strong> · Unvested: <strong>188</strong></div>
+            <div class="inv-sub" id="inv-rsu-sellable-sub">Sellable now: 100 · ≈ USD 23,808</div>
+          </div>
+        </li>
+        <li class="inv-item">
+          <div class="inv-name">💰 eTrade Total Value</div>
+          <div class="inv-value" id="inv-etrade-val" style="color:var(--green)">₹1.45Cr<div class="inv-sub" id="inv-etrade-sub">ESPP + Vested RSU @ USD 238</div></div>
         </li>
         <li class="inv-item">
           <div class="inv-name">🆕 New RSU Grant <span class="inv-badge badge-new">Vesting</span></div>
-          <div class="inv-value" style="color: var(--purple)" id="inv-rsu-grant-val">USD 32,400</div>
+          <div class="inv-value" style="color: var(--purple)" id="inv-rsu-grant-val">USD 32,400<div class="inv-sub" id="inv-rsu-grant-sub">3-yr vest · USD 10,800/yr</div></div>
         </li>
         <li class="inv-item">
           <div class="inv-name">🏦 A/C: 153-318259 · DTC: 0015</div>
           <div class="inv-value" style="font-size:0.75rem; color:var(--muted)">Morgan Stanley<div class="inv-sub">Smith Barney LLC</div></div>
         </li>
       </ul>
+      <!-- Upcoming Vesting -->
+      <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);">
+        <div style="font-size:0.7rem;font-weight:700;color:#6c63ff;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">📅 Upcoming Vesting 2026</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+          <div style="background:rgba(108,99,255,0.08);border:1px solid rgba(108,99,255,0.2);border-radius:8px;padding:8px;text-align:center;">
+            <div style="font-size:0.65rem;color:var(--muted);">Jun 10, 2026</div>
+            <div style="font-size:0.9rem;font-weight:700;color:var(--purple);">32 RSU</div>
+            <div style="font-size:0.65rem;color:var(--muted);" id="vest-jun-val">17 + 15 · ≈ USD 7,619</div>
+          </div>
+          <div style="background:rgba(108,99,255,0.08);border:1px solid rgba(108,99,255,0.2);border-radius:8px;padding:8px;text-align:center;">
+            <div style="font-size:0.65rem;color:var(--muted);">Sep 10, 2026</div>
+            <div style="font-size:0.9rem;font-weight:700;color:var(--purple);">31 RSU</div>
+            <div style="font-size:0.65rem;color:var(--muted);" id="vest-sep-val">17 + 14 · ≈ USD 7,380</div>
+          </div>
+        </div>
+        <div style="margin-top:8px;font-size:0.72rem;color:var(--muted);text-align:center;" id="vest-total-note">
+          Total 2026 vesting: 63 RSU ≈ USD 14,999 · ₹12.45L
+        </div>
+        <div style="margin-top:4px;font-size:0.7rem;color:var(--yellow);text-align:center;">
+          🗓️ Sep 30, 2026 — ESPP Purchase Period Ends
+        </div>
+      </div>
     </div>
 
     <div class="card">
-      <h3>🇸🇬 SG Equity — Saxo</h3>
+      <h3>📱 Moomoo Account — US Equities</h3>
       <ul class="inv-list">
         <li class="inv-item">
-          <div class="inv-name">📊 Diversified Portfolio <span class="inv-badge badge-active">Active</span></div>
-          <div class="inv-value" id="inv-saxo-val">USD 40,000</div>
+          <div class="inv-name">📊 Autodesk (ADSK) <span class="inv-badge badge-active">Active</span></div>
+          <div class="inv-value" style="color:var(--green)">641 shares<div class="inv-sub" id="inv-moomoo-adsk-sub">≈ USD 152,609 · ₹1.27Cr</div></div>
         </li>
         <li class="inv-item">
-          <div class="inv-name">💰 Total Invested</div>
-          <div class="inv-value">USD 25,000<div class="inv-sub">Cost basis</div></div>
+          <div class="inv-name">📊 Sundhon</div>
+          <div class="inv-value" style="color:var(--muted)">20 shares<div class="inv-sub">Value TBC</div></div>
         </li>
         <li class="inv-item">
-          <div class="inv-name">📈 Unrealised Gain</div>
-          <div class="inv-value" style="color: var(--green)">+USD 15K<div class="inv-sub">+60% return</div></div>
+          <div class="inv-name">💰 Moomoo Total (ADSK)</div>
+          <div class="inv-value" id="inv-saxo-val" style="color:var(--green)">₹1.27Cr<div class="inv-sub" id="inv-saxo-sub">641 × USD 238 · ≈ ₹1.27Cr</div></div>
         </li>
       </ul>
+      <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);">
+        <div style="background:rgba(239,68,68,0.08);border-left:3px solid var(--red);border-radius:6px;padding:8px 10px;font-size:0.76rem;color:var(--red);">
+          ⚠️ High ADSK concentration across eTrade + Moomoo — consider diversifying on vesting events
+        </div>
+      </div>
     </div>
 
     <div class="card">
@@ -636,7 +674,7 @@
 
     <!-- Investments -->
     <div style="font-size:0.7rem;font-weight:700;color:#6c63ff;text-transform:uppercase;letter-spacing:1px;margin:18px 0 10px;">📈 Investments</div>
-    <div class="ef-row"><label class="ef-label">eTrade Value (₹ Crores)</label><input id="ef-etrade_inr" class="ef-input" type="number" step="0.01" value="2.5"></div>
+    <div class="ef-row"><label class="ef-label">ADSK Price (USD)</label><input id="ef-adsk_price" class="ef-input" type="number" step="0.01" value="238.08"></div>
     <div class="ef-row"><label class="ef-label">Saxo Portfolio (USD)</label><input id="ef-saxo_usd" class="ef-input" type="number" value="40000"></div>
     <div class="ef-row"><label class="ef-label">SIP Amount (₹/mo)</label><input id="ef-sip_monthly" class="ef-input" type="number" value="50000"></div>
     <div class="ef-row"><label class="ef-label">Private Lending (₹ Lakhs)</label><input id="ef-lending_inr" class="ef-input" type="number" value="10"></div>
@@ -692,7 +730,11 @@ var PRUDENTIAL_SGD = 522;
 var PPF_INR = 12500;
 
 // ── EDIT DEFAULTS (hardcoded baseline values) ──────────────
-var EDIT_DEFAULTS = {"base_salary":14380,"bonus":29167,"rsu_grant":32400,"etrade_inr":2.5,"saxo_usd":40000,"sip_monthly":50000,"lending_inr":10,"loan_sgd":129000,"loan_rate":2.07,"loan_months":24,"re_total":3.74,"rental_mo":52000,"lending_mo":17000};
+// Fixed ADSK holdings (shares are fixed; only price changes)
+var ESPP_QTY = 319, RSU_VESTED_QTY = 413, RSU_SELLABLE_QTY = 100, RSU_UNVESTED_QTY = 188;
+var MOOMOO_ADSK_QTY = 641;
+
+var EDIT_DEFAULTS = {"base_salary":14380,"bonus":29167,"rsu_grant":32400,"adsk_price":238.08,"saxo_usd":40000,"sip_monthly":50000,"lending_inr":10,"loan_sgd":129000,"loan_rate":2.07,"loan_months":24,"re_total":3.74,"rental_mo":52000,"lending_mo":17000};
 
 // ── CHART INSTANCES ────────────────────────────────────────
 var chartAsset = null, chartGeo = null, chartDebt = null, chartIncome = null;
@@ -738,15 +780,20 @@ function renderDashboard(d) {
   var totalInt      = Math.round(emi * d.loan_months - d.loan_sgd);
   var liabInrL      = Math.round((d.loan_sgd * SGD_INR) / 100000); // lakhs
 
-  // Assets in lakhs
+  // Assets in lakhs — eTrade = (ESPP + Vested RSU) × ADSK price; Moomoo = 641 × ADSK price
+  var adskPrice     = d.adsk_price || 238.08;
+  var etradeUSD     = (ESPP_QTY + RSU_VESTED_QTY) * adskPrice;
+  var etradeL       = Math.round(etradeUSD * USD_INR / 100000 * 10) / 10;
+  var etradeCr      = etradeL / 100;
+  var moomooUSD     = MOOMOO_ADSK_QTY * adskPrice;
+  var moomooL       = Math.round(moomooUSD * USD_INR / 100000 * 10) / 10;
   var reTotalL      = d.re_total * 100;
-  var etradeL       = d.etrade_inr * 100;
   var saxoL         = Math.round((d.saxo_usd * USD_INR) / 100000 * 10) / 10;
   var insuranceL    = 66.5;
   var sipL          = 7.5;
   var ppfL          = 15;
   var lendingL      = d.lending_inr;
-  var assetsL       = reTotalL + etradeL + saxoL + insuranceL + sipL + ppfL + lendingL;
+  var assetsL       = reTotalL + etradeL + moomooL + saxoL + insuranceL + sipL + ppfL + lendingL;
   var assetsCr      = assetsL / 100;
   var netWorthCr    = assetsCr - (liabInrL / 100);
 
@@ -827,17 +874,27 @@ function renderDashboard(d) {
   setText('debt-note',              'New liability: SGD ' + Math.round(d.loan_sgd/1000) + 'K · Rate: ' + d.loan_rate + '% vs old 3.56–4.94%');
 
   // ── Investment cards ─────────────────────────────────────
-  setText('inv-etrade-val',       '₹' + d.etrade_inr + 'Cr');
+  setText('inv-etrade-val',       '₹' + etradeCr.toFixed(2) + 'Cr');
+  setText('inv-etrade-sub',       'ESPP + Vested RSU @ USD ' + Math.round(adskPrice));
+  setText('inv-espp-sub',         '≈ USD ' + Math.round(ESPP_QTY * adskPrice).toLocaleString() + ' · ₹' + Math.round(ESPP_QTY * adskPrice * USD_INR / 100000) + 'L');
+  setText('inv-rsu-sellable-sub', 'Sellable now: ' + RSU_SELLABLE_QTY + ' · ≈ USD ' + Math.round(RSU_SELLABLE_QTY * adskPrice).toLocaleString());
+  setText('inv-moomoo-adsk-sub',  '≈ USD ' + Math.round(moomooUSD).toLocaleString() + ' · ₹' + (moomooL/100).toFixed(2) + 'Cr');
   setText('inv-rsu-grant-val',    'USD ' + d.rsu_grant.toLocaleString());
   setText('inv-rsu-grant-sub',    '3-yr vest · USD ' + Math.round(rsuPerYear).toLocaleString() + '/yr');
   setText('inv-saxo-val',         'USD ' + d.saxo_usd.toLocaleString());
-  setText('inv-saxo-sub',         '≈ ₹' + saxoL.toFixed(1) + 'L current value');
+  setText('inv-saxo-val',         '₹' + (moomooL/100).toFixed(2) + 'Cr');
+  setText('inv-saxo-sub',         '641 × USD ' + Math.round(adskPrice) + ' · ≈ ₹' + moomooL.toFixed(1) + 'L');
+  // Update upcoming vesting boxes with live price
+  var vestJunUSD = 32 * adskPrice, vestSepUSD = 31 * adskPrice, vestTotalUSD = 63 * adskPrice;
+  setText('vest-jun-val',         '17 + 15 · ≈ USD ' + Math.round(vestJunUSD).toLocaleString());
+  setText('vest-sep-val',         '17 + 14 · ≈ USD ' + Math.round(vestSepUSD).toLocaleString());
+  setText('vest-total-note',      'Total 2026 vesting: 63 RSU ≈ USD ' + Math.round(vestTotalUSD).toLocaleString() + ' · ₹' + (Math.round(vestTotalUSD * USD_INR / 100000 * 10)/10).toFixed(1) + 'L');
   setText('inv-sip-val',          '₹' + Math.round(d.sip_monthly/1000) + 'K/mo');
   setText('inv-lending-sub',      '₹' + d.lending_inr + 'L · ₹' + Math.round(d.lending_mo/1000) + 'K/mo');
 
   // ── Charts ───────────────────────────────────────────────
   renderCharts(d, {
-    reTotalL: reTotalL, etradeL: etradeL, saxoL: saxoL,
+    reTotalL: reTotalL, etradeL: etradeL, moomooL: moomooL, saxoL: saxoL,
     insuranceL: insuranceL, sipL: sipL, ppfL: ppfL, lendingL: lendingL,
     assetsL: assetsL, annualBase: annualBase, rsuPerYear: rsuPerYear,
     passiveAnnL: passiveAnnL, loan_sgd: d.loan_sgd, loan_rate: d.loan_rate
@@ -855,10 +912,10 @@ function renderCharts(d, c) {
     chartAsset = new Chart(document.getElementById('assetChart'), {
       type: 'doughnut',
       data: {
-        labels: ['Real Estate','US Equity','SG Equity','SG Insurance','SIP','PPF','Lending'],
+        labels: ['Real Estate','eTrade (ESPP+RSU)','Moomoo (ADSK)','SG Equity','SG Insurance','SIP','PPF','Lending'],
         datasets: [{
-          data: [c.reTotalL, c.etradeL, c.saxoL, c.insuranceL, c.sipL, c.ppfL, c.lendingL],
-          backgroundColor: ['#6c63ff','#eab308','#3b82f6','#22c55e','#f97316','#06b6d4','#ec4899'],
+          data: [c.reTotalL, c.etradeL, c.moomooL, c.saxoL, c.insuranceL, c.sipL, c.ppfL, c.lendingL],
+          backgroundColor: ['#6c63ff','#eab308','#f59e0b','#3b82f6','#22c55e','#f97316','#06b6d4','#ec4899'],
           borderColor: '#1a1d27', borderWidth: 3, hoverOffset: 8
         }]
       },
@@ -874,7 +931,7 @@ function renderCharts(d, c) {
 
   // Geography: India = RE + SIP + PPF + Lending, USA = eTrade, SG = Saxo + Insurance
   var indiaL = c.reTotalL + c.sipL + c.ppfL + c.lendingL;
-  var usaL   = c.etradeL;
+  var usaL   = c.etradeL + c.moomooL;
   var sgL    = c.saxoL + c.insuranceL;
   var geoTotal = indiaL + usaL + sgL;
   try {

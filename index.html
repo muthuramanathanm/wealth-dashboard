@@ -178,7 +178,7 @@
     <div class="header-badges">
       <span class="badge badge-updated">Updated Apr 2026</span>
       <span class="badge" id="adsk-price-badge" style="background:rgba(234,179,8,0.15);color:#eab308;border:1px solid rgba(234,179,8,0.3);">ADSK: USD 238.08</span>
-      <span class="badge" id="soun-price-badge" style="background:rgba(59,130,246,0.15);color:#3b82f6;border:1px solid rgba(59,130,246,0.3);">SOUN: USD 6.78</span>
+      <span id="price-status" style="font-size:0.68rem;color:#94a3b8;align-self:center;margin-left:4px;"></span>
     </div>
   </div>
   <div class="header-right">
@@ -816,7 +816,6 @@ function renderDashboard(d) {
 
   // ── Header ──────────────────────────────────────────────
   setText('adsk-price-badge', 'ADSK: USD ' + adskPrice.toFixed(2));
-  setText('soun-price-badge', 'SOUN: USD ' + sounPrice.toFixed(2));
   setText('header-net-worth',     '₹' + netWorthCr.toFixed(2) + ' Crores');
   setText('header-net-worth-sub', 'Total Assets ₹' + assetsCr.toFixed(2) + 'Cr \u00b7 Liabilities SGD ' + Math.round(d.loan_sgd/1000) + 'K ≈ ₹' + liabInrL + 'L');
 
@@ -1111,6 +1110,42 @@ async function deployToGitHub() {
   }
 }
 
+// ── LIVE PRICE FETCH ───────────────────────────────────────
+async function fetchADSKPrice() {
+  var statusEl = document.getElementById('price-status');
+  try {
+    var res = await fetch('https://query1.finance.yahoo.com/v8/finance/chart/ADSK?interval=1d&range=1d', {
+      headers: { 'User-Agent': 'Mozilla/5.0' }
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    var data = await res.json();
+    var price = data.chart.result[0].meta.regularMarketPrice;
+    if (!price) throw new Error('No price');
+    // Update EDIT_DEFAULTS and the input
+    EDIT_DEFAULTS.adsk_price = price;
+    var inp = document.getElementById('ef-adsk_price');
+    if (inp) inp.value = price;
+    // Re-render dashboard with new price
+    var d = {};
+    Object.keys(EDIT_DEFAULTS).forEach(function(k){ d[k] = EDIT_DEFAULTS[k]; });
+    // Override with any user-edited values from inputs
+    Object.keys(EDIT_DEFAULTS).forEach(function(k) {
+      var el = document.getElementById('ef-' + k);
+      if (el && k !== 'adsk_price') d[k] = parseFloat(el.value) || EDIT_DEFAULTS[k];
+    });
+    d.adsk_price = price;
+    renderDashboard(d);
+    var now = new Date();
+    var timeStr = now.toLocaleTimeString('en-SG', { hour: '2-digit', minute: '2-digit' });
+    if (statusEl) { statusEl.textContent = '● Live · ' + timeStr; statusEl.style.color = '#22c55e'; }
+    return price;
+  } catch(e) {
+    console.warn('ADSK price fetch failed:', e.message);
+    if (statusEl) { statusEl.textContent = '○ Offline'; statusEl.style.color = '#ef4444'; }
+    return null;
+  }
+}
+
 // ── INIT ON LOAD ───────────────────────────────────────────
 window.addEventListener('load', function() {
   // Populate input fields from EDIT_DEFAULTS
@@ -1121,8 +1156,11 @@ window.addEventListener('load', function() {
   // Restore saved GitHub token
   var savedToken = localStorage.getItem('gh_token');
   if (savedToken) { var te = document.getElementById('ef-gh-token'); if (te) te.value = savedToken; }
-  // Render the full dashboard from EDIT_DEFAULTS
+  // Render from defaults first (instant), then fetch live ADSK price
   renderDashboard(EDIT_DEFAULTS);
+  fetchADSKPrice();
+  // Auto-refresh price every 5 minutes
+  setInterval(fetchADSKPrice, 5 * 60 * 1000);
 });
 </script>
 

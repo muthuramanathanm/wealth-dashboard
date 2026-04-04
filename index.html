@@ -1194,8 +1194,8 @@ window.addEventListener('load', function() {
   // Render from defaults first (instant), then fetch live ADSK price
   renderDashboard(EDIT_DEFAULTS);
   fetchADSKPrice();
-  // Auto-refresh price every 5 minutes
-  setInterval(fetchADSKPrice, 5 * 60 * 1000);
+  // Auto-refresh price every 2 hours
+  setInterval(fetchADSKPrice, 2 * 60 * 60 * 1000);
 });
 </script>
 

@@ -1,0 +1,35 @@
+name: Update ADSK Price
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'   # every 2 hours
+  workflow_dispatch:          # allow manual trigger
+
+jobs:
+  update-price:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch ADSK price
+        run: |
+          PRICE=$(curl -s "https://query1.finance.yahoo.com/v8/finance/chart/ADSK?interval=1d&range=1d" \
+            -H "User-Agent: Mozilla/5.0" | \
+            python3 -c "import sys,json; d=json.load(sys.stdin); print(d['chart']['result'][0]['meta']['regularMarketPrice'])")
+          
+          if [ -z "$PRICE" ]; then
+            echo "Failed to fetch price"
+            exit 1
+          fi
+          
+          UPDATED=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          echo "{\"adsk\": $PRICE, \"updated\": \"$UPDATED\"}" > price.json
+          echo "ADSK price: $PRICE"
+
+      - name: Commit price.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add price.json
+          git diff --staged --quiet || git commit -m "Update ADSK price [skip ci]"
+          git push

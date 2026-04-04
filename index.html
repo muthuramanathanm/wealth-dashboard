@@ -1111,30 +1111,12 @@ async function deployToGitHub() {
 }
 
 // ── LIVE PRICE FETCH ───────────────────────────────────────
-// Uses CORS proxies to bypass browser restrictions on Yahoo Finance
-var YAHOO_ADSK_URL = 'https://query1.finance.yahoo.com/v8/finance/chart/ADSK?interval=1d&range=1d';
-var YAHOO_ADSK_URL2 = 'https://query2.finance.yahoo.com/v8/finance/chart/ADSK?interval=1d&range=1d';
-
+// Reads price.json from same domain (no CORS) — updated by GitHub Actions every 2h
 var PRICE_SOURCES = [
-  // Stooq — no API key, proper CORS headers, very reliable
+  // Same-domain price.json — written by GitHub Actions workflow
   {
-    url: 'https://stooq.com/q/l/?s=adsk.us&f=sd2t2ohlcv&h&e=json',
-    parse: function(data) { return data.symbols[0].close; }
-  },
-  // allorigins /raw -> Yahoo Finance query1
-  {
-    url: 'https://api.allorigins.win/raw?url=' + encodeURIComponent(YAHOO_ADSK_URL),
-    parse: function(data) { return data.chart.result[0].meta.regularMarketPrice; }
-  },
-  // allorigins /raw -> Yahoo Finance query2
-  {
-    url: 'https://api.allorigins.win/raw?url=' + encodeURIComponent(YAHOO_ADSK_URL2),
-    parse: function(data) { return data.chart.result[0].meta.regularMarketPrice; }
-  },
-  // allorigins /get envelope format
-  {
-    url: 'https://api.allorigins.win/get?url=' + encodeURIComponent(YAHOO_ADSK_URL),
-    parse: function(data) { return JSON.parse(data.contents).chart.result[0].meta.regularMarketPrice; }
+    url: './price.json?cb=' + Date.now(),
+    parse: function(data) { return data.adsk; }
   }
 ];
 
@@ -1185,9 +1167,8 @@ async function fetchADSKPrice() {
     d.adsk_price = price;
     renderDashboard(d);
 
-    var timeStr = new Date().toLocaleTimeString('en-SG', { hour: '2-digit', minute: '2-digit' });
     if (badgeEl) badgeEl.textContent = 'ADSK: USD ' + price.toFixed(2);
-    if (statusEl) { statusEl.textContent = '● Live · ' + timeStr; statusEl.style.color = '#22c55e'; }
+    if (statusEl) { statusEl.textContent = '● Live'; statusEl.style.color = '#22c55e'; }
   } else {
     if (statusEl) { statusEl.textContent = '○ Offline'; statusEl.style.color = '#ef4444'; }
   }

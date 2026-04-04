@@ -1111,39 +1111,74 @@ async function deployToGitHub() {
 }
 
 // ── LIVE PRICE FETCH ───────────────────────────────────────
+// Uses CORS proxies to bypass browser restrictions on Yahoo Finance
+var YAHOO_ADSK_URL = 'https://query1.finance.yahoo.com/v8/finance/chart/ADSK?interval=1d&range=1d';
+var YAHOO_ADSK_URL2 = 'https://query2.finance.yahoo.com/v8/finance/chart/ADSK?interval=1d&range=1d';
+
+var PRICE_SOURCES = [
+  // allorigins /raw — returns raw Yahoo JSON directly
+  {
+    url: 'https://api.allorigins.win/raw?url=' + encodeURIComponent(YAHOO_ADSK_URL),
+    parse: function(data) { return data.chart.result[0].meta.regularMarketPrice; }
+  },
+  // allorigins /raw with query2
+  {
+    url: 'https://api.allorigins.win/raw?url=' + encodeURIComponent(YAHOO_ADSK_URL2),
+    parse: function(data) { return data.chart.result[0].meta.regularMarketPrice; }
+  },
+  // allorigins /get — wraps in {contents: "..."} envelope
+  {
+    url: 'https://api.allorigins.win/get?url=' + encodeURIComponent(YAHOO_ADSK_URL),
+    parse: function(data) { return JSON.parse(data.contents).chart.result[0].meta.regularMarketPrice; }
+  }
+];
+
+async function tryFetchPrice(source) {
+  var res = await fetch(source.url);
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  var data = await res.json();
+  var price = source.parse(data);
+  if (!price || isNaN(price)) throw new Error('Invalid price: ' + price);
+  return parseFloat(price);
+}
+
 async function fetchADSKPrice() {
   var statusEl = document.getElementById('price-status');
-  try {
-    var res = await fetch('https://query1.finance.yahoo.com/v8/finance/chart/ADSK?interval=1d&range=1d', {
-      headers: { 'User-Agent': 'Mozilla/5.0' }
-    });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    var data = await res.json();
-    var price = data.chart.result[0].meta.regularMarketPrice;
-    if (!price) throw new Error('No price');
-    // Update EDIT_DEFAULTS and the input
+  var badgeEl  = document.getElementById('adsk-price-badge');
+  if (statusEl) { statusEl.textContent = '⟳ updating…'; statusEl.style.color = '#94a3b8'; }
+
+  var price = null;
+  for (var i = 0; i < PRICE_SOURCES.length; i++) {
+    try {
+      price = await tryFetchPrice(PRICE_SOURCES[i]);
+      break; // got it
+    } catch(e) {
+      console.warn('Source ' + i + ' failed:', e.message);
+    }
+  }
+
+  if (price) {
+    // Update defaults + input field
     EDIT_DEFAULTS.adsk_price = price;
     var inp = document.getElementById('ef-adsk_price');
-    if (inp) inp.value = price;
-    // Re-render dashboard with new price
+    if (inp) inp.value = price.toFixed(2);
+
+    // Merge with any user-edited values (except adsk_price which we just fetched)
     var d = {};
-    Object.keys(EDIT_DEFAULTS).forEach(function(k){ d[k] = EDIT_DEFAULTS[k]; });
-    // Override with any user-edited values from inputs
     Object.keys(EDIT_DEFAULTS).forEach(function(k) {
       var el = document.getElementById('ef-' + k);
-      if (el && k !== 'adsk_price') d[k] = parseFloat(el.value) || EDIT_DEFAULTS[k];
+      d[k] = (el && k !== 'adsk_price') ? (parseFloat(el.value) || EDIT_DEFAULTS[k]) : EDIT_DEFAULTS[k];
     });
     d.adsk_price = price;
     renderDashboard(d);
-    var now = new Date();
-    var timeStr = now.toLocaleTimeString('en-SG', { hour: '2-digit', minute: '2-digit' });
+
+    var timeStr = new Date().toLocaleTimeString('en-SG', { hour: '2-digit', minute: '2-digit' });
+    if (badgeEl) badgeEl.textContent = 'ADSK: USD ' + price.toFixed(2);
     if (statusEl) { statusEl.textContent = '● Live · ' + timeStr; statusEl.style.color = '#22c55e'; }
-    return price;
-  } catch(e) {
-    console.warn('ADSK price fetch failed:', e.message);
+  } else {
     if (statusEl) { statusEl.textContent = '○ Offline'; statusEl.style.color = '#ef4444'; }
-    return null;
   }
+  return price;
 }
 
 // ── INIT ON LOAD ───────────────────────────────────────────

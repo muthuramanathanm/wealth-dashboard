@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -185,8 +183,8 @@
   </div>
   <div class="header-right">
     <div class="net-worth-label">Estimated Net Worth</div>
-    <div class="net-worth-value" id="header-net-worth">₹6.97 Crores</div>
-    <div class="net-worth-sub" id="header-net-worth-sub">Total Assets ₹7.56Cr &nbsp;·&nbsp; Liabilities SGD 129K ≈ ₹80L</div>
+    <div class="net-worth-value" id="header-net-worth">₹6.96 Crores</div>
+    <div class="net-worth-sub" id="header-net-worth-sub">Total Assets ₹7.76Cr · Liabilities SGD 129K ≈ ₹80L</div>
   </div>
 </header>
 
@@ -196,7 +194,7 @@
   <div class="kpi-grid">
     <div class="kpi-card" style="--accent-color: #22c55e">
       <div class="kpi-label">Total Assets</div>
-      <div class="kpi-value" id="kpi-assets-val" style="color: var(--green)">₹7.56Cr</div>
+      <div class="kpi-value" id="kpi-assets-val" style="color: var(--green)">₹7.76Cr</div>
       <div class="kpi-sub">Across 7 asset categories</div>
       <div class="kpi-icon">📦</div>
     </div>
@@ -220,13 +218,13 @@
     </div>
     <div class="kpi-card" style="--accent-color: #eab308">
       <div class="kpi-label">Annual Cash Comp</div>
-      <div class="kpi-value" id="kpi-annual-val" style="color: var(--yellow)">SGD 201K</div>
+      <div class="kpi-value" id="kpi-annual-val" style="color: var(--yellow)">SGD 202K</div>
       <div class="kpi-sub" id="kpi-annual-sub">Base + Bonus (excl. RSU)</div>
       <div class="kpi-icon">💰</div>
     </div>
     <div class="kpi-card" style="--accent-color: #f97316">
       <div class="kpi-label">Monthly Commitments</div>
-      <div class="kpi-value" id="kpi-commitments-val" style="color: var(--orange)">~₹4.12L</div>
+      <div class="kpi-value" id="kpi-commitments-val" style="color: var(--orange)">~₹5L/mo</div>
       <div class="kpi-sub">SIP + PPF + Insurance + New EMI</div>
       <div class="kpi-icon">📤</div>
     </div>
@@ -240,7 +238,7 @@
       <div class="income-item">
         <div class="income-item-label">New Base (post 4.3% inc)</div>
         <div class="income-item-value" id="income-base-val" style="color: var(--green)">SGD 14,380</div>
-        <div class="income-item-sub" id="income-base-sub">per month · ≈ SGD 172.5K/yr</div>
+        <div class="income-item-sub" id="income-base-sub">per month · ≈ SGD 172.6K/yr</div>
       </div>
       <div class="income-item">
         <div class="income-item-label">Annual Bonus</div>
@@ -265,7 +263,7 @@
       <div class="income-item">
         <div class="income-item-label">With RSU (yr avg)</div>
         <div class="income-item-value" id="income-with-rsu-val" style="color: var(--orange)">SGD 216K</div>
-        <div class="income-item-sub" id="income-with-rsu-sub">≈ ₹1.79Cr/year total</div>
+        <div class="income-item-sub" id="income-with-rsu-sub">≈ ₹1.34Cr/year total</div>
       </div>
     </div>
 
@@ -276,17 +274,17 @@
         <div class="rsu-year">
           <div class="rsu-year-label">Year 1</div>
           <div class="rsu-year-val" id="rsu-y1-val">USD 10,800</div>
-          <div style="font-size: 0.68rem; color: var(--muted)" id="rsu-y1-sub">≈ ₹8.96L</div>
+          <div style="font-size: 0.68rem; color: var(--muted)" id="rsu-y1-sub">≈ ₹9L</div>
         </div>
         <div class="rsu-year">
           <div class="rsu-year-label">Year 2</div>
           <div class="rsu-year-val" id="rsu-y2-val">USD 10,800</div>
-          <div style="font-size: 0.68rem; color: var(--muted)" id="rsu-y2-sub">≈ ₹8.96L</div>
+          <div style="font-size: 0.68rem; color: var(--muted)" id="rsu-y2-sub">≈ ₹9L</div>
         </div>
         <div class="rsu-year">
           <div class="rsu-year-label">Year 3</div>
           <div class="rsu-year-val" id="rsu-y3-val">USD 10,800</div>
-          <div style="font-size: 0.68rem; color: var(--muted)" id="rsu-y3-sub">≈ ₹8.96L</div>
+          <div style="font-size: 0.68rem; color: var(--muted)" id="rsu-y3-sub">≈ ₹9L</div>
         </div>
         <div class="rsu-year" style="background: rgba(34,197,94,0.1); border-color: rgba(34,197,94,0.25);">
           <div class="rsu-year-label">Total</div>
@@ -304,13 +302,13 @@
     <div class="card">
       <h3>By Asset Class</h3>
       <div class="chart-wrap">
-        <canvas id="assetChart"></canvas>
+        <canvas id="assetChart" style="box-sizing: border-box; display: block; height: 260px; width: 612px;" width="1224" height="520"></canvas>
       </div>
     </div>
     <div class="card">
       <h3>By Geography</h3>
       <div class="chart-wrap">
-        <canvas id="geoChart"></canvas>
+        <canvas id="geoChart" style="box-sizing: border-box; display: block; height: 260px; width: 612px;" width="1224" height="520"></canvas>
       </div>
     </div>
   </div>
@@ -369,7 +367,7 @@
       <div style="margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px;">
         <div class="summary-row">
           <span style="color: var(--muted)">SG Commitments/mo</span>
-          <span style="color: var(--red)" id="cf-sg-commitments">SGD 6,013 ≈ ₹3.73L</span>
+          <span style="color: var(--red)" id="cf-sg-commitments">SGD 6,013 ≈ ₹4L</span>
         </div>
         <div class="summary-row">
           <span style="color: var(--muted)">India Commitments/mo</span>
@@ -377,7 +375,7 @@
         </div>
         <div class="summary-row total">
           <span>Total Outflows</span>
-          <span style="color: var(--red)" id="cf-total-outflows">~₹4.35L/mo</span>
+          <span style="color: var(--red)" id="cf-total-outflows">~₹5L/mo</span>
         </div>
       </div>
     </div>
@@ -417,7 +415,7 @@
           <span class="liab-val" id="liab-new-loan-val">SGD 129,000 ≈ ₹80L</span>
         </div>
         <div class="liab-bar-bg"><div class="liab-bar-fill" style="width: 100%"></div></div>
-        <div class="liab-rate"><span id="liab-rate-text">2.05% interest · 24 months · EMI: SGD 5,491/mo · Total interest: SGD 2,773</span></div>
+        <div class="liab-rate"><span id="liab-rate-text">2.05% interest · 24 months · EMI: SGD 5,491/mo · Total interest: SGD 2,784</span></div>
       </div>
       <div style="margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px;">
         <div class="summary-row total">
@@ -441,11 +439,9 @@
     <div class="card">
       <h3>📊 Debt Overview</h3>
       <div class="chart-wrap" style="height: 220px;">
-        <canvas id="debtChart"></canvas>
+        <canvas id="debtChart" style="box-sizing: border-box; display: block; height: 220px; width: 612px;" width="1224" height="440"></canvas>
       </div>
-      <div style="margin-top: 12px; font-size: 0.78rem; color: var(--muted); text-align: center;" id="debt-note">
-        Net new liability: SGD 86,300 vs previous SGD 42,700 · Offset by lower interest rate (2.05%)
-      </div>
+      <div style="margin-top: 12px; font-size: 0.78rem; color: var(--muted); text-align: center;" id="debt-note">New liability: SGD 129K · Rate: 2.05% vs old 3.56–4.94%</div>
     </div>
   </div>
 
@@ -457,11 +453,11 @@
       <ul class="inv-list">
         <li class="inv-item">
           <div class="inv-name">📊 Autodesk RSUs <span class="inv-badge badge-active">Active</span></div>
-          <div class="inv-value" id="inv-etrade-val">₹2.50Cr<div class="inv-sub">641 RSUs (existing)</div></div>
+          <div class="inv-value" id="inv-etrade-val">₹2.7Cr</div>
         </li>
         <li class="inv-item">
           <div class="inv-name">🆕 New RSU Grant <span class="inv-badge badge-new">Vesting</span></div>
-          <div class="inv-value" style="color: var(--purple)" id="inv-rsu-grant-val">USD 32,400<div class="inv-sub" id="inv-rsu-grant-sub">3-yr vest · USD 10,800/yr</div></div>
+          <div class="inv-value" style="color: var(--purple)" id="inv-rsu-grant-val">USD 32,400</div>
         </li>
         <li class="inv-item">
           <div class="inv-name">🏦 A/C: 153-318259 · DTC: 0015</div>
@@ -475,7 +471,7 @@
       <ul class="inv-list">
         <li class="inv-item">
           <div class="inv-name">📊 Diversified Portfolio <span class="inv-badge badge-active">Active</span></div>
-          <div class="inv-value" id="inv-saxo-val">USD 40,000<div class="inv-sub" id="inv-saxo-sub">≈ ₹33.2L current value</div></div>
+          <div class="inv-value" id="inv-saxo-val">USD 40,000</div>
         </li>
         <li class="inv-item">
           <div class="inv-name">💰 Total Invested</div>
@@ -493,7 +489,7 @@
       <ul class="inv-list">
         <li class="inv-item">
           <div class="inv-name">📈 Mutual Fund SIP <span class="inv-badge badge-active">Active</span></div>
-          <div class="inv-value" id="inv-sip-val">₹50K/mo<div class="inv-sub">Since Jan 2025</div></div>
+          <div class="inv-value" id="inv-sip-val">₹50K/mo</div>
         </li>
         <li class="inv-item">
           <div class="inv-name">🏦 SBI PPF <span class="inv-badge badge-active">EEE Tax-Free</span></div>
@@ -523,7 +519,7 @@
     <div class="card">
       <h3>📊 Annual Income Breakdown</h3>
       <div class="chart-wrap" style="height: 220px;">
-        <canvas id="incomeChart"></canvas>
+        <canvas id="incomeChart" style="box-sizing: border-box; display: block; height: 220px; width: 612px;" width="1224" height="440"></canvas>
       </div>
     </div>
   </div>
@@ -622,7 +618,7 @@
 <button id="edit-fab" onclick="document.getElementById('edit-overlay').style.display='block'" style="position:fixed;bottom:28px;right:28px;z-index:9999;background:#6c63ff;color:#fff;border:none;border-radius:50px;padding:14px 26px;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 4px 24px rgba(108,99,255,0.6);">✏️ Edit</button>
 
 <!-- EDIT OVERLAY -->
-<div id="edit-overlay" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.75);backdrop-filter:blur(4px);overflow-y:auto;">
+<div id="edit-overlay" style="display: none; position: fixed; inset: 0px; z-index: 10000; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(4px); overflow-y: auto;">
   <div style="background:#1a1d27;border:1px solid #2a2d3e;border-radius:16px;max-width:560px;margin:40px auto;padding:28px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
       <h2 style="font-size:1.1rem;color:#fff;">✏️ Edit Dashboard</h2>
@@ -640,7 +636,7 @@
 
     <!-- Investments -->
     <div style="font-size:0.7rem;font-weight:700;color:#6c63ff;text-transform:uppercase;letter-spacing:1px;margin:18px 0 10px;">📈 Investments</div>
-    <div class="ef-row"><label class="ef-label">eTrade Value (₹ Crores)</label><input id="ef-etrade_inr" class="ef-input" type="number" step="0.01" value="2.5"></div>
+    <div class="ef-row"><label class="ef-label">eTrade Value (₹ Crores)</label><input id="ef-etrade_inr" class="ef-input" type="number" step="0.01" value="2.7"></div>
     <div class="ef-row"><label class="ef-label">Saxo Portfolio (USD)</label><input id="ef-saxo_usd" class="ef-input" type="number" value="40000"></div>
     <div class="ef-row"><label class="ef-label">SIP Amount (₹/mo)</label><input id="ef-sip_monthly" class="ef-input" type="number" value="50000"></div>
     <div class="ef-row"><label class="ef-label">Private Lending (₹ Lakhs)</label><input id="ef-lending_inr" class="ef-input" type="number" value="10"></div>
@@ -671,11 +667,9 @@
       <div style="font-size:0.7rem;font-weight:700;color:#6c63ff;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">🚀 Deploy to GitHub Pages</div>
       <div style="font-size:0.75rem;color:#94a3b8;margin-bottom:10px;">
         Paste your GitHub token to deploy directly from here — no Terminal needed.
-        <a href="https://github.com/settings/tokens/new?scopes=repo&description=WealthDashboard" target="_blank" style="color:#6c63ff;text-decoration:none;">Generate token ↗</a>
+        <a href="https://github.com/settings/tokens/new?scopes=repo&amp;description=WealthDashboard" target="_blank" style="color:#6c63ff;text-decoration:none;">Generate token ↗</a>
       </div>
-      <input id="ef-gh-token" type="password" placeholder="ghp_xxxxxxxxxxxx (repo scope)" 
-        style="width:100%;background:#0f1117;border:1px solid #2a2d3e;border-radius:8px;color:#e2e8f0;padding:9px 12px;font-size:0.85rem;margin-bottom:6px;"
-        oninput="localStorage.setItem('gh_token', this.value)">
+      <input id="ef-gh-token" type="password" placeholder="ghp_xxxxxxxxxxxx (repo scope)" style="width:100%;background:#0f1117;border:1px solid #2a2d3e;border-radius:8px;color:#e2e8f0;padding:9px 12px;font-size:0.85rem;margin-bottom:6px;" oninput="localStorage.setItem('gh_token', this.value)">
       <div style="font-size:0.72rem;color:#22c55e;margin-bottom:10px;">🔒 Token saved in your browser only — never in the HTML file</div>
       <button onclick="deployToGitHub()" id="deploy-btn" style="width:100%;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:none;border-radius:10px;padding:13px;font-size:0.95rem;font-weight:700;cursor:pointer;">
         🚀 Save &amp; Deploy to GitHub Pages
@@ -698,12 +692,7 @@ var PRUDENTIAL_SGD = 522;
 var PPF_INR = 12500;
 
 // ── EDIT DEFAULTS (hardcoded baseline values) ──────────────
-var EDIT_DEFAULTS = {
-  base_salary: 14380, bonus: 29167, rsu_grant: 32400,
-  etrade_inr: 2.5, saxo_usd: 40000, sip_monthly: 50000, lending_inr: 10,
-  loan_sgd: 129000, loan_rate: 2.05, loan_months: 24,
-  re_total: 3.74, rental_mo: 52000, lending_mo: 17000
-};
+var EDIT_DEFAULTS = {"base_salary":14380,"bonus":29167,"rsu_grant":32400,"etrade_inr":2.7,"saxo_usd":40000,"sip_monthly":50000,"lending_inr":10,"loan_sgd":129000,"loan_rate":2.05,"loan_months":24,"re_total":3.74,"rental_mo":52000,"lending_mo":17000};
 
 // ── CHART INSTANCES ────────────────────────────────────────
 var chartAsset = null, chartGeo = null, chartDebt = null, chartIncome = null;
@@ -1066,5 +1055,6 @@ window.addEventListener('load', function() {
   renderDashboard(EDIT_DEFAULTS);
 });
 </script>
-</body>
-</html>
+
+
+</body></html>

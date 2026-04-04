@@ -1116,17 +1116,22 @@ var YAHOO_ADSK_URL = 'https://query1.finance.yahoo.com/v8/finance/chart/ADSK?int
 var YAHOO_ADSK_URL2 = 'https://query2.finance.yahoo.com/v8/finance/chart/ADSK?interval=1d&range=1d';
 
 var PRICE_SOURCES = [
-  // allorigins /raw — returns raw Yahoo JSON directly
+  // Stooq — no API key, proper CORS headers, very reliable
+  {
+    url: 'https://stooq.com/q/l/?s=adsk.us&f=sd2t2ohlcv&h&e=json',
+    parse: function(data) { return data.symbols[0].close; }
+  },
+  // allorigins /raw -> Yahoo Finance query1
   {
     url: 'https://api.allorigins.win/raw?url=' + encodeURIComponent(YAHOO_ADSK_URL),
     parse: function(data) { return data.chart.result[0].meta.regularMarketPrice; }
   },
-  // allorigins /raw with query2
+  // allorigins /raw -> Yahoo Finance query2
   {
     url: 'https://api.allorigins.win/raw?url=' + encodeURIComponent(YAHOO_ADSK_URL2),
     parse: function(data) { return data.chart.result[0].meta.regularMarketPrice; }
   },
-  // allorigins /get — wraps in {contents: "..."} envelope
+  // allorigins /get envelope format
   {
     url: 'https://api.allorigins.win/get?url=' + encodeURIComponent(YAHOO_ADSK_URL),
     parse: function(data) { return JSON.parse(data.contents).chart.result[0].meta.regularMarketPrice; }

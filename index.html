@@ -176,9 +176,9 @@
     <h1>💰 Ram's Wealth Dashboard</h1>
     <p>Comprehensive view of assets, investments, income &amp; liabilities</p>
     <div class="header-badges">
-      <span class="badge badge-role">Principal Engineer · Autodesk SG</span>
-      <span class="badge badge-co">Employee #460962</span>
       <span class="badge badge-updated">Updated Apr 2026</span>
+      <span class="badge" id="adsk-price-badge" style="background:rgba(234,179,8,0.15);color:#eab308;border:1px solid rgba(234,179,8,0.3);">ADSK: USD 238.08</span>
+      <span class="badge" id="soun-price-badge" style="background:rgba(59,130,246,0.15);color:#3b82f6;border:1px solid rgba(59,130,246,0.3);">SOUN: USD 6.78</span>
     </div>
   </div>
   <div class="header-right">
@@ -507,12 +507,12 @@
           <div class="inv-value" style="color:var(--green)">641 shares<div class="inv-sub" id="inv-moomoo-adsk-sub">≈ USD 152,609 · ₹1.27Cr</div></div>
         </li>
         <li class="inv-item">
-          <div class="inv-name">📊 Sundhon</div>
-          <div class="inv-value" style="color:var(--muted)">20 shares<div class="inv-sub">Value TBC</div></div>
+          <div class="inv-name">🎤 SoundHound AI (SOUN) <span class="inv-badge badge-new">Growth</span></div>
+          <div class="inv-value" style="color:var(--blue)">20 shares<div class="inv-sub" id="inv-soun-sub">≈ USD 136 · ₹0.11L @ USD 6.78</div></div>
         </li>
         <li class="inv-item">
-          <div class="inv-name">💰 Moomoo Total (ADSK)</div>
-          <div class="inv-value" id="inv-saxo-val" style="color:var(--green)">₹1.27Cr<div class="inv-sub" id="inv-saxo-sub">641 × USD 238 · ≈ ₹1.27Cr</div></div>
+          <div class="inv-name">💰 Moomoo Total (ADSK + SOUN)</div>
+          <div class="inv-value" id="inv-saxo-val" style="color:var(--green)">₹1.27Cr<div class="inv-sub" id="inv-saxo-sub">641 ADSK + 20 SOUN</div></div>
         </li>
       </ul>
       <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);">
@@ -640,7 +640,7 @@
     <ul class="obs-list">
       <li class="obs-item"><span class="obs-icon">✅</span><span><strong>Old Citi loans cleared:</strong> SGD 42.7K at 3.56–4.94% settled. Replaced with SGD 129K at 2.05% — smart refinance. Lower rate, longer runway. EMI goes from ~SGD 3,800 to SGD 5,491 but at much better terms.</span></li>
       <li class="obs-item"><span class="obs-icon">💼</span><span><strong>Strong comp growth:</strong> Total cash hits SGD 201.7K/yr after 4.3% raise + SGD 29K bonus. Add USD 32.4K RSU over 3 years and total annual comp is ~SGD 216K (₹1.79Cr). Excellent progression.</span></li>
-      <li class="obs-item"><span class="obs-icon">⚠️</span><span><strong>Autodesk concentration risk:</strong> Existing 641 RSUs + new USD 32.4K grant means continued heavy exposure to a single stock. Set a plan to diversify as new RSUs vest each year.</span></li>
+      <li class="obs-item"><span class="obs-icon">⚠️</span><span><strong>Autodesk concentration risk:</strong> eTrade (319 ESPP + 413 vested RSU) + Moomoo (641 shares) = <strong id="obs-adsk-total-shares">1,373 total ADSK shares</strong> ≈ <strong id="obs-adsk-total-val">₹2.72Cr</strong>. Plus 63 RSU vesting in 2026. Set a diversification plan for each vest event.</span></li>
       <li class="obs-item"><span class="obs-icon">🔍</span><span><strong>Prudential review:</strong> PruFlexiCash yields only ~1.1% p.a. vs 2.05% cost of your new loan. Money locked here is technically costing you. Model the early surrender value vs remaining premiums.</span></li>
       <li class="obs-item"><span class="obs-icon">📈</span><span><strong>SIP on track:</strong> ₹50K/month since Jan 2025 — stay consistent. The compounding effect becomes meaningful from year 5 onward. Don't stop during market dips.</span></li>
       <li class="obs-item"><span class="obs-icon">🏦</span><span><strong>PPF fully utilise:</strong> EEE status makes this the best guaranteed return in India. Max ₹1.5L/year — non-negotiable.</span></li>
@@ -675,6 +675,7 @@
     <!-- Investments -->
     <div style="font-size:0.7rem;font-weight:700;color:#6c63ff;text-transform:uppercase;letter-spacing:1px;margin:18px 0 10px;">📈 Investments</div>
     <div class="ef-row"><label class="ef-label">ADSK Price (USD)</label><input id="ef-adsk_price" class="ef-input" type="number" step="0.01" value="238.08"></div>
+    <div class="ef-row"><label class="ef-label">SOUN Price (USD)</label><input id="ef-soun_price" class="ef-input" type="number" step="0.01" value="6.78"></div>
     <div class="ef-row"><label class="ef-label">Saxo Portfolio (USD)</label><input id="ef-saxo_usd" class="ef-input" type="number" value="40000"></div>
     <div class="ef-row"><label class="ef-label">SIP Amount (₹/mo)</label><input id="ef-sip_monthly" class="ef-input" type="number" value="50000"></div>
     <div class="ef-row"><label class="ef-label">Private Lending (₹ Lakhs)</label><input id="ef-lending_inr" class="ef-input" type="number" value="10"></div>
@@ -730,11 +731,11 @@ var PRUDENTIAL_SGD = 522;
 var PPF_INR = 12500;
 
 // ── EDIT DEFAULTS (hardcoded baseline values) ──────────────
-// Fixed ADSK holdings (shares are fixed; only price changes)
+// Fixed holdings (shares are fixed; only price changes)
 var ESPP_QTY = 319, RSU_VESTED_QTY = 413, RSU_SELLABLE_QTY = 100, RSU_UNVESTED_QTY = 188;
-var MOOMOO_ADSK_QTY = 641;
+var MOOMOO_ADSK_QTY = 641, MOOMOO_SOUN_QTY = 20, SOUN_PRICE_USD = 6.78;
 
-var EDIT_DEFAULTS = {"base_salary":14380,"bonus":29167,"rsu_grant":32400,"adsk_price":238.08,"saxo_usd":40000,"sip_monthly":50000,"lending_inr":10,"loan_sgd":129000,"loan_rate":2.07,"loan_months":24,"re_total":3.74,"rental_mo":52000,"lending_mo":17000};
+var EDIT_DEFAULTS = {"base_salary":14380,"bonus":29167,"rsu_grant":32400,"adsk_price":238.08,"soun_price":6.78,"saxo_usd":40000,"sip_monthly":50000,"lending_inr":10,"loan_sgd":129000,"loan_rate":2.07,"loan_months":24,"re_total":3.74,"rental_mo":52000,"lending_mo":17000};
 
 // ── CHART INSTANCES ────────────────────────────────────────
 var chartAsset = null, chartGeo = null, chartDebt = null, chartIncome = null;
@@ -782,10 +783,13 @@ function renderDashboard(d) {
 
   // Assets in lakhs — eTrade = (ESPP + Vested RSU) × ADSK price; Moomoo = 641 × ADSK price
   var adskPrice     = d.adsk_price || 238.08;
+  var sounPrice     = d.soun_price || SOUN_PRICE_USD;
   var etradeUSD     = (ESPP_QTY + RSU_VESTED_QTY) * adskPrice;
   var etradeL       = Math.round(etradeUSD * USD_INR / 100000 * 10) / 10;
   var etradeCr      = etradeL / 100;
-  var moomooUSD     = MOOMOO_ADSK_QTY * adskPrice;
+  var moomooADSKUSD = MOOMOO_ADSK_QTY * adskPrice;
+  var moomooSOUNUSD = MOOMOO_SOUN_QTY * sounPrice;
+  var moomooUSD     = moomooADSKUSD + moomooSOUNUSD;
   var moomooL       = Math.round(moomooUSD * USD_INR / 100000 * 10) / 10;
   var reTotalL      = d.re_total * 100;
   var saxoL         = Math.round((d.saxo_usd * USD_INR) / 100000 * 10) / 10;
@@ -811,6 +815,8 @@ function renderDashboard(d) {
   var withRSU_INRCr = ((totalCash * SGD_INR + rsuPerYear * USD_INR) / 10000000).toFixed(2);
 
   // ── Header ──────────────────────────────────────────────
+  setText('adsk-price-badge', 'ADSK: USD ' + adskPrice.toFixed(2));
+  setText('soun-price-badge', 'SOUN: USD ' + sounPrice.toFixed(2));
   setText('header-net-worth',     '₹' + netWorthCr.toFixed(2) + ' Crores');
   setText('header-net-worth-sub', 'Total Assets ₹' + assetsCr.toFixed(2) + 'Cr \u00b7 Liabilities SGD ' + Math.round(d.loan_sgd/1000) + 'K ≈ ₹' + liabInrL + 'L');
 
@@ -878,12 +884,19 @@ function renderDashboard(d) {
   setText('inv-etrade-sub',       'ESPP + Vested RSU @ USD ' + Math.round(adskPrice));
   setText('inv-espp-sub',         '≈ USD ' + Math.round(ESPP_QTY * adskPrice).toLocaleString() + ' · ₹' + Math.round(ESPP_QTY * adskPrice * USD_INR / 100000) + 'L');
   setText('inv-rsu-sellable-sub', 'Sellable now: ' + RSU_SELLABLE_QTY + ' · ≈ USD ' + Math.round(RSU_SELLABLE_QTY * adskPrice).toLocaleString());
-  setText('inv-moomoo-adsk-sub',  '≈ USD ' + Math.round(moomooUSD).toLocaleString() + ' · ₹' + (moomooL/100).toFixed(2) + 'Cr');
+  setText('inv-moomoo-adsk-sub',  '≈ USD ' + Math.round(moomooADSKUSD).toLocaleString() + ' · ₹' + (moomooADSKUSD * USD_INR / 10000000).toFixed(2) + 'Cr');
+  setText('inv-soun-sub',        '≈ USD ' + Math.round(moomooSOUNUSD) + ' · ₹' + Math.round(moomooSOUNUSD * USD_INR / 1000) + 'K @ USD ' + sounPrice.toFixed(2));
+  // ── ADSK total exposure (observations) ──────────────────
+  var totalADSKShares = ESPP_QTY + RSU_VESTED_QTY + MOOMOO_ADSK_QTY;
+  var totalADSKUSD    = totalADSKShares * adskPrice;
+  var totalADSKCr     = (totalADSKUSD * USD_INR / 10000000).toFixed(2);
+  setText('obs-adsk-total-shares', totalADSKShares.toLocaleString() + ' total ADSK shares');
+  setText('obs-adsk-total-val',    '₹' + totalADSKCr + 'Cr');
   setText('inv-rsu-grant-val',    'USD ' + d.rsu_grant.toLocaleString());
   setText('inv-rsu-grant-sub',    '3-yr vest · USD ' + Math.round(rsuPerYear).toLocaleString() + '/yr');
   setText('inv-saxo-val',         'USD ' + d.saxo_usd.toLocaleString());
   setText('inv-saxo-val',         '₹' + (moomooL/100).toFixed(2) + 'Cr');
-  setText('inv-saxo-sub',         '641 × USD ' + Math.round(adskPrice) + ' · ≈ ₹' + moomooL.toFixed(1) + 'L');
+  setText('inv-saxo-sub',         '641 ADSK + 20 SOUN · ≈ ₹' + moomooL.toFixed(1) + 'L');
   // Update upcoming vesting boxes with live price
   var vestJunUSD = 32 * adskPrice, vestSepUSD = 31 * adskPrice, vestTotalUSD = 63 * adskPrice;
   setText('vest-jun-val',         '17 + 15 · ≈ USD ' + Math.round(vestJunUSD).toLocaleString());

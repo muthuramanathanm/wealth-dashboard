@@ -5,168 +5,178 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>Ram's Wealth Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
-  :root {
-    --bg: #0f1117;
-    --card: #1a1d27;
-    --card2: #1e2130;
-    --border: #2a2d3e;
-    --accent: #6c63ff;
-    --green: #22c55e;
-    --red: #ef4444;
-    --yellow: #eab308;
-    --blue: #3b82f6;
-    --orange: #f97316;
-    --purple: #a78bfa;
-    --text: #e2e8f0;
-    --muted: #94a3b8;
-    --font: 'Segoe UI', system-ui, sans-serif;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; }
+:root {
+  --bg: #0a0c10;
+  --card: rgba(22, 27, 38, 0.8);
+  --card2: rgba(26, 32, 44, 0.7);
+  --card-hover: rgba(30, 35, 50, 0.9);
+  --border: rgba(255,255,255,0.06);
+  --border-hover: rgba(255,255,255,0.12);
+  --accent: #7c6aff;
+  --green: #34d399;
+  --red: #f87171;
+  --yellow: #fbbf24;
+  --blue: #60a5fa;
+  --orange: #fb923c;
+  --purple: #a78bfa;
+  --text: #e2e8f0;
+  --muted: #7a839b;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --font-heading: 'Outfit', system-ui, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--text); font-family: var(--font-body);
+  min-height: 100vh;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(124,106,255,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(52,211,153,0.05) 0%, transparent 50%);
+}
+@keyframes fadeUp { from { opacity:0; transform: translateY(16px); } to { opacity:1; transform: translateY(0); } }
+.animate-in { animation: fadeUp 0.5s ease-out both; }
 
-  header {
-    background: linear-gradient(135deg, #1e2130 0%, #0f1117 100%);
-    border-bottom: 1px solid var(--border);
-    padding: 24px 32px;
-    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
-  }
-  .header-left h1 { font-size: 1.6rem; font-weight: 700; color: #fff; }
-  .header-left p { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
-  .header-badges { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
-  .badge { font-size: 0.72rem; padding: 3px 9px; border-radius: 20px; font-weight: 600; }
-  .badge-role { background: rgba(108,99,255,0.2); color: var(--purple); border: 1px solid rgba(108,99,255,0.3); }
-  .badge-co { background: rgba(59,130,246,0.2); color: var(--blue); border: 1px solid rgba(59,130,246,0.3); }
-  .badge-updated { background: rgba(34,197,94,0.15); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
-  .header-right { text-align: right; }
-  .net-worth-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
-  .net-worth-value { font-size: 2.4rem; font-weight: 800; color: var(--green); }
-  .net-worth-sub { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+header {
+  background: rgba(14,17,24,0.85);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 28px 36px;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;
+  position: sticky; top: 0; z-index: 100;
+}
+.header-left h1 { font-family: var(--font-heading); font-size: 1.5rem; font-weight: 700; color: #fff; letter-spacing: -0.02em; }
+.header-left p { color: var(--muted); font-size: 0.82rem; margin-top: 4px; }
+.header-badges { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; align-items: center; }
+.badge { font-size: 0.68rem; padding: 4px 10px; border-radius: 20px; font-weight: 600; backdrop-filter: blur(8px); }
+.badge-updated { background: rgba(52,211,153,0.12); color: var(--green); border: 1px solid rgba(52,211,153,0.2); }
+.header-right { text-align: right; }
+.net-worth-label { font-family: var(--font-heading); font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 500; }
+.net-worth-value { font-family: var(--font-heading); font-size: 2.2rem; font-weight: 800; color: var(--green); letter-spacing: -0.03em; text-shadow: 0 0 40px rgba(52,211,153,0.2); }
+.net-worth-sub { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+.container { max-width: 1400px; margin: 0 auto; padding: 28px 36px; }
 
-  .container { max-width: 1400px; margin: 0 auto; padding: 24px 32px; }
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-bottom: 32px; }
+.kpi-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; position: relative; overflow: hidden; backdrop-filter: blur(12px); transition: all 0.25s ease; }
+.kpi-card:hover { background: var(--card-hover); border-color: var(--border-hover); transform: translateY(-2px); }
+.kpi-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--accent-color, var(--accent)); opacity: 0.8; }
+.kpi-label { font-family: var(--font-heading); font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 500; }
+.kpi-value { font-family: var(--font-heading); font-size: 1.45rem; font-weight: 700; margin: 6px 0 4px; letter-spacing: -0.02em; }
+.kpi-sub { font-size: 0.73rem; color: var(--muted); line-height: 1.4; }
+.kpi-icon { font-size: 1.6rem; position: absolute; right: 16px; top: 50%; transform: translateY(-50%); opacity: 0.08; }
 
-  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 28px; }
-  .kpi-card {
-    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
-    padding: 20px; position: relative; overflow: hidden;
-  }
-  .kpi-card::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-    background: var(--accent-color, var(--accent));
-  }
-  .kpi-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
-  .kpi-value { font-size: 1.55rem; font-weight: 700; margin: 6px 0 4px; }
-  .kpi-sub { font-size: 0.76rem; color: var(--muted); }
-  .kpi-icon { font-size: 1.8rem; position: absolute; right: 16px; top: 50%; transform: translateY(-50%); opacity: 0.12; }
+.section-title { font-family: var(--font-heading); font-size: 0.78rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+.section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-  .section-title {
-    font-size: 0.82rem; font-weight: 700; color: var(--muted); text-transform: uppercase;
-    letter-spacing: 1.2px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
-  }
-  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 28px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; margin-bottom: 28px; }
+@media (max-width: 1000px) { .grid-3 { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 700px) {
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  header { padding: 20px 18px; }
+  .container { padding: 20px 18px; }
+  .kpi-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+  .kpi-card { padding: 16px; }
+  .kpi-value { font-size: 1.25rem; }
+  .kpi-label { font-size: 0.62rem; }
+  .net-worth-value { font-size: 1.7rem; }
+  .header-left h1 { font-size: 1.2rem; }
+}
 
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
-  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 28px; }
-  @media (max-width: 1000px) { .grid-3 { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 700px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; backdrop-filter: blur(12px); transition: all 0.25s ease; }
+.card:hover { border-color: var(--border-hover); }
+.card h3 { font-family: var(--font-heading); font-size: 0.88rem; font-weight: 600; margin-bottom: 18px; color: #fff; }
+.chart-wrap { position: relative; height: 260px; }
 
-  .card {
-    background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px;
-  }
-  .card h3 { font-size: 0.92rem; font-weight: 600; margin-bottom: 16px; color: #fff; }
+.inv-list { list-style: none; }
+.inv-item { display: flex; justify-content: space-between; align-items: center; padding: 11px 0; border-bottom: 1px solid var(--border); }
+.inv-item:last-child { border-bottom: none; }
+.inv-name { font-size: 0.85rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.inv-badge { font-size: 0.6rem; padding: 2px 7px; border-radius: 6px; font-weight: 600; text-transform: uppercase; }
+.badge-active { background: rgba(52,211,153,0.12); color: var(--green); }
+.badge-new { background: rgba(124,106,255,0.12); color: var(--purple); }
+.inv-value { font-size: 0.85rem; font-weight: 600; text-align: right; min-width: 90px; }
+.inv-sub { font-size: 0.68rem; color: var(--muted); }
 
-  .chart-wrap { position: relative; height: 260px; }
+.cashflow-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-radius: 10px; margin-bottom: 6px; }
+.cashflow-in { background: rgba(52,211,153,0.06); border-left: 3px solid var(--green); }
+.cashflow-out { background: rgba(248,113,113,0.06); border-left: 3px solid var(--red); }
+.cashflow-neutral { background: rgba(96,165,250,0.06); border-left: 3px solid var(--blue); }
+.cashflow-label { font-size: 0.82rem; }
+.cashflow-value { font-size: 0.85rem; font-weight: 600; white-space: nowrap; }
+.cf-income { color: var(--green); } .cf-expense { color: var(--red); } .cf-neutral { color: var(--blue); }
 
-  .inv-list { list-style: none; }
-  .inv-item {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 10px 0; border-bottom: 1px solid var(--border);
-  }
-  .inv-item:last-child { border-bottom: none; }
-  .inv-name { font-size: 0.88rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .inv-badge { font-size: 0.62rem; padding: 2px 6px; border-radius: 4px; font-weight: 600; text-transform: uppercase; }
-  .badge-active { background: rgba(34,197,94,0.15); color: var(--green); }
-  .badge-new { background: rgba(108,99,255,0.15); color: var(--purple); }
-  .inv-value { font-size: 0.88rem; font-weight: 600; text-align: right; min-width: 90px; }
-  .inv-sub { font-size: 0.70rem; color: var(--muted); }
+.re-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; margin-bottom: 28px; }
+.re-card { background: var(--card2); border: 1px solid var(--border); border-radius: 14px; padding: 18px; transition: all 0.25s ease; }
+.re-card:hover { border-color: var(--border-hover); transform: translateY(-1px); }
+.re-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+.re-name { font-family: var(--font-heading); font-size: 0.88rem; font-weight: 600; color: #fff; }
+.re-location { font-size: 0.71rem; color: var(--muted); margin-top: 3px; }
+.re-value { font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; color: var(--green); white-space: nowrap; margin-left: 8px; }
+.re-detail { font-size: 0.74rem; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+.re-tag { display: inline-block; font-size: 0.62rem; padding: 3px 8px; border-radius: 6px; margin-top: 8px; font-weight: 600; }
+.tag-paid { background: rgba(52,211,153,0.12); color: var(--green); }
+.tag-rental { background: rgba(96,165,250,0.12); color: var(--blue); }
 
-  .cashflow-item {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 9px 12px; border-radius: 8px; margin-bottom: 6px;
-  }
-  .cashflow-in { background: rgba(34,197,94,0.08); border-left: 3px solid var(--green); }
-  .cashflow-out { background: rgba(239,68,68,0.08); border-left: 3px solid var(--red); }
-  .cashflow-neutral { background: rgba(59,130,246,0.08); border-left: 3px solid var(--blue); }
-  .cashflow-label { font-size: 0.84rem; }
-  .cashflow-value { font-size: 0.88rem; font-weight: 600; white-space: nowrap; }
-  .cf-income { color: var(--green); }
-  .cf-expense { color: var(--red); }
-  .cf-neutral { color: var(--blue); }
+.income-highlight { background: linear-gradient(135deg, rgba(52,211,153,0.05), rgba(124,106,255,0.05)); border: 1px solid rgba(52,211,153,0.12); border-radius: 16px; padding: 24px; margin-bottom: 28px; }
+.income-highlight h3 { font-family: var(--font-heading); font-size: 0.9rem; color: #fff; margin-bottom: 16px; }
+.income-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 12px; }
+.income-item { text-align: center; padding: 16px 12px; background: rgba(0,0,0,0.25); border-radius: 12px; border: 1px solid var(--border); transition: border-color 0.2s; }
+.income-item:hover { border-color: var(--border-hover); }
+.income-item-label { font-family: var(--font-heading); font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500; }
+.income-item-value { font-family: var(--font-heading); font-size: 1.15rem; font-weight: 700; margin-top: 6px; }
+.income-item-sub { font-size: 0.68rem; color: var(--muted); margin-top: 3px; }
 
-  .re-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; margin-bottom: 28px; }
-  .re-card {
-    background: var(--card2); border: 1px solid var(--border); border-radius: 12px; padding: 16px;
-  }
-  .re-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
-  .re-name { font-size: 0.9rem; font-weight: 600; color: #fff; }
-  .re-location { font-size: 0.73rem; color: var(--muted); margin-top: 2px; }
-  .re-value { font-size: 1.08rem; font-weight: 700; color: var(--green); white-space: nowrap; margin-left: 8px; }
-  .re-detail { font-size: 0.76rem; color: var(--muted); margin-top: 4px; }
-  .re-tag { display: inline-block; font-size: 0.63rem; padding: 2px 7px; border-radius: 4px; margin-top: 6px; font-weight: 600; }
-  .tag-paid { background: rgba(34,197,94,0.15); color: var(--green); }
-  .tag-rental { background: rgba(59,130,246,0.15); color: var(--blue); }
+.liab-item { padding: 12px 0; border-bottom: 1px solid var(--border); }
+.liab-item:last-child { border-bottom: none; }
+.liab-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.liab-name { font-size: 0.84rem; font-weight: 500; }
+.liab-val { font-size: 0.84rem; font-weight: 600; color: var(--red); }
+.liab-bar-bg { background: rgba(255,255,255,0.06); border-radius: 4px; height: 6px; }
+.liab-bar-fill { height: 6px; border-radius: 4px; background: var(--red); transition: width 0.6s ease; }
+.liab-rate { font-size: 0.7rem; color: var(--muted); margin-top: 4px; }
+.liab-settled { font-size: 0.7rem; color: var(--green); margin-top: 4px; }
 
-  /* Income section */
-  .income-highlight {
-    background: linear-gradient(135deg, rgba(34,197,94,0.08), rgba(108,99,255,0.08));
-    border: 1px solid rgba(34,197,94,0.2);
-    border-radius: 12px; padding: 20px; margin-bottom: 28px;
-  }
-  .income-highlight h3 { font-size: 0.92rem; color: #fff; margin-bottom: 14px; }
-  .income-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
-  .income-item { text-align: center; padding: 14px; background: rgba(0,0,0,0.2); border-radius: 10px; }
-  .income-item-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
-  .income-item-value { font-size: 1.2rem; font-weight: 700; margin-top: 6px; }
-  .income-item-sub { font-size: 0.7rem; color: var(--muted); margin-top: 3px; }
+.summary-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.84rem; }
+.summary-row:last-child { border-bottom: none; }
+.summary-row.total { font-weight: 700; font-size: 0.92rem; padding-top: 12px; }
 
-  .liab-item { padding: 12px 0; border-bottom: 1px solid var(--border); }
-  .liab-item:last-child { border-bottom: none; }
-  .liab-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
-  .liab-name { font-size: 0.87rem; font-weight: 500; }
-  .liab-val { font-size: 0.87rem; font-weight: 600; color: var(--red); }
-  .liab-bar-bg { background: var(--border); border-radius: 4px; height: 5px; }
-  .liab-bar-fill { height: 5px; border-radius: 4px; background: var(--red); }
-  .liab-rate { font-size: 0.72rem; color: var(--muted); margin-top: 4px; }
-  .liab-settled { font-size: 0.72rem; color: var(--green); margin-top: 4px; }
+.obs-list { list-style: none; }
+.obs-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 0.84rem; color: var(--text); line-height: 1.6; }
+.obs-item:last-child { border-bottom: none; }
+.obs-icon { font-size: 1rem; flex-shrink: 0; padding-top: 2px; }
 
-  .summary-row {
-    display: flex; justify-content: space-between; padding: 8px 0;
-    border-bottom: 1px solid var(--border); font-size: 0.87rem;
-  }
-  .summary-row:last-child { border-bottom: none; }
-  .summary-row.total { font-weight: 700; font-size: 0.95rem; padding-top: 12px; }
+.rsu-timeline { display: flex; gap: 8px; margin-top: 10px; }
+.rsu-year { flex: 1; text-align: center; padding: 10px 4px; background: rgba(124,106,255,0.08); border: 1px solid rgba(124,106,255,0.18); border-radius: 10px; transition: border-color 0.2s; }
+.rsu-year:hover { border-color: rgba(124,106,255,0.35); }
+.rsu-year-label { font-family: var(--font-heading); font-size: 0.65rem; color: var(--muted); font-weight: 500; }
+.rsu-year-val { font-family: var(--font-heading); font-size: 0.82rem; font-weight: 600; color: var(--purple); margin-top: 3px; }
 
-  .obs-list { list-style: none; }
-  .obs-item {
-    display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border);
-    font-size: 0.86rem; color: var(--text); line-height: 1.5;
-  }
-  .obs-item:last-child { border-bottom: none; }
-  .obs-icon { font-size: 1rem; flex-shrink: 0; padding-top: 1px; }
+.tag-new { background: rgba(124,106,255,0.15); color: var(--purple); border: 1px solid rgba(124,106,255,0.25); padding: 2px 8px; border-radius: 6px; font-size: 0.62rem; font-weight: 700; }
+.tag-settled { background: rgba(52,211,153,0.12); color: var(--green); border: 1px solid rgba(52,211,153,0.2); padding: 2px 8px; border-radius: 6px; font-size: 0.62rem; font-weight: 700; }
 
-  .rsu-timeline { display: flex; gap: 8px; margin-top: 8px; }
-  .rsu-year {
-    flex: 1; text-align: center; padding: 8px 4px; background: rgba(108,99,255,0.1);
-    border: 1px solid rgba(108,99,255,0.25); border-radius: 8px;
-  }
-  .rsu-year-label { font-size: 0.68rem; color: var(--muted); }
-  .rsu-year-val { font-size: 0.85rem; font-weight: 600; color: var(--purple); margin-top: 3px; }
+.loan-progress-wrap { margin-top: 10px; }
+.loan-progress-bar { background: rgba(255,255,255,0.06); border-radius: 6px; height: 8px; overflow: hidden; }
+.loan-progress-fill { height: 8px; border-radius: 6px; background: linear-gradient(90deg, var(--green), var(--blue)); transition: width 0.8s ease; }
+.loan-progress-text { display: flex; justify-content: space-between; margin-top: 6px; font-size: 0.7rem; color: var(--muted); }
 
-  .tag-new { background: rgba(108,99,255,0.2); color: var(--purple); border: 1px solid rgba(108,99,255,0.3); padding: 2px 7px; border-radius: 4px; font-size: 0.65rem; font-weight: 700; }
-  .tag-settled { background: rgba(34,197,94,0.15); color: var(--green); border: 1px solid rgba(34,197,94,0.3); padding: 2px 7px; border-radius: 4px; font-size: 0.65rem; font-weight: 700; }
+.us-equity-banner { background: linear-gradient(135deg, rgba(251,191,36,0.08), rgba(124,106,255,0.06)); border: 1px solid rgba(251,191,36,0.15); border-radius: 12px; padding: 14px 18px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+.us-equity-banner .label { font-family: var(--font-heading); font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 500; }
+.us-equity-banner .value { font-family: var(--font-heading); font-size: 1.3rem; font-weight: 700; color: var(--yellow); }
+.us-equity-banner .sub { font-size: 0.72rem; color: var(--muted); }
 
-  .updated { font-size: 0.72rem; color: var(--muted); text-align: right; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); }
+.re-total-banner { background: linear-gradient(135deg, rgba(124,106,255,0.08), rgba(52,211,153,0.05)); border: 1px solid rgba(124,106,255,0.15); border-radius: 12px; padding: 14px 18px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+.re-total-banner .label { font-family: var(--font-heading); font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 500; }
+.re-total-banner .value { font-family: var(--font-heading); font-size: 1.3rem; font-weight: 700; color: var(--accent); }
+
+.updated { font-size: 0.7rem; color: var(--muted); text-align: right; margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--border); }
+.ef-row { display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.06); }
+.ef-label { font-size:0.82rem;color:var(--muted); }
+.ef-input { background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.08);border-radius:8px;color:#e2e8f0;padding:7px 10px;width:140px;font-size:0.85rem;text-align:right;font-family:var(--font-body); }
+.ef-input:focus { outline:none; border-color: var(--accent); }
 </style>
 </head>
 <body>
@@ -177,1020 +187,439 @@
     <p>Comprehensive view of assets, investments, income &amp; liabilities</p>
     <div class="header-badges">
       <span class="badge badge-updated">Updated Apr 2026</span>
-      <span class="badge" id="adsk-price-badge" style="background:rgba(234,179,8,0.15);color:#eab308;border:1px solid rgba(234,179,8,0.3);">ADSK: USD 238.08</span>
-      <span id="price-status" style="font-size:0.68rem;color:#94a3b8;align-self:center;margin-left:4px;"></span>
+      <span class="badge" id="adsk-price-badge" style="background:rgba(251,191,36,0.12);color:var(--yellow);border:1px solid rgba(251,191,36,0.2);">ADSK: USD 238.08</span>
+      <span id="price-status" style="font-size:0.65rem;color:var(--muted);align-self:center;margin-left:2px;"></span>
+      <span id="price-updated-time" style="font-size:0.62rem;color:var(--muted);align-self:center;"></span>
     </div>
   </div>
   <div class="header-right">
     <div class="net-worth-label">Estimated Net Worth</div>
     <div class="net-worth-value" id="header-net-worth">₹6.96 Crores</div>
     <div class="net-worth-sub" id="header-net-worth-sub">Total Assets ₹7.76Cr · Liabilities SGD 129K ≈ ₹80L</div>
+    <div id="header-alloc-bar" style="display:flex;height:7px;border-radius:4px;overflow:hidden;margin-top:10px;width:220px;margin-left:auto;">
+      <div id="alloc-re" style="background:#7c6aff;" title="Real Estate"></div>
+      <div id="alloc-us" style="background:#fbbf24;" title="US Equity"></div>
+      <div id="alloc-india" style="background:#fb923c;" title="India"></div>
+      <div id="alloc-sg" style="background:#34d399;" title="Singapore"></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:5px;font-size:0.58rem;color:var(--muted);">
+      <span style="display:flex;align-items:center;gap:3px;"><span style="width:6px;height:6px;border-radius:2px;background:#7c6aff;display:inline-block;"></span>RE</span>
+      <span style="display:flex;align-items:center;gap:3px;"><span style="width:6px;height:6px;border-radius:2px;background:#fbbf24;display:inline-block;"></span>US Equity</span>
+      <span style="display:flex;align-items:center;gap:3px;"><span style="width:6px;height:6px;border-radius:2px;background:#fb923c;display:inline-block;"></span>India</span>
+      <span style="display:flex;align-items:center;gap:3px;"><span style="width:6px;height:6px;border-radius:2px;background:#34d399;display:inline-block;"></span>SG</span>
+    </div>
   </div>
 </header>
 
 <div class="container">
+<div class="kpi-grid">
+  <div class="kpi-card animate-in" style="--accent-color:#34d399;animation-delay:0.05s"><div class="kpi-label">Total Assets</div><div class="kpi-value" id="kpi-assets-val" style="color:var(--green)">₹7.76Cr</div><div class="kpi-sub">Across 8 asset categories</div><div class="kpi-icon">📦</div></div>
+  <div class="kpi-card animate-in" style="--accent-color:#f87171;animation-delay:0.1s"><div class="kpi-label">Total Liabilities</div><div class="kpi-value" id="kpi-liab-val" style="color:var(--red)">SGD 129K</div><div class="kpi-sub"><span id="kpi-loan-sub">≈ ₹80L · Citi SG Loan · 2.05%</span></div><div class="kpi-icon">🏦</div></div>
+  <div class="kpi-card animate-in" style="--accent-color:#60a5fa;animation-delay:0.15s"><div class="kpi-label">Passive Income</div><div class="kpi-value" id="kpi-passive-val" style="color:var(--blue)">₹69K/mo</div><div class="kpi-sub" id="kpi-passive-sub">₹8.28L/year · Rental + Lending</div><div class="kpi-icon">📥</div></div>
+  <div class="kpi-card animate-in" style="--accent-color:#a78bfa;animation-delay:0.2s"><div class="kpi-label">Monthly Base Salary</div><div class="kpi-value" id="kpi-salary-val" style="color:var(--purple)">SGD 14,380</div><div class="kpi-sub" id="kpi-salary-sub">+4.3% · was SGD 13,787</div><div class="kpi-icon">💼</div></div>
+  <div class="kpi-card animate-in" style="--accent-color:#fbbf24;animation-delay:0.25s"><div class="kpi-label">Annual Cash Comp</div><div class="kpi-value" id="kpi-annual-val" style="color:var(--yellow)">SGD 202K</div><div class="kpi-sub" id="kpi-annual-sub">Base + Bonus (excl. RSU)</div><div class="kpi-icon">💰</div></div>
+  <div class="kpi-card animate-in" style="--accent-color:#fb923c;animation-delay:0.3s"><div class="kpi-label">Monthly Commitments</div><div class="kpi-value" id="kpi-commitments-val" style="color:var(--orange)">~₹5L/mo</div><div class="kpi-sub">SIP + PPF + Insurance + EMI</div><div class="kpi-icon">📤</div></div>
+</div>
 
-  <!-- KPIs -->
-  <div class="kpi-grid">
-    <div class="kpi-card" style="--accent-color: #22c55e">
-      <div class="kpi-label">Total Assets</div>
-      <div class="kpi-value" id="kpi-assets-val" style="color: var(--green)">₹7.76Cr</div>
-      <div class="kpi-sub">Across 7 asset categories</div>
-      <div class="kpi-icon">📦</div>
+<div class="section-title">💼 Employment Income — Autodesk Singapore</div>
+<div class="income-highlight animate-in" style="animation-delay:0.1s">
+  <h3>📋 Feb 2026 Payslip + New Compensation Package</h3>
+  <div class="income-grid">
+    <div class="income-item"><div class="income-item-label">New Base (post 4.3% inc)</div><div class="income-item-value" id="income-base-val" style="color:var(--green)">SGD 14,380</div><div class="income-item-sub" id="income-base-sub">per month · ≈ SGD 172.6K/yr</div></div>
+    <div class="income-item"><div class="income-item-label">Annual Bonus</div><div class="income-item-value" id="income-bonus-val" style="color:var(--yellow)">SGD 29,167</div><div class="income-item-sub">FY2026 payout</div></div>
+    <div class="income-item"><div class="income-item-label">RSU New Grant</div><div class="income-item-value" id="income-rsu-val" style="color:var(--purple)">USD 32,400</div><div class="income-item-sub">3-yr vest · <span id="income-rsu-sub">USD 10,800/yr</span></div></div>
+    <div class="income-item"><div class="income-item-label">Net Salary (Feb 26)</div><div class="income-item-value" style="color:var(--blue)" id="income-net-val">SGD 12,119</div><div class="income-item-sub">After deductions (ESPP etc.)</div></div>
+    <div class="income-item"><div class="income-item-label">Total Annual Cash</div><div class="income-item-value" id="income-annual-val" style="color:var(--green)">SGD 201.7K</div><div class="income-item-sub">Base + Bonus (excl. RSU)</div></div>
+    <div class="income-item"><div class="income-item-label">With RSU (yr avg)</div><div class="income-item-value" id="income-with-rsu-val" style="color:var(--orange)">SGD 216K</div><div class="income-item-sub" id="income-with-rsu-sub">≈ ₹1.34Cr/year total</div></div>
+  </div>
+  <div style="margin-top:20px;">
+    <div style="font-family:var(--font-heading);font-size:0.72rem;color:var(--muted);margin-bottom:8px;font-weight:600;">NEW RSU GRANT — <span id="rsu-grant-label">USD 32,400</span> over 3 years</div>
+    <div class="rsu-timeline">
+      <div class="rsu-year"><div class="rsu-year-label">Year 1</div><div class="rsu-year-val" id="rsu-y1-val">USD 10,800</div><div style="font-size:0.65rem;color:var(--muted)" id="rsu-y1-sub">≈ ₹9L</div></div>
+      <div class="rsu-year"><div class="rsu-year-label">Year 2</div><div class="rsu-year-val" id="rsu-y2-val">USD 10,800</div><div style="font-size:0.65rem;color:var(--muted)" id="rsu-y2-sub">≈ ₹9L</div></div>
+      <div class="rsu-year"><div class="rsu-year-label">Year 3</div><div class="rsu-year-val" id="rsu-y3-val">USD 10,800</div><div style="font-size:0.65rem;color:var(--muted)" id="rsu-y3-sub">≈ ₹9L</div></div>
+      <div class="rsu-year" style="background:rgba(52,211,153,0.08);border-color:rgba(52,211,153,0.2);"><div class="rsu-year-label">Total</div><div class="rsu-year-val" id="rsu-total-val" style="color:var(--green)">USD 32,400</div><div style="font-size:0.65rem;color:var(--muted)" id="rsu-total-sub">≈ ₹26.9L</div></div>
     </div>
-    <div class="kpi-card" style="--accent-color: #ef4444">
-      <div class="kpi-label">Total Liabilities</div>
-      <div class="kpi-value" id="kpi-liab-val" style="color: var(--red)">SGD 129K</div>
-      <div class="kpi-sub"><span id="kpi-loan-sub">≈ ₹80L · Citi SG Loan · 2.05%</span></div>
-      <div class="kpi-icon">🏦</div>
+    <div style="font-size:0.7rem;color:var(--muted);margin-top:8px;">⚠️ Plus existing 641 RSUs (Autodesk) already vested &amp; held in eTrade. New grant is additional on top.</div>
+  </div>
+</div>
+
+<div class="section-title">📊 Portfolio Allocation</div>
+<div class="grid-2">
+  <div class="card animate-in" style="animation-delay:0.1s"><h3>By Asset Class</h3><div class="chart-wrap"><canvas id="assetChart"></canvas></div></div>
+  <div class="card animate-in" style="animation-delay:0.15s"><h3>By Geography</h3><div class="chart-wrap"><canvas id="geoChart"></canvas></div></div>
+</div>
+
+<div class="section-title">💸 Monthly Cash Flow</div>
+<div class="grid-2">
+  <div class="card"><h3>💚 Income Streams</h3>
+    <div class="cashflow-item cashflow-in"><span class="cashflow-label">💼 Net Salary (Autodesk SG)</span><span class="cashflow-value cf-income" id="cf-salary-val">+SGD 14,380</span></div>
+    <div class="cashflow-item cashflow-in"><span class="cashflow-label">🏪 Commercial Rental — Iyer Bungalow</span><span class="cashflow-value cf-income" id="cf-rental-val">+₹52,000</span></div>
+    <div class="cashflow-item cashflow-in"><span class="cashflow-label">🤝 Private Lending — Baskaran &amp; Malar</span><span class="cashflow-value cf-income" id="cf-lending-mo-val">+₹17,000</span></div>
+    <div class="cashflow-item cashflow-neutral"><span class="cashflow-label">📈 RSU Vest (monthly avg)</span><span class="cashflow-value cf-neutral" id="cf-rsu-vest-val">+USD 900</span></div>
+    <div style="margin-top:14px;border-top:1px solid var(--border);padding-top:12px;">
+      <div class="summary-row total"><span>Passive Income Only</span><span style="color:var(--green)" id="cf-passive-total">₹69,000/mo</span></div>
+      <div class="summary-row"><span style="color:var(--muted)">Annual Passive</span><span style="color:var(--green)" id="cf-passive-annual">₹8.28 Lakhs</span></div>
     </div>
-    <div class="kpi-card" style="--accent-color: #3b82f6">
-      <div class="kpi-label">Passive Income</div>
-      <div class="kpi-value" id="kpi-passive-val" style="color: var(--blue)">₹69K/mo</div>
-      <div class="kpi-sub" id="kpi-passive-sub">₹8.28L/year · Rental + Lending</div>
-      <div class="kpi-icon">📥</div>
+  </div>
+  <div class="card"><h3>🔴 Monthly Outflows</h3>
+    <div class="cashflow-item cashflow-out"><span class="cashflow-label">💳 Citi SG Loan (<span id="cf-loan-label">SGD 129K · 2.05% · 24mo</span>) <span class="tag-new">NEW</span></span><span class="cashflow-value cf-expense">-SGD <span id="cf-loan-emi">5,491</span></span></div>
+    <div class="cashflow-item cashflow-out"><span class="cashflow-label">📈 India SIP (Mutual Fund)</span><span class="cashflow-value cf-expense" id="cf-sip-val">-₹50,000</span></div>
+    <div class="cashflow-item cashflow-out"><span class="cashflow-label">🛡️ SG Prudential Premium</span><span class="cashflow-value cf-expense" id="cf-prudential-val">-SGD 522</span></div>
+    <div class="cashflow-item cashflow-out"><span class="cashflow-label">🏦 India PPF (SBI)</span><span class="cashflow-value cf-expense" id="cf-ppf-val">-₹12,500</span></div>
+    <div style="margin-top:14px;border-top:1px solid var(--border);padding-top:12px;">
+      <div class="summary-row"><span style="color:var(--muted)">SG Commitments/mo</span><span style="color:var(--red)" id="cf-sg-commitments">SGD 6,013 ≈ ₹4L</span></div>
+      <div class="summary-row"><span style="color:var(--muted)">India Commitments/mo</span><span style="color:var(--red)" id="cf-india-commitments">₹62,500</span></div>
+      <div class="summary-row total"><span>Total Outflows</span><span style="color:var(--red)" id="cf-total-outflows">~₹5L/mo</span></div>
     </div>
-    <div class="kpi-card" style="--accent-color: #a78bfa">
-      <div class="kpi-label">Monthly Base Salary</div>
-      <div class="kpi-value" id="kpi-salary-val" style="color: var(--purple)">SGD 14,380</div>
-      <div class="kpi-sub" id="kpi-salary-sub">+4.3% · was SGD 13,787</div>
-      <div class="kpi-icon">💼</div>
+  </div>
+</div>
+
+<div class="section-title">🔴 Liabilities</div>
+<div class="grid-2" style="margin-bottom:28px;">
+  <div class="card"><h3>🏦 Citi SG Loan — Updated</h3>
+    <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+      <span class="tag-settled">✅ Loan 1 Settled — SGD 15K</span>
+      <span class="tag-settled">✅ Loan 2 Settled — SGD 27.7K</span>
+      <span class="tag-new">🆕 New Loan — <span id="liab-new-loan-amt">SGD 129K</span></span>
     </div>
-    <div class="kpi-card" style="--accent-color: #eab308">
-      <div class="kpi-label">Annual Cash Comp</div>
-      <div class="kpi-value" id="kpi-annual-val" style="color: var(--yellow)">SGD 202K</div>
-      <div class="kpi-sub" id="kpi-annual-sub">Base + Bonus (excl. RSU)</div>
-      <div class="kpi-icon">💰</div>
+    <div class="liab-item"><div class="liab-header"><span class="liab-name">🏦 Citi SG Loan 1 (SGD 15K @ 4.94%)</span><span style="color:var(--green);font-size:0.8rem;">✅ Settled</span></div><div class="liab-bar-bg"><div class="liab-bar-fill" style="width:0%;background:var(--green)"></div></div><div class="liab-settled">Cleared — Apr 2026</div></div>
+    <div class="liab-item"><div class="liab-header"><span class="liab-name">🏦 Citi SG Loan 2 (SGD 27.7K @ 3.56%)</span><span style="color:var(--green);font-size:0.8rem;">✅ Settled</span></div><div class="liab-bar-bg"><div class="liab-bar-fill" style="width:0%;background:var(--green)"></div></div><div class="liab-settled">Cleared — Apr 2026</div></div>
+    <div class="liab-item"><div class="liab-header"><span class="liab-name" id="liab-new-loan-name">🏦 New Citi SG Loan — SGD 129,000</span><span class="liab-val" id="liab-new-loan-val">SGD 129,000 ≈ ₹80L</span></div>
+      <div class="liab-bar-bg"><div class="liab-bar-fill" style="width:100%" id="liab-new-bar"></div></div>
+      <div class="liab-rate"><span id="liab-rate-text">2.05% interest · 24 months · EMI: SGD 5,491/mo</span></div>
+      <div class="loan-progress-wrap" id="loan-countdown-wrap">
+        <div style="font-family:var(--font-heading);font-size:0.7rem;color:var(--muted);margin-bottom:4px;font-weight:500;" id="loan-countdown-label">0 of 24 months paid</div>
+        <div class="loan-progress-bar"><div class="loan-progress-fill" id="loan-countdown-fill" style="width:0%"></div></div>
+        <div class="loan-progress-text"><span id="loan-months-paid">Started Apr 2026</span><span id="loan-months-remaining">24 months remaining</span></div>
+      </div>
     </div>
-    <div class="kpi-card" style="--accent-color: #f97316">
-      <div class="kpi-label">Monthly Commitments</div>
-      <div class="kpi-value" id="kpi-commitments-val" style="color: var(--orange)">~₹5L/mo</div>
-      <div class="kpi-sub">SIP + PPF + Insurance + New EMI</div>
-      <div class="kpi-icon">📤</div>
+    <div style="margin-top:14px;border-top:1px solid var(--border);padding-top:12px;">
+      <div class="summary-row total"><span>Total Outstanding</span><span style="color:var(--red)" id="liab-total-outstanding">SGD 129,000 ≈ ₹80L</span></div>
+      <div class="summary-row"><span style="color:var(--muted)">Monthly EMI</span><span id="liab-emi-mo">SGD 5,491/mo</span></div>
+      <div class="summary-row"><span style="color:var(--muted)">Payoff Date</span><span id="liab-payoff-date">~Apr 2028</span></div>
+      <div class="summary-row"><span style="color:var(--green);font-size:0.78rem;" id="liab-rate-note">💡 Better rate (2.05% vs 3.56–4.94%)</span></div>
+    </div>
+  </div>
+  <div class="card"><h3>📊 Debt Overview</h3><div class="chart-wrap" style="height:220px;"><canvas id="debtChart"></canvas></div><div style="margin-top:12px;font-size:0.75rem;color:var(--muted);text-align:center;" id="debt-note">New liability: SGD 129K · Rate: 2.05%</div></div>
+</div>
+
+<div class="section-title">📈 Investment Portfolio</div>
+<div class="us-equity-banner animate-in" style="animation-delay:0.05s">
+  <div><div class="label">🇺🇸 Total US Equity (eTrade + Moomoo)</div><div class="sub" id="us-equity-detail">eTrade ₹1.45Cr + Moomoo ₹1.27Cr</div></div>
+  <div class="value" id="us-equity-total-val">₹2.72Cr</div>
+</div>
+
+<div class="grid-3">
+  <div class="card"><h3>🇺🇸 US Equity — eTrade</h3>
+    <ul class="inv-list">
+      <li class="inv-item"><div class="inv-name">🏷️ ESPP <span class="inv-badge badge-active">Sellable</span></div><div class="inv-value" style="color:var(--green)">319 shares<div class="inv-sub" id="inv-espp-sub">≈ USD 75,948 · ₹63L</div></div></li>
+      <li class="inv-item"><div class="inv-name">📊 RSU Granted <span class="inv-badge badge-active">601 total</span></div><div class="inv-value"><div style="font-size:0.76rem;">Vested: <strong>413</strong> · Unvested: <strong>188</strong></div><div class="inv-sub" id="inv-rsu-sellable-sub">Sellable: 100 · ≈ USD 23,808</div></div></li>
+      <li class="inv-item"><div class="inv-name">💰 eTrade Total</div><div class="inv-value" id="inv-etrade-val" style="color:var(--green)">₹1.45Cr<div class="inv-sub" id="inv-etrade-sub">ESPP + Vested RSU @ USD 238</div></div></li>
+      <li class="inv-item"><div class="inv-name">🆕 New RSU Grant <span class="inv-badge badge-new">Vesting</span></div><div class="inv-value" style="color:var(--purple)" id="inv-rsu-grant-val">USD 32,400<div class="inv-sub" id="inv-rsu-grant-sub">3-yr vest · USD 10,800/yr</div></div></li>
+    </ul>
+    <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);">
+      <div style="font-family:var(--font-heading);font-size:0.68rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">📅 Upcoming Vesting 2026</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div style="background:rgba(124,106,255,0.06);border:1px solid rgba(124,106,255,0.15);border-radius:10px;padding:10px;text-align:center;">
+          <div style="font-size:0.63rem;color:var(--muted);">Jun 10, 2026</div>
+          <div style="font-family:var(--font-heading);font-size:0.88rem;font-weight:700;color:var(--purple);">32 RSU</div>
+          <div style="font-size:0.63rem;color:var(--muted);" id="vest-jun-val">≈ USD 7,619</div>
+          <div style="font-size:0.62rem;color:var(--yellow);margin-top:2px;" id="vest-jun-inr">≈ ₹6.3L</div>
+        </div>
+        <div style="background:rgba(124,106,255,0.06);border:1px solid rgba(124,106,255,0.15);border-radius:10px;padding:10px;text-align:center;">
+          <div style="font-size:0.63rem;color:var(--muted);">Sep 10, 2026</div>
+          <div style="font-family:var(--font-heading);font-size:0.88rem;font-weight:700;color:var(--purple);">31 RSU</div>
+          <div style="font-size:0.63rem;color:var(--muted);" id="vest-sep-val">≈ USD 7,380</div>
+          <div style="font-size:0.62rem;color:var(--yellow);margin-top:2px;" id="vest-sep-inr">≈ ₹6.1L</div>
+        </div>
+      </div>
+      <div style="margin-top:8px;font-size:0.7rem;color:var(--muted);text-align:center;" id="vest-total-note">Total 2026: 63 RSU ≈ USD 14,999 · ₹12.45L</div>
+      <div style="margin-top:4px;font-size:0.68rem;color:var(--yellow);text-align:center;">🗓️ Sep 30, 2026 — ESPP Purchase Period Ends</div>
     </div>
   </div>
 
-  <!-- Income Section -->
-  <div class="section-title">💼 Employment Income — Autodesk Singapore (Updated)</div>
-  <div class="income-highlight">
-    <h3>📋 Feb 2026 Payslip + New Compensation Package</h3>
-    <div class="income-grid">
-      <div class="income-item">
-        <div class="income-item-label">New Base (post 4.3% inc)</div>
-        <div class="income-item-value" id="income-base-val" style="color: var(--green)">SGD 14,380</div>
-        <div class="income-item-sub" id="income-base-sub">per month · ≈ SGD 172.6K/yr</div>
-      </div>
-      <div class="income-item">
-        <div class="income-item-label">Annual Bonus</div>
-        <div class="income-item-value" id="income-bonus-val" style="color: var(--yellow)">SGD 29,167</div>
-        <div class="income-item-sub">FY2026 payout</div>
-      </div>
-      <div class="income-item">
-        <div class="income-item-label">RSU New Grant</div>
-        <div class="income-item-value" id="income-rsu-val" style="color: var(--purple)">USD 32,400</div>
-        <div class="income-item-sub">3-yr vest · <span id="income-rsu-sub">USD 10,800/yr</span></div>
-      </div>
-      <div class="income-item">
-        <div class="income-item-label">Net Salary (Feb 26)</div>
-        <div class="income-item-value" style="color: var(--blue)">SGD 12,119</div>
-        <div class="income-item-sub">After deductions (ESPP etc.)</div>
-      </div>
-      <div class="income-item">
-        <div class="income-item-label">Total Annual Cash</div>
-        <div class="income-item-value" id="income-annual-val" style="color: var(--green)">SGD 201.7K</div>
-        <div class="income-item-sub">Base + Bonus (excl. RSU)</div>
-      </div>
-      <div class="income-item">
-        <div class="income-item-label">With RSU (yr avg)</div>
-        <div class="income-item-value" id="income-with-rsu-val" style="color: var(--orange)">SGD 216K</div>
-        <div class="income-item-sub" id="income-with-rsu-sub">≈ ₹1.34Cr/year total</div>
-      </div>
-    </div>
-
-    <!-- RSU Vesting timeline -->
-    <div style="margin-top: 18px;">
-      <div style="font-size: 0.78rem; color: var(--muted); margin-bottom: 8px; font-weight: 600;">NEW RSU GRANT — <span id="rsu-grant-label">USD 32,400</span> over 3 years</div>
-      <div class="rsu-timeline">
-        <div class="rsu-year">
-          <div class="rsu-year-label">Year 1</div>
-          <div class="rsu-year-val" id="rsu-y1-val">USD 10,800</div>
-          <div style="font-size: 0.68rem; color: var(--muted)" id="rsu-y1-sub">≈ ₹9L</div>
-        </div>
-        <div class="rsu-year">
-          <div class="rsu-year-label">Year 2</div>
-          <div class="rsu-year-val" id="rsu-y2-val">USD 10,800</div>
-          <div style="font-size: 0.68rem; color: var(--muted)" id="rsu-y2-sub">≈ ₹9L</div>
-        </div>
-        <div class="rsu-year">
-          <div class="rsu-year-label">Year 3</div>
-          <div class="rsu-year-val" id="rsu-y3-val">USD 10,800</div>
-          <div style="font-size: 0.68rem; color: var(--muted)" id="rsu-y3-sub">≈ ₹9L</div>
-        </div>
-        <div class="rsu-year" style="background: rgba(34,197,94,0.1); border-color: rgba(34,197,94,0.25);">
-          <div class="rsu-year-label">Total</div>
-          <div class="rsu-year-val" id="rsu-total-val" style="color: var(--green)">USD 32,400</div>
-          <div style="font-size: 0.68rem; color: var(--muted)" id="rsu-total-sub">≈ ₹26.9L</div>
-        </div>
-      </div>
-      <div style="font-size: 0.72rem; color: var(--muted); margin-top: 8px;">⚠️ Plus existing 641 RSUs (Autodesk) already vested &amp; held in eTrade. New grant is additional on top.</div>
-    </div>
+  <div class="card"><h3>📱 Moomoo — US Equities</h3>
+    <ul class="inv-list">
+      <li class="inv-item"><div class="inv-name">📊 ADSK <span class="inv-badge badge-active">Active</span></div><div class="inv-value" style="color:var(--green)">641 shares<div class="inv-sub" id="inv-moomoo-adsk-sub">≈ USD 152,609 · ₹1.27Cr</div></div></li>
+      <li class="inv-item"><div class="inv-name">🎤 SOUN <span class="inv-badge badge-new">Growth</span></div><div class="inv-value" style="color:var(--blue)">20 shares<div class="inv-sub" id="inv-soun-sub">≈ USD 136 · ₹0.11L</div></div></li>
+      <li class="inv-item"><div class="inv-name">💰 Moomoo Total</div><div class="inv-value" id="inv-moomoo-val" style="color:var(--green)">₹1.27Cr<div class="inv-sub" id="inv-moomoo-sub">641 ADSK + 20 SOUN</div></div></li>
+    </ul>
+    <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);"><div style="background:rgba(248,113,113,0.06);border-left:3px solid var(--red);border-radius:8px;padding:10px 12px;font-size:0.74rem;color:var(--red);">⚠️ High ADSK concentration — consider diversifying on vesting events</div></div>
   </div>
 
-  <!-- Charts Row -->
-  <div class="section-title">📊 Portfolio Allocation</div>
-  <div class="grid-2">
-    <div class="card">
-      <h3>By Asset Class</h3>
-      <div class="chart-wrap">
-        <canvas id="assetChart" style="box-sizing: border-box; display: block; height: 260px; width: 612px;" width="1224" height="520"></canvas>
-      </div>
-    </div>
-    <div class="card">
-      <h3>By Geography</h3>
-      <div class="chart-wrap">
-        <canvas id="geoChart" style="box-sizing: border-box; display: block; height: 260px; width: 612px;" width="1224" height="520"></canvas>
-      </div>
-    </div>
-  </div>
-
-  <!-- Cash Flow -->
-  <div class="section-title">💸 Monthly Cash Flow</div>
-  <div class="grid-2">
-    <div class="card">
-      <h3>💚 Income Streams</h3>
-      <div class="cashflow-item cashflow-in">
-        <span class="cashflow-label">💼 Net Salary (Autodesk SG, post 4.3% raise)</span>
-        <span class="cashflow-value cf-income" id="cf-salary-val">+SGD 14,380</span>
-      </div>
-      <div class="cashflow-item cashflow-in">
-        <span class="cashflow-label">🏪 Commercial Rental — Iyer Bungalow, Madurai</span>
-        <span class="cashflow-value cf-income" id="cf-rental-val">+₹52,000</span>
-      </div>
-      <div class="cashflow-item cashflow-in">
-        <span class="cashflow-label">🤝 Private Lending — Baskaran &amp; Malar (20.4%)</span>
-        <span class="cashflow-value cf-income" id="cf-lending-mo-val">+₹17,000</span>
-      </div>
-      <div class="cashflow-item cashflow-neutral">
-        <span class="cashflow-label">📈 RSU Vest (monthly avg, new grant)</span>
-        <span class="cashflow-value cf-neutral" id="cf-rsu-vest-val">+USD 900</span>
-      </div>
-      <div style="margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px;">
-        <div class="summary-row total">
-          <span>Passive Income Only</span>
-          <span style="color: var(--green)" id="cf-passive-total">₹69,000/mo</span>
-        </div>
-        <div class="summary-row">
-          <span style="color: var(--muted)">Annual Passive</span>
-          <span style="color: var(--green)" id="cf-passive-annual">₹8.28 Lakhs</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3>🔴 Monthly Outflows</h3>
-      <div class="cashflow-item cashflow-out">
-        <span class="cashflow-label">💳 Citi SG Loan (<span id="cf-loan-label">SGD 129K · 2.05% · 24mo</span>) <span class="tag-new">NEW</span></span>
-        <span class="cashflow-value cf-expense">-SGD <span id="cf-loan-emi">5,491</span></span>
-      </div>
-      <div class="cashflow-item cashflow-out">
-        <span class="cashflow-label">📈 India SIP (Mutual Fund)</span>
-        <span class="cashflow-value cf-expense" id="cf-sip-val">-₹50,000</span>
-      </div>
-      <div class="cashflow-item cashflow-out">
-        <span class="cashflow-label">🛡️ SG Prudential Premium (PruFlexiCash)</span>
-        <span class="cashflow-value cf-expense">-SGD 522</span>
-      </div>
-      <div class="cashflow-item cashflow-out">
-        <span class="cashflow-label">🏦 India PPF (SBI)</span>
-        <span class="cashflow-value cf-expense">-₹12,500</span>
-      </div>
-      <div style="margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px;">
-        <div class="summary-row">
-          <span style="color: var(--muted)">SG Commitments/mo</span>
-          <span style="color: var(--red)" id="cf-sg-commitments">SGD 6,013 ≈ ₹4L</span>
-        </div>
-        <div class="summary-row">
-          <span style="color: var(--muted)">India Commitments/mo</span>
-          <span style="color: var(--red)" id="cf-india-commitments">₹62,500</span>
-        </div>
-        <div class="summary-row total">
-          <span>Total Outflows</span>
-          <span style="color: var(--red)" id="cf-total-outflows">~₹5L/mo</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Liability Section -->
-  <div class="section-title">🔴 Liabilities</div>
-  <div class="grid-2" style="margin-bottom: 28px;">
-    <div class="card">
-      <h3>🏦 Citi SG Loan — Updated</h3>
-
-      <div style="display:flex; gap:8px; margin-bottom: 14px; flex-wrap: wrap;">
-        <span class="tag-settled">✅ Loan 1 Settled — SGD 15K</span>
-        <span class="tag-settled">✅ Loan 2 Settled — SGD 27.7K</span>
-        <span class="tag-new">🆕 New Loan — <span id="liab-new-loan-amt">SGD 129K</span></span>
-      </div>
-
-      <div class="liab-item">
-        <div class="liab-header">
-          <span class="liab-name">🏦 Citi SG Loan 1 (SGD 15K @ 4.94%)</span>
-          <span style="color: var(--green); font-size: 0.82rem;">✅ Settled</span>
-        </div>
-        <div class="liab-bar-bg"><div class="liab-bar-fill" style="width: 0%; background: var(--green)"></div></div>
-        <div class="liab-settled">Cleared this month — Apr 2026</div>
-      </div>
-      <div class="liab-item">
-        <div class="liab-header">
-          <span class="liab-name">🏦 Citi SG Loan 2 (SGD 27.7K @ 3.56%)</span>
-          <span style="color: var(--green); font-size: 0.82rem;">✅ Settled</span>
-        </div>
-        <div class="liab-bar-bg"><div class="liab-bar-fill" style="width: 0%; background: var(--green)"></div></div>
-        <div class="liab-settled">Cleared this month — Apr 2026</div>
-      </div>
-      <div class="liab-item">
-        <div class="liab-header">
-          <span class="liab-name" id="liab-new-loan-name">🏦 New Citi SG Loan — SGD 129,000</span>
-          <span class="liab-val" id="liab-new-loan-val">SGD 129,000 ≈ ₹80L</span>
-        </div>
-        <div class="liab-bar-bg"><div class="liab-bar-fill" style="width: 100%"></div></div>
-        <div class="liab-rate"><span id="liab-rate-text">2.05% interest · 24 months · EMI: SGD 5,491/mo · Total interest: SGD 2,784</span></div>
-      </div>
-      <div style="margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px;">
-        <div class="summary-row total">
-          <span>Total Outstanding</span>
-          <span style="color: var(--red)" id="liab-total-outstanding">SGD 129,000 ≈ ₹80L</span>
-        </div>
-        <div class="summary-row">
-          <span style="color: var(--muted)">Monthly EMI</span>
-          <span id="liab-emi-mo">SGD 5,491/mo</span>
-        </div>
-        <div class="summary-row">
-          <span style="color: var(--muted)">Payoff Date</span>
-          <span id="liab-payoff-date">~Apr 2028</span>
-        </div>
-        <div class="summary-row">
-          <span style="color: var(--green); font-size: 0.8rem;" id="liab-rate-note">💡 Better rate vs old loans (2.05% vs 3.56–4.94%)</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3>📊 Debt Overview</h3>
-      <div class="chart-wrap" style="height: 220px;">
-        <canvas id="debtChart" style="box-sizing: border-box; display: block; height: 220px; width: 612px;" width="1224" height="440"></canvas>
-      </div>
-      <div style="margin-top: 12px; font-size: 0.78rem; color: var(--muted); text-align: center;" id="debt-note">New liability: SGD 129K · Rate: 2.05% vs old 3.56–4.94%</div>
-    </div>
-  </div>
-
-  <!-- Investments -->
-  <div class="section-title">📈 Investment Portfolio</div>
-  <div class="grid-3">
-    <div class="card">
-      <h3>🇺🇸 US Equity — eTrade (Morgan Stanley)</h3>
-      <ul class="inv-list">
-        <li class="inv-item">
-          <div class="inv-name">🏷️ ESPP <span class="inv-badge badge-active">Sellable</span></div>
-          <div class="inv-value" style="color:var(--green)">319 shares<div class="inv-sub" id="inv-espp-sub">≈ USD 75,948 · ₹63L</div></div>
-        </li>
-        <li class="inv-item">
-          <div class="inv-name">📊 RSU Granted <span class="inv-badge badge-active">601 total</span></div>
-          <div class="inv-value">
-            <div style="font-size:0.78rem;">Vested: <strong>413</strong> · Unvested: <strong>188</strong></div>
-            <div class="inv-sub" id="inv-rsu-sellable-sub">Sellable now: 100 · ≈ USD 23,808</div>
-          </div>
-        </li>
-        <li class="inv-item">
-          <div class="inv-name">💰 eTrade Total Value</div>
-          <div class="inv-value" id="inv-etrade-val" style="color:var(--green)">₹1.45Cr<div class="inv-sub" id="inv-etrade-sub">ESPP + Vested RSU @ USD 238</div></div>
-        </li>
-        <li class="inv-item">
-          <div class="inv-name">🆕 New RSU Grant <span class="inv-badge badge-new">Vesting</span></div>
-          <div class="inv-value" style="color: var(--purple)" id="inv-rsu-grant-val">USD 32,400<div class="inv-sub" id="inv-rsu-grant-sub">3-yr vest · USD 10,800/yr</div></div>
-        </li>
-        <li class="inv-item">
-          <div class="inv-name">🏦 A/C: 153-318259 · DTC: 0015</div>
-          <div class="inv-value" style="font-size:0.75rem; color:var(--muted)">Morgan Stanley<div class="inv-sub">Smith Barney LLC</div></div>
-        </li>
-      </ul>
-      <!-- Upcoming Vesting -->
-      <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);">
-        <div style="font-size:0.7rem;font-weight:700;color:#6c63ff;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">📅 Upcoming Vesting 2026</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-          <div style="background:rgba(108,99,255,0.08);border:1px solid rgba(108,99,255,0.2);border-radius:8px;padding:8px;text-align:center;">
-            <div style="font-size:0.65rem;color:var(--muted);">Jun 10, 2026</div>
-            <div style="font-size:0.9rem;font-weight:700;color:var(--purple);">32 RSU</div>
-            <div style="font-size:0.65rem;color:var(--muted);" id="vest-jun-val">17 + 15 · ≈ USD 7,619</div>
-          </div>
-          <div style="background:rgba(108,99,255,0.08);border:1px solid rgba(108,99,255,0.2);border-radius:8px;padding:8px;text-align:center;">
-            <div style="font-size:0.65rem;color:var(--muted);">Sep 10, 2026</div>
-            <div style="font-size:0.9rem;font-weight:700;color:var(--purple);">31 RSU</div>
-            <div style="font-size:0.65rem;color:var(--muted);" id="vest-sep-val">17 + 14 · ≈ USD 7,380</div>
-          </div>
-        </div>
-        <div style="margin-top:8px;font-size:0.72rem;color:var(--muted);text-align:center;" id="vest-total-note">
-          Total 2026 vesting: 63 RSU ≈ USD 14,999 · ₹12.45L
-        </div>
-        <div style="margin-top:4px;font-size:0.7rem;color:var(--yellow);text-align:center;">
-          🗓️ Sep 30, 2026 — ESPP Purchase Period Ends
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3>📱 Moomoo Account — US Equities</h3>
-      <ul class="inv-list">
-        <li class="inv-item">
-          <div class="inv-name">📊 Autodesk (ADSK) <span class="inv-badge badge-active">Active</span></div>
-          <div class="inv-value" style="color:var(--green)">641 shares<div class="inv-sub" id="inv-moomoo-adsk-sub">≈ USD 152,609 · ₹1.27Cr</div></div>
-        </li>
-        <li class="inv-item">
-          <div class="inv-name">🎤 SoundHound AI (SOUN) <span class="inv-badge badge-new">Growth</span></div>
-          <div class="inv-value" style="color:var(--blue)">20 shares<div class="inv-sub" id="inv-soun-sub">≈ USD 136 · ₹0.11L @ USD 6.78</div></div>
-        </li>
-        <li class="inv-item">
-          <div class="inv-name">💰 Moomoo Total (ADSK + SOUN)</div>
-          <div class="inv-value" id="inv-saxo-val" style="color:var(--green)">₹1.27Cr<div class="inv-sub" id="inv-saxo-sub">641 ADSK + 20 SOUN</div></div>
-        </li>
-      </ul>
-      <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);">
-        <div style="background:rgba(239,68,68,0.08);border-left:3px solid var(--red);border-radius:6px;padding:8px 10px;font-size:0.76rem;color:var(--red);">
-          ⚠️ High ADSK concentration across eTrade + Moomoo — consider diversifying on vesting events
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3>🇮🇳 India — SIP, PPF &amp; Lending</h3>
-      <ul class="inv-list">
-        <li class="inv-item">
-          <div class="inv-name">📈 Mutual Fund SIP <span class="inv-badge badge-active">Active</span></div>
-          <div class="inv-value" id="inv-sip-val">₹50K/mo</div>
-        </li>
-        <li class="inv-item">
-          <div class="inv-name">🏦 SBI PPF <span class="inv-badge badge-active">EEE Tax-Free</span></div>
-          <div class="inv-value">₹15L goal<div class="inv-sub">₹1.5L/yr · 15 yrs</div></div>
-        </li>
-        <li class="inv-item">
-          <div class="inv-name">🤝 Private Lending</div>
-          <div class="inv-value" style="color: var(--green)">20.4% yield<div class="inv-sub" id="inv-lending-sub">₹10L · ₹17K/mo</div></div>
-        </li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- Prudential -->
-  <div class="grid-2">
-    <div class="card">
-      <h3>🛡️ SG Insurance — Prudential PruFlexiCash</h3>
-      <ul class="inv-list">
-        <li class="inv-item"><div class="inv-name">Program</div><div class="inv-value">PruFlexiCash (7th Series)</div></li>
-        <li class="inv-item"><div class="inv-name">Monthly Premium</div><div class="inv-value">SGD 522.26<div class="inv-sub">≈ ₹32,380/mo</div></div></li>
-        <li class="inv-item"><div class="inv-name">Sum Assured (Maturity)</div><div class="inv-value" style="color: var(--green)">SGD 107,310<div class="inv-sub">≈ ₹66.5L @ 2035</div></div></li>
-        <li class="inv-item"><div class="inv-name">Maturity Year</div><div class="inv-value">2035 (Age 53)</div></li>
-        <li class="inv-item"><div class="inv-name">Effective Yield</div><div class="inv-value" style="color: var(--yellow)">~1.1% p.a.<div class="inv-sub">⚠️ Below inflation — review</div></div></li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <h3>📊 Annual Income Breakdown</h3>
-      <div class="chart-wrap" style="height: 220px;">
-        <canvas id="incomeChart" style="box-sizing: border-box; display: block; height: 220px; width: 612px;" width="1224" height="440"></canvas>
-      </div>
-    </div>
-  </div>
-
-  <!-- Real Estate -->
-  <div class="section-title" style="margin-top: 28px;">🏠 Real Estate Portfolio — 6 Properties · Tamil Nadu</div>
-  <div class="re-grid">
-    <div class="re-card">
-      <div class="re-card-header">
-        <div>
-          <div class="re-name">Rameswaram — Peikarumbu Plot</div>
-          <div class="re-location">📍 Survey No: 141/1A2C</div>
-        </div>
-        <div class="re-value">₹60L</div>
-      </div>
-      <div class="re-detail">25 cents (10,900 sq ft) · Front: 71ft · Back: 56ft · Length: 177ft</div>
-      <span class="re-tag tag-paid">✅ Fully Paid</span>
-    </div>
-    <div class="re-card">
-      <div class="re-card-header">
-        <div>
-          <div class="re-name">Madurai — Iyer Bungalow Commercial</div>
-          <div class="re-location">📍 2, 1110, Mullai St, Ezhil Nagar · 625014</div>
-        </div>
-        <div class="re-value">₹1.52Cr</div>
-      </div>
-      <div class="re-detail">Purchase ₹1.45Cr + Reg ₹5.63L + Fees ₹1.45L</div>
-      <div class="re-detail" style="margin-top:5px;">Tenants: Parlour ₹2L · Studio ₹65K · Tailor ₹50K · Water ₹30K</div>
-      <span class="re-tag tag-rental">🏪 Active Rental Income</span>
-    </div>
-    <div class="re-card">
-      <div class="re-card-header">
-        <div>
-          <div class="re-name">Andippatti — Gullapuram</div>
-          <div class="re-location">📍 Near Vaigai Dam</div>
-        </div>
-        <div class="re-value">₹10L</div>
-      </div>
-      <div class="re-detail">44 cents (19,184 sq ft)</div>
-      <span class="re-tag tag-paid">✅ Registered</span>
-    </div>
-    <div class="re-card">
-      <div class="re-card-header">
-        <div>
-          <div class="re-name">Madurai — Azhagar Kovil</div>
-          <div class="re-location">📍 Azhagar Kovil</div>
-        </div>
-        <div class="re-value">₹15L</div>
-      </div>
-      <div class="re-detail">6.6 cents (2,300 sq ft)</div>
-      <span class="re-tag tag-paid">✅ Registered</span>
-    </div>
-    <div class="re-card">
-      <div class="re-card-header">
-        <div>
-          <div class="re-name">Arun HiTech City — Plot 1</div>
-          <div class="re-location">📍 Plot 22, 92F · Madurai</div>
-        </div>
-        <div class="re-value">₹98L</div>
-      </div>
-      <div class="re-detail">8.8 cents (3,845 sq ft) · 52.9ft / 56ft</div>
-      <span class="re-tag tag-paid">✅ Registered</span>
-    </div>
-    <div class="re-card">
-      <div class="re-card-header">
-        <div>
-          <div class="re-name">Arun HiTech City — Plot 2</div>
-          <div class="re-location">📍 Plot 92F(North), 5W · Madurai</div>
-        </div>
-        <div class="re-value">₹30L</div>
-      </div>
-      <div class="re-detail">2.93 cents · Combined with Plot 1: 52.9ft front / 81.5ft south / 56ft</div>
-      <span class="re-tag tag-paid">✅ Registered</span>
-    </div>
-  </div>
-
-  <!-- Key Observations -->
-  <div class="section-title">⚠️ Key Observations</div>
-  <div class="card" style="margin-bottom: 28px;">
-    <ul class="obs-list">
-      <li class="obs-item"><span class="obs-icon">✅</span><span><strong>Old Citi loans cleared:</strong> SGD 42.7K at 3.56–4.94% settled. Replaced with SGD 129K at 2.05% — smart refinance. Lower rate, longer runway. EMI goes from ~SGD 3,800 to SGD 5,491 but at much better terms.</span></li>
-      <li class="obs-item"><span class="obs-icon">💼</span><span><strong>Strong comp growth:</strong> Total cash hits SGD 201.7K/yr after 4.3% raise + SGD 29K bonus. Add USD 32.4K RSU over 3 years and total annual comp is ~SGD 216K (₹1.79Cr). Excellent progression.</span></li>
-      <li class="obs-item"><span class="obs-icon">⚠️</span><span><strong>Autodesk concentration risk:</strong> eTrade (319 ESPP + 413 vested RSU) + Moomoo (641 shares) = <strong id="obs-adsk-total-shares">1,373 total ADSK shares</strong> ≈ <strong id="obs-adsk-total-val">₹2.72Cr</strong>. Plus 63 RSU vesting in 2026. Set a diversification plan for each vest event.</span></li>
-      <li class="obs-item"><span class="obs-icon">🔍</span><span><strong>Prudential review:</strong> PruFlexiCash yields only ~1.1% p.a. vs 2.05% cost of your new loan. Money locked here is technically costing you. Model the early surrender value vs remaining premiums.</span></li>
-      <li class="obs-item"><span class="obs-icon">📈</span><span><strong>SIP on track:</strong> ₹50K/month since Jan 2025 — stay consistent. The compounding effect becomes meaningful from year 5 onward. Don't stop during market dips.</span></li>
-      <li class="obs-item"><span class="obs-icon">🏦</span><span><strong>PPF fully utilise:</strong> EEE status makes this the best guaranteed return in India. Max ₹1.5L/year — non-negotiable.</span></li>
-      <li class="obs-item"><span class="obs-icon">🏠</span><span><strong>Real estate illiquidity:</strong> ~55% of net worth is in land/property. Steady rental income (₹52K/mo) is great, but watch for liquidity needs if the SG loan EMI strains cash flow.</span></li>
-      <li class="obs-item"><span class="obs-icon">🤝</span><span><strong>Private lending:</strong> 20.4% yield is outstanding — ensure the Baskaran &amp; Malar loan has a signed agreement and clear repayment schedule. High yield = higher risk.</span></li>
+  <div class="card"><h3>🇮🇳 India — SIP, PPF &amp; Lending</h3>
+    <ul class="inv-list">
+      <li class="inv-item"><div class="inv-name">📈 Mutual Fund SIP <span class="inv-badge badge-active">Active</span></div><div class="inv-value" id="inv-sip-val">₹50K/mo</div></li>
+      <li class="inv-item"><div class="inv-name">🏦 SBI PPF <span class="inv-badge badge-active">EEE Tax-Free</span></div><div class="inv-value">₹15L goal<div class="inv-sub">₹1.5L/yr · 15 yrs</div></div></li>
+      <li class="inv-item"><div class="inv-name">🤝 Private Lending</div><div class="inv-value" style="color:var(--green)">20.4% yield<div class="inv-sub" id="inv-lending-sub">₹10L · ₹17K/mo</div></div></li>
     </ul>
   </div>
-
-  <p class="updated">📅 Data sourced from Notion Finance Hub + Payslip (Feb 2026) · Updated Apr 2026 · Exchange rates: 1 SGD ≈ ₹62 · 1 USD ≈ ₹83</p>
 </div>
 
-<!-- EDIT BUTTON — always visible -->
-<button id="edit-fab" onclick="document.getElementById('edit-overlay').style.display='block'" style="position:fixed;bottom:28px;right:28px;z-index:9999;background:#6c63ff;color:#fff;border:none;border-radius:50px;padding:14px 26px;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 4px 24px rgba(108,99,255,0.6);">✏️ Edit</button>
-
-<!-- EDIT OVERLAY -->
-<div id="edit-overlay" style="display: none; position: fixed; inset: 0px; z-index: 10000; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(4px); overflow-y: auto;">
-  <div style="background:#1a1d27;border:1px solid #2a2d3e;border-radius:16px;max-width:560px;margin:40px auto;padding:28px;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-      <h2 style="font-size:1.1rem;color:#fff;">✏️ Edit Dashboard</h2>
-      <button onclick="document.getElementById('edit-overlay').style.display='none'" style="background:none;border:none;color:#94a3b8;font-size:1.4rem;cursor:pointer;">✕</button>
-    </div>
-    <div style="font-size:0.78rem;color:#94a3b8;margin-bottom:20px;padding:10px 14px;background:rgba(108,99,255,0.1);border-radius:8px;border-left:3px solid #6c63ff;">
-      Edit values below → <strong>Save &amp; Apply</strong> to preview live · <strong>Save &amp; Download</strong> to get updated file for redeployment.
-    </div>
-
-    <!-- Employment -->
-    <div style="font-size:0.7rem;font-weight:700;color:#6c63ff;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">💼 Employment</div>
-    <div class="ef-row"><label class="ef-label">Base Salary (SGD/mo)</label><input id="ef-base_salary" class="ef-input" type="number" value="14380"></div>
-    <div class="ef-row"><label class="ef-label">Annual Bonus (SGD)</label><input id="ef-bonus" class="ef-input" type="number" value="29167"></div>
-    <div class="ef-row"><label class="ef-label">RSU New Grant (USD, 3yr)</label><input id="ef-rsu_grant" class="ef-input" type="number" value="32400"></div>
-
-    <!-- Investments -->
-    <div style="font-size:0.7rem;font-weight:700;color:#6c63ff;text-transform:uppercase;letter-spacing:1px;margin:18px 0 10px;">📈 Investments</div>
-    <div class="ef-row"><label class="ef-label">ADSK Price (USD)</label><input id="ef-adsk_price" class="ef-input" type="number" step="0.01" value="238.08"></div>
-    <div class="ef-row"><label class="ef-label">SOUN Price (USD)</label><input id="ef-soun_price" class="ef-input" type="number" step="0.01" value="6.78"></div>
-    <div class="ef-row"><label class="ef-label">Saxo Portfolio (USD)</label><input id="ef-saxo_usd" class="ef-input" type="number" value="40000"></div>
-    <div class="ef-row"><label class="ef-label">SIP Amount (₹/mo)</label><input id="ef-sip_monthly" class="ef-input" type="number" value="50000"></div>
-    <div class="ef-row"><label class="ef-label">Private Lending (₹ Lakhs)</label><input id="ef-lending_inr" class="ef-input" type="number" value="10"></div>
-
-    <!-- Liabilities -->
-    <div style="font-size:0.7rem;font-weight:700;color:#6c63ff;text-transform:uppercase;letter-spacing:1px;margin:18px 0 10px;">🏦 Liabilities</div>
-    <div class="ef-row"><label class="ef-label">Citi Loan Balance (SGD)</label><input id="ef-loan_sgd" class="ef-input" type="number" value="129000"></div>
-    <div class="ef-row"><label class="ef-label">Loan Interest Rate (%)</label><input id="ef-loan_rate" class="ef-input" type="number" step="0.01" value="2.07"></div>
-    <div class="ef-row"><label class="ef-label">Loan Tenure (months)</label><input id="ef-loan_months" class="ef-input" type="number" value="24"></div>
-
-    <!-- Real Estate -->
-    <div style="font-size:0.7rem;font-weight:700;color:#6c63ff;text-transform:uppercase;letter-spacing:1px;margin:18px 0 10px;">🏠 Real Estate</div>
-    <div class="ef-row"><label class="ef-label">Real Estate Total (₹ Crores)</label><input id="ef-re_total" class="ef-input" type="number" step="0.01" value="3.74"></div>
-
-    <!-- Passive Income -->
-    <div style="font-size:0.7rem;font-weight:700;color:#6c63ff;text-transform:uppercase;letter-spacing:1px;margin:18px 0 10px;">💰 Passive Income</div>
-    <div class="ef-row"><label class="ef-label">Rental Income (₹/mo)</label><input id="ef-rental_mo" class="ef-input" type="number" value="52000"></div>
-    <div class="ef-row"><label class="ef-label">Lending Returns (₹/mo)</label><input id="ef-lending_mo" class="ef-input" type="number" value="17000"></div>
-
-    <div style="display:flex;gap:10px;margin-top:24px;flex-wrap:wrap;">
-      <button onclick="applyEdit()" style="flex:1;background:#6c63ff;color:#fff;border:none;border-radius:10px;padding:13px;font-size:0.9rem;font-weight:700;cursor:pointer;">💾 Save &amp; Apply</button>
-      <button onclick="downloadEdit()" style="flex:1;background:#1e2130;color:#94a3b8;border:1px solid #2a2d3e;border-radius:10px;padding:13px;font-size:0.9rem;cursor:pointer;">⬇️ Download</button>
-      <button onclick="resetEdit()" style="background:#2a2d3e;color:#94a3b8;border:none;border-radius:10px;padding:13px 16px;font-size:0.85rem;cursor:pointer;">↺ Reset</button>
-    </div>
-
-    <!-- GitHub Deploy -->
-    <div style="margin-top:20px;padding-top:18px;border-top:1px solid #2a2d3e;">
-      <div style="font-size:0.7rem;font-weight:700;color:#6c63ff;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">🚀 Deploy to GitHub Pages</div>
-      <div style="font-size:0.75rem;color:#94a3b8;margin-bottom:10px;">
-        Paste your GitHub token to deploy directly from here — no Terminal needed.
-        <a href="https://github.com/settings/tokens/new?scopes=repo&amp;description=WealthDashboard" target="_blank" style="color:#6c63ff;text-decoration:none;">Generate token ↗</a>
-      </div>
-      <input id="ef-gh-token" type="password" placeholder="ghp_xxxxxxxxxxxx (repo scope)" style="width:100%;background:#0f1117;border:1px solid #2a2d3e;border-radius:8px;color:#e2e8f0;padding:9px 12px;font-size:0.85rem;margin-bottom:6px;" oninput="localStorage.setItem('gh_token', this.value)">
-      <div style="font-size:0.72rem;color:#22c55e;margin-bottom:10px;">🔒 Token saved in your browser only — never in the HTML file</div>
-      <button onclick="deployToGitHub()" id="deploy-btn" style="width:100%;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:none;border-radius:10px;padding:13px;font-size:0.95rem;font-weight:700;cursor:pointer;">
-        🚀 Save &amp; Deploy to GitHub Pages
-      </button>
-      <div id="deploy-status" style="margin-top:8px;font-size:0.78rem;text-align:center;display:none;"></div>
+<div class="grid-2">
+  <div class="card"><h3>🛡️ SG Insurance — Prudential PruFlexiCash</h3>
+    <ul class="inv-list">
+      <li class="inv-item"><div class="inv-name">Program</div><div class="inv-value">PruFlexiCash (7th Series)</div></li>
+      <li class="inv-item"><div class="inv-name">Monthly Premium</div><div class="inv-value"><span id="pru-premium-val">SGD 522.26</span><div class="inv-sub" id="pru-premium-inr">≈ ₹32,380/mo</div></div></li>
+      <li class="inv-item"><div class="inv-name">Sum Assured</div><div class="inv-value" style="color:var(--green)">SGD 107,310<div class="inv-sub">≈ ₹66.5L @ 2035</div></div></li>
+      <li class="inv-item"><div class="inv-name">Effective Yield</div><div class="inv-value" style="color:var(--yellow)">~1.1% p.a.<div class="inv-sub">⚠️ Below inflation</div></div></li>
+    </ul>
+    <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);">
+      <div style="font-family:var(--font-heading);font-size:0.7rem;color:var(--muted);margin-bottom:4px;font-weight:500;" id="pru-countdown-label">~9 years remaining · Matures 2035</div>
+      <div class="loan-progress-bar"><div class="loan-progress-fill" id="pru-countdown-fill" style="width:0%;background:linear-gradient(90deg,var(--purple),var(--green));"></div></div>
+      <div class="loan-progress-text"><span id="pru-years-paid">6 years paid</span><span id="pru-years-left">Matures 2035</span></div>
     </div>
   </div>
+  <div class="card"><h3>📊 Annual Income Breakdown</h3><div class="chart-wrap" style="height:220px;"><canvas id="incomeChart"></canvas></div></div>
 </div>
 
-<style>
-.ef-row { display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #2a2d3e; }
-.ef-label { font-size:0.84rem;color:#94a3b8; }
-.ef-input { background:#0f1117;border:1px solid #2a2d3e;border-radius:8px;color:#e2e8f0;padding:7px 10px;width:140px;font-size:0.88rem;text-align:right; }
-</style>
+<div class="section-title" style="margin-top:28px;">🏠 Real Estate Portfolio — 6 Properties · Tamil Nadu</div>
+<div class="re-total-banner animate-in" style="animation-delay:0.05s">
+  <div><div class="label">Total Real Estate Value</div><div style="font-size:0.72rem;color:var(--muted);">6 properties across Madurai, Rameswaram &amp; Andippatti</div></div>
+  <div class="value" id="re-total-val">₹3.74Cr</div>
+</div>
+<div class="re-grid">
+  <div class="re-card"><div class="re-card-header"><div><div class="re-name">Rameswaram — Peikarumbu Plot</div><div class="re-location">📍 Survey No: 141/1A2C</div></div><div class="re-value">₹60L</div></div><div class="re-detail">25 cents (10,900 sq ft) · Front: 71ft · Back: 56ft · Length: 177ft</div><span class="re-tag tag-paid">✅ Fully Paid</span></div>
+  <div class="re-card"><div class="re-card-header"><div><div class="re-name">Madurai — Iyer Bungalow Commercial</div><div class="re-location">📍 2, 1110, Mullai St, Ezhil Nagar</div></div><div class="re-value">₹1.52Cr</div></div><div class="re-detail">Purchase ₹1.45Cr + Reg ₹5.63L + Fees ₹1.45L</div><div class="re-detail" style="margin-top:5px;">Tenants: Parlour ₹2L · Studio ₹65K · Tailor ₹50K · Water ₹30K</div><span class="re-tag tag-rental">🏪 Active Rental Income</span></div>
+  <div class="re-card"><div class="re-card-header"><div><div class="re-name">Andippatti — Gullapuram</div><div class="re-location">📍 Near Vaigai Dam</div></div><div class="re-value">₹10L</div></div><div class="re-detail">44 cents (19,184 sq ft)</div><span class="re-tag tag-paid">✅ Registered</span></div>
+  <div class="re-card"><div class="re-card-header"><div><div class="re-name">Madurai — Azhagar Kovil</div><div class="re-location">📍 Azhagar Kovil</div></div><div class="re-value">₹15L</div></div><div class="re-detail">6.6 cents (2,300 sq ft)</div><span class="re-tag tag-paid">✅ Registered</span></div>
+  <div class="re-card"><div class="re-card-header"><div><div class="re-name">Arun HiTech City — Plot 1</div><div class="re-location">📍 Plot 22, 92F · Madurai</div></div><div class="re-value">₹98L</div></div><div class="re-detail">8.8 cents (3,845 sq ft)</div><span class="re-tag tag-paid">✅ Registered</span></div>
+  <div class="re-card"><div class="re-card-header"><div><div class="re-name">Arun HiTech City — Plot 2</div><div class="re-location">📍 Plot 92F(North), 5W · Madurai</div></div><div class="re-value">₹30L</div></div><div class="re-detail">2.93 cents · Combined with Plot 1</div><span class="re-tag tag-paid">✅ Registered</span></div>
+</div>
+
+<div class="section-title">⚠️ Key Observations</div>
+<div class="card" style="margin-bottom:28px;">
+  <ul class="obs-list">
+    <li class="obs-item"><span class="obs-icon">✅</span><span><strong>Old Citi loans cleared:</strong> SGD 42.7K at 3.56–4.94% settled. Replaced with SGD 129K at 2.05% — smart refinance with better terms.</span></li>
+    <li class="obs-item"><span class="obs-icon">💼</span><span><strong>Strong comp growth:</strong> Total cash SGD 201.7K/yr after 4.3% raise + SGD 29K bonus. With RSU ~SGD 216K (₹1.79Cr).</span></li>
+    <li class="obs-item"><span class="obs-icon">⚠️</span><span><strong>ADSK concentration risk:</strong> eTrade + Moomoo = <strong id="obs-adsk-total-shares">1,373 shares</strong> ≈ <strong id="obs-adsk-total-val">₹2.72Cr</strong>. Plus 63 RSU vesting in 2026. Diversify on vest events.</span></li>
+    <li class="obs-item"><span class="obs-icon">🔍</span><span><strong>Prudential review:</strong> ~1.1% yield vs 2.05% loan cost. Model early surrender value vs remaining premiums.</span></li>
+    <li class="obs-item"><span class="obs-icon">📈</span><span><strong>SIP on track:</strong> ₹50K/month since Jan 2025 — compounding meaningful from year 5.</span></li>
+    <li class="obs-item"><span class="obs-icon">🏦</span><span><strong>PPF fully utilise:</strong> EEE status — best guaranteed return in India. Max ₹1.5L/year.</span></li>
+    <li class="obs-item"><span class="obs-icon">🏠</span><span><strong>Real estate illiquidity:</strong> ~55% of net worth in property. Watch liquidity if EMI strains cash flow.</span></li>
+    <li class="obs-item"><span class="obs-icon">🤝</span><span><strong>Private lending:</strong> 20.4% yield — ensure signed agreement with clear repayment schedule.</span></li>
+  </ul>
+</div>
+
+<p class="updated">📅 Data sourced from Notion Finance Hub + Payslip (Feb 2026) · Updated Apr 2026 · Exchange rates: 1 SGD ≈ ₹62 · 1 USD ≈ ₹83</p>
+</div>
+
+<button id="edit-fab" onclick="document.getElementById('edit-overlay').style.display='block'" style="position:fixed;bottom:28px;right:28px;z-index:9999;background:linear-gradient(135deg,#7c6aff,#6c63ff);color:#fff;border:none;border-radius:50px;padding:14px 26px;font-size:0.95rem;font-weight:700;cursor:pointer;box-shadow:0 4px 24px rgba(124,106,255,0.4);font-family:var(--font-heading);transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">✏️ Edit</button>
+
+<div id="edit-overlay" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.8);backdrop-filter:blur(8px);overflow-y:auto;">
+<div style="background:rgba(22,27,38,0.95);border:1px solid rgba(255,255,255,0.08);border-radius:20px;max-width:560px;margin:40px auto;padding:28px;">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;"><h2 style="font-family:var(--font-heading);font-size:1.1rem;color:#fff;">✏️ Edit Dashboard</h2><button onclick="document.getElementById('edit-overlay').style.display='none'" style="background:none;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;">✕</button></div>
+  <div style="font-size:0.76rem;color:var(--muted);margin-bottom:20px;padding:10px 14px;background:rgba(124,106,255,0.08);border-radius:10px;border-left:3px solid var(--accent);">Edit values → <strong>Save &amp; Apply</strong> to preview · <strong>Download</strong> to get file.</div>
+  <div style="font-family:var(--font-heading);font-size:0.68rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">💼 Employment</div>
+  <div class="ef-row"><label class="ef-label">Base Salary (SGD/mo)</label><input id="ef-base_salary" class="ef-input" type="number" value="14380"></div>
+  <div class="ef-row"><label class="ef-label">Annual Bonus (SGD)</label><input id="ef-bonus" class="ef-input" type="number" value="29167"></div>
+  <div class="ef-row"><label class="ef-label">RSU New Grant (USD, 3yr)</label><input id="ef-rsu_grant" class="ef-input" type="number" value="32400"></div>
+  <div class="ef-row"><label class="ef-label">Net Take-Home (SGD/mo)</label><input id="ef-net_salary" class="ef-input" type="number" value="12119"></div>
+  <div style="font-family:var(--font-heading);font-size:0.68rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin:18px 0 10px;">📈 Investments</div>
+  <div class="ef-row"><label class="ef-label">ADSK Price (USD)</label><input id="ef-adsk_price" class="ef-input" type="number" step="0.01" value="238.08"></div>
+  <div class="ef-row"><label class="ef-label">SOUN Price (USD)</label><input id="ef-soun_price" class="ef-input" type="number" step="0.01" value="6.78"></div>
+  <div class="ef-row"><label class="ef-label">SIP Amount (₹/mo)</label><input id="ef-sip_monthly" class="ef-input" type="number" value="50000"></div>
+  <div class="ef-row"><label class="ef-label">Private Lending (₹ Lakhs)</label><input id="ef-lending_inr" class="ef-input" type="number" value="10"></div>
+  <div style="font-family:var(--font-heading);font-size:0.68rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin:18px 0 10px;">🏦 Liabilities</div>
+  <div class="ef-row"><label class="ef-label">Citi Loan Balance (SGD)</label><input id="ef-loan_sgd" class="ef-input" type="number" value="129000"></div>
+  <div class="ef-row"><label class="ef-label">Loan Rate (%)</label><input id="ef-loan_rate" class="ef-input" type="number" step="0.01" value="2.05"></div>
+  <div class="ef-row"><label class="ef-label">Loan Tenure (months)</label><input id="ef-loan_months" class="ef-input" type="number" value="24"></div>
+  <div class="ef-row"><label class="ef-label">Loan Start Date</label><input id="ef-loan_start" class="ef-input" type="month" value="2026-04" style="width:160px;"></div>
+  <div style="font-family:var(--font-heading);font-size:0.68rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin:18px 0 10px;">🏠 Real Estate</div>
+  <div class="ef-row"><label class="ef-label">RE Total (₹ Crores)</label><input id="ef-re_total" class="ef-input" type="number" step="0.01" value="3.74"></div>
+  <div style="font-family:var(--font-heading);font-size:0.68rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin:18px 0 10px;">💰 Passive Income</div>
+  <div class="ef-row"><label class="ef-label">Rental (₹/mo)</label><input id="ef-rental_mo" class="ef-input" type="number" value="52000"></div>
+  <div class="ef-row"><label class="ef-label">Lending (₹/mo)</label><input id="ef-lending_mo" class="ef-input" type="number" value="17000"></div>
+  <div style="font-family:var(--font-heading);font-size:0.68rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin:18px 0 10px;">🛡️ Fixed Commitments</div>
+  <div class="ef-row"><label class="ef-label">PPF Monthly (₹)</label><input id="ef-ppf_monthly" class="ef-input" type="number" value="12500"></div>
+  <div class="ef-row"><label class="ef-label">Prudential Premium (SGD/mo)</label><input id="ef-prudential_sgd" class="ef-input" type="number" value="522"></div>
+  <div style="display:flex;gap:10px;margin-top:24px;flex-wrap:wrap;">
+    <button onclick="applyEdit()" style="flex:1;background:linear-gradient(135deg,#7c6aff,#6c63ff);color:#fff;border:none;border-radius:12px;padding:13px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:var(--font-heading);">💾 Save &amp; Apply</button>
+    <button onclick="downloadEdit()" style="flex:1;background:rgba(255,255,255,0.04);color:var(--muted);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:13px;font-size:0.88rem;cursor:pointer;font-family:var(--font-heading);">⬇️ Download</button>
+    <button onclick="resetEdit()" style="background:rgba(255,255,255,0.04);color:var(--muted);border:none;border-radius:12px;padding:13px 16px;font-size:0.82rem;cursor:pointer;">↺</button>
+  </div>
+  <div style="margin-top:20px;padding-top:18px;border-top:1px solid rgba(255,255,255,0.06);">
+    <div style="font-family:var(--font-heading);font-size:0.68rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">🚀 Deploy to GitHub Pages</div>
+    <div style="font-size:0.73rem;color:var(--muted);margin-bottom:10px;">Paste GitHub token to deploy. <a href="https://github.com/settings/tokens/new?scopes=repo&amp;description=WealthDashboard" target="_blank" style="color:var(--accent);text-decoration:none;">Generate token ↗</a></div>
+    <input id="ef-gh-token" type="password" placeholder="ghp_xxxxxxxxxxxx" style="width:100%;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.08);border-radius:10px;color:#e2e8f0;padding:9px 12px;font-size:0.83rem;margin-bottom:6px;" oninput="localStorage.setItem('gh_token',this.value)">
+    <div style="font-size:0.7rem;color:var(--green);margin-bottom:10px;">🔒 Token stays in browser only</div>
+    <button onclick="deployToGitHub()" id="deploy-btn" style="width:100%;background:linear-gradient(135deg,#34d399,#22c55e);color:#fff;border:none;border-radius:12px;padding:13px;font-size:0.92rem;font-weight:700;cursor:pointer;font-family:var(--font-heading);">🚀 Deploy</button>
+    <div id="deploy-status" style="margin-top:8px;font-size:0.76rem;text-align:center;display:none;"></div>
+  </div>
+</div>
+</div>
 
 <script>
-// ── CONSTANTS ──────────────────────────────────────────────
-var SGD_INR = 62, USD_INR = 83;
-var PRUDENTIAL_SGD = 522;
-var PPF_INR = 12500;
+var SGD_INR=62,USD_INR=83;
+var ESPP_QTY=319,RSU_VESTED_QTY=413,RSU_SELLABLE_QTY=100,RSU_UNVESTED_QTY=188;
+var MOOMOO_ADSK_QTY=641,MOOMOO_SOUN_QTY=20;
+var EDIT_DEFAULTS={"base_salary":14380,"bonus":29167,"rsu_grant":32400,"net_salary":12119,"adsk_price":238.08,"soun_price":6.78,"sip_monthly":50000,"lending_inr":10,"loan_sgd":129000,"loan_rate":2.05,"loan_months":24,"loan_start":"2026-04","re_total":3.74,"rental_mo":52000,"lending_mo":17000,"ppf_monthly":12500,"prudential_sgd":522};
+var chartAsset=null,chartGeo=null,chartDebt=null,chartIncome=null;
 
-// ── EDIT DEFAULTS (hardcoded baseline values) ──────────────
-// Fixed holdings (shares are fixed; only price changes)
-var ESPP_QTY = 319, RSU_VESTED_QTY = 413, RSU_SELLABLE_QTY = 100, RSU_UNVESTED_QTY = 188;
-var MOOMOO_ADSK_QTY = 641, MOOMOO_SOUN_QTY = 20, SOUN_PRICE_USD = 6.78;
+function getVal(k){return parseFloat(document.getElementById('ef-'+k).value)||0;}
+function getStr(k){return document.getElementById('ef-'+k).value||'';}
+function setText(id,t){var e=document.getElementById(id);if(!e)return;var kids=e.querySelectorAll('*');if(kids.length===0){e.textContent=t;}else{var first=e.childNodes[0];if(first&&first.nodeType===3){first.textContent=t;}else{e.insertBefore(document.createTextNode(t),e.firstChild);}}}
+function calcEMI(p,r,m){if(r===0)return Math.round(p/m);var i=(r/100)/12;return Math.round(p*i*Math.pow(1+i,m)/(Math.pow(1+i,m)-1));}
+function payoffDate(s,m){var p=s.split('-');var d=new Date(parseInt(p[0]),parseInt(p[1])-1);d.setMonth(d.getMonth()+m);return d.toLocaleString('en-SG',{month:'short',year:'numeric'});}
+function calcLoanCountdown(s,t){var p=s.split('-');var sd=new Date(parseInt(p[0]),parseInt(p[1])-1);var n=new Date();var mp=(n.getFullYear()-sd.getFullYear())*12+(n.getMonth()-sd.getMonth());if(mp<0)mp=0;if(mp>t)mp=t;return{paid:mp,remaining:t-mp,total:t,pct:Math.round((mp/t)*100)};}
 
-var EDIT_DEFAULTS = {"base_salary":14380,"bonus":29167,"rsu_grant":32400,"adsk_price":238.08,"soun_price":6.78,"saxo_usd":40000,"sip_monthly":50000,"lending_inr":10,"loan_sgd":129000,"loan_rate":2.07,"loan_months":24,"re_total":3.74,"rental_mo":52000,"lending_mo":17000};
+function renderDashboard(d){
+  var annualBase=d.base_salary*12,totalCash=annualBase+d.bonus,rsuPerYear=d.rsu_grant/3,rsuMonthly=Math.round(rsuPerYear/12);
+  var withRSU_SGD=Math.round(totalCash+(rsuPerYear*USD_INR/SGD_INR));
+  var emi=calcEMI(d.loan_sgd,d.loan_rate,d.loan_months),totalInt=Math.round(emi*d.loan_months-d.loan_sgd);
+  var liabInrL=Math.round((d.loan_sgd*SGD_INR)/100000);
+  var adskPrice=d.adsk_price||238.08,sounPrice=d.soun_price||6.78;
+  var etradeUSD=(ESPP_QTY+RSU_VESTED_QTY)*adskPrice,etradeL=Math.round(etradeUSD*USD_INR/100000*10)/10,etradeCr=etradeL/100;
+  var moomooADSKUSD=MOOMOO_ADSK_QTY*adskPrice,moomooSOUNUSD=MOOMOO_SOUN_QTY*sounPrice,moomooUSD=moomooADSKUSD+moomooSOUNUSD;
+  var moomooL=Math.round(moomooUSD*USD_INR/100000*10)/10;
+  var reTotalL=d.re_total*100,insuranceL=66.5,sipL=7.5,ppfL=15,lendingL=d.lending_inr;
+  var assetsL=reTotalL+etradeL+moomooL+insuranceL+sipL+ppfL+lendingL,assetsCr=assetsL/100;
+  var netWorthCr=assetsCr-(liabInrL/100);
+  var passiveMo=d.rental_mo+d.lending_mo,passiveAnnL=(passiveMo*12)/100000;
+  var sgCommit=emi+d.prudential_sgd,sgCommitINRL=Math.round(sgCommit*SGD_INR/100000);
+  var indiaCommit=d.sip_monthly+d.ppf_monthly,totalOutflowL=sgCommitINRL+Math.round(indiaCommit/100000);
+  var rsuYrINRL=Math.round(rsuPerYear*USD_INR/100000*10)/10;
+  var rsuTotalINRL=Math.round(d.rsu_grant*USD_INR/100000*10)/10;
+  var withRSU_INRCr=((totalCash*SGD_INR+rsuPerYear*USD_INR)/10000000).toFixed(2);
+  var loanStart=d.loan_start||'2026-04';
 
-// ── CHART INSTANCES ────────────────────────────────────────
-var chartAsset = null, chartGeo = null, chartDebt = null, chartIncome = null;
+  setText('adsk-price-badge','ADSK: USD '+adskPrice.toFixed(2));
+  setText('header-net-worth','₹'+netWorthCr.toFixed(2)+' Crores');
+  setText('header-net-worth-sub','Total Assets ₹'+assetsCr.toFixed(2)+'Cr · Liabilities SGD '+Math.round(d.loan_sgd/1000)+'K ≈ ₹'+liabInrL+'L');
 
-// ── HELPERS ────────────────────────────────────────────────
-function getVal(key) {
-  return parseFloat(document.getElementById('ef-' + key).value) || 0;
+  // Allocation bar
+  var rePct=(reTotalL/assetsL*100),usPct=((etradeL+moomooL)/assetsL*100);
+  var indiaPct=((sipL+ppfL+lendingL)/assetsL*100),sgPct=(insuranceL/assetsL*100);
+  document.getElementById('alloc-re').style.width=rePct+'%';
+  document.getElementById('alloc-us').style.width=usPct+'%';
+  document.getElementById('alloc-india').style.width=indiaPct+'%';
+  document.getElementById('alloc-sg').style.width=sgPct+'%';
+
+  setText('kpi-assets-val','₹'+assetsCr.toFixed(2)+'Cr');
+  setText('kpi-liab-val','SGD '+Math.round(d.loan_sgd/1000)+'K');
+  setText('kpi-loan-sub','≈ ₹'+liabInrL+'L · Citi SG · '+d.loan_rate+'%');
+  setText('kpi-passive-val','₹'+Math.round(passiveMo/1000)+'K/mo');
+  setText('kpi-passive-sub','₹'+passiveAnnL.toFixed(2)+'L/year · Rental + Lending');
+  setText('kpi-salary-val','SGD '+d.base_salary.toLocaleString());
+  setText('kpi-salary-sub','≈ SGD '+(annualBase/1000).toFixed(1)+'K/yr · ₹'+(Math.round(annualBase*SGD_INR/100000))+'L/yr');
+  setText('kpi-annual-val','SGD '+Math.round(totalCash/1000)+'K');
+  setText('kpi-commitments-val','~₹'+totalOutflowL+'L/mo');
+
+  setText('income-base-val','SGD '+d.base_salary.toLocaleString());
+  setText('income-base-sub','per month · ≈ SGD '+(annualBase/1000).toFixed(1)+'K/yr');
+  setText('income-bonus-val','SGD '+d.bonus.toLocaleString());
+  setText('income-rsu-val','USD '+d.rsu_grant.toLocaleString());
+  setText('income-rsu-sub','USD '+Math.round(rsuPerYear).toLocaleString()+'/yr');
+  setText('income-annual-val','SGD '+(totalCash/1000).toFixed(1)+'K');
+  setText('income-with-rsu-val','SGD '+Math.round(withRSU_SGD/1000)+'K');
+  setText('income-with-rsu-sub','≈ ₹'+withRSU_INRCr+'Cr/year total');
+
+  setText('rsu-grant-label','USD '+d.rsu_grant.toLocaleString());
+  ['y1','y2','y3'].forEach(function(k){setText('rsu-'+k+'-val','USD '+Math.round(rsuPerYear).toLocaleString());setText('rsu-'+k+'-sub','≈ ₹'+rsuYrINRL+'L');});
+  setText('rsu-total-val','USD '+d.rsu_grant.toLocaleString());
+  setText('rsu-total-sub','≈ ₹'+rsuTotalINRL+'L');
+
+  setText('cf-salary-val','+SGD '+d.base_salary.toLocaleString());
+  setText('cf-rental-val','+₹'+d.rental_mo.toLocaleString());
+  setText('cf-lending-mo-val','+₹'+d.lending_mo.toLocaleString());
+  setText('cf-rsu-vest-val','+USD '+rsuMonthly.toLocaleString());
+  setText('cf-passive-total','₹'+passiveMo.toLocaleString()+'/mo');
+  setText('cf-passive-annual','₹'+passiveAnnL.toFixed(2)+' Lakhs');
+  setText('cf-loan-label','SGD '+Math.round(d.loan_sgd/1000)+'K · '+d.loan_rate+'% · '+d.loan_months+'mo');
+  setText('cf-loan-emi',emi.toLocaleString());
+  setText('cf-sip-val','-₹'+d.sip_monthly.toLocaleString());
+  setText('cf-prudential-val','-SGD '+d.prudential_sgd.toLocaleString());
+  setText('cf-ppf-val','-₹'+d.ppf_monthly.toLocaleString());
+  setText('income-net-val','SGD '+d.net_salary.toLocaleString());
+  setText('pru-premium-val','SGD '+d.prudential_sgd.toFixed(2));
+  setText('pru-premium-inr','≈ ₹'+Math.round(d.prudential_sgd*SGD_INR).toLocaleString()+'/mo');
+  setText('cf-sg-commitments','SGD '+sgCommit.toLocaleString()+' ≈ ₹'+sgCommitINRL+'L');
+  setText('cf-india-commitments','₹'+indiaCommit.toLocaleString());
+  setText('cf-total-outflows','~₹'+totalOutflowL+'L/mo');
+
+  setText('liab-new-loan-amt','SGD '+Math.round(d.loan_sgd/1000)+'K');
+  setText('liab-new-loan-name','🏦 New Citi SG Loan — SGD '+d.loan_sgd.toLocaleString());
+  setText('liab-new-loan-val','SGD '+d.loan_sgd.toLocaleString()+' ≈ ₹'+liabInrL+'L');
+  setText('liab-rate-text',d.loan_rate+'% · '+d.loan_months+' months · EMI: SGD '+emi.toLocaleString()+'/mo · Interest: SGD '+totalInt.toLocaleString());
+  setText('liab-total-outstanding','SGD '+d.loan_sgd.toLocaleString()+' ≈ ₹'+liabInrL+'L');
+  setText('liab-emi-mo','SGD '+emi.toLocaleString()+'/mo');
+  setText('liab-payoff-date','~'+payoffDate(loanStart,d.loan_months));
+  setText('liab-rate-note','💡 Better rate ('+d.loan_rate+'% vs 3.56–4.94%)');
+  setText('debt-note','Liability: SGD '+Math.round(d.loan_sgd/1000)+'K · Rate: '+d.loan_rate+'%');
+
+  var lc=calcLoanCountdown(loanStart,d.loan_months);
+  setText('loan-countdown-label',lc.paid+' of '+lc.total+' months paid');
+  document.getElementById('loan-countdown-fill').style.width=lc.pct+'%';
+  setText('loan-months-paid','Started '+loanStart);
+  setText('loan-months-remaining',lc.remaining+' months remaining');
+
+  var pruStart=2020,pruEnd=2035,pruTotal=pruEnd-pruStart;
+  var pruElapsed=new Date().getFullYear()-pruStart;
+  if(pruElapsed<0)pruElapsed=0;if(pruElapsed>pruTotal)pruElapsed=pruTotal;
+  var pruRemaining=pruTotal-pruElapsed,pruPct=Math.round((pruElapsed/pruTotal)*100);
+  setText('pru-countdown-label','~'+pruRemaining+' years remaining · Matures '+pruEnd);
+  document.getElementById('pru-countdown-fill').style.width=pruPct+'%';
+  setText('pru-years-paid',pruElapsed+' years paid');
+  setText('pru-years-left',pruRemaining+' years left');
+
+  setText('inv-etrade-val','₹'+etradeCr.toFixed(2)+'Cr');
+  setText('inv-etrade-sub','ESPP + Vested RSU @ USD '+Math.round(adskPrice));
+  setText('inv-espp-sub','≈ USD '+Math.round(ESPP_QTY*adskPrice).toLocaleString()+' · ₹'+Math.round(ESPP_QTY*adskPrice*USD_INR/100000)+'L');
+  setText('inv-rsu-sellable-sub','Sellable: '+RSU_SELLABLE_QTY+' · ≈ USD '+Math.round(RSU_SELLABLE_QTY*adskPrice).toLocaleString());
+  setText('inv-moomoo-adsk-sub','≈ USD '+Math.round(moomooADSKUSD).toLocaleString()+' · ₹'+(moomooADSKUSD*USD_INR/10000000).toFixed(2)+'Cr');
+  setText('inv-soun-sub','≈ USD '+Math.round(moomooSOUNUSD)+' · ₹'+Math.round(moomooSOUNUSD*USD_INR/1000)+'K');
+  setText('inv-moomoo-val','₹'+(moomooL/100).toFixed(2)+'Cr');
+  setText('inv-moomoo-sub','641 ADSK + 20 SOUN');
+  setText('inv-rsu-grant-val','USD '+d.rsu_grant.toLocaleString());
+  setText('inv-rsu-grant-sub','3-yr vest · USD '+Math.round(rsuPerYear).toLocaleString()+'/yr');
+
+  var usEquityCr=((etradeL+moomooL)/100).toFixed(2);
+  setText('us-equity-total-val','₹'+usEquityCr+'Cr');
+  setText('us-equity-detail','eTrade ₹'+etradeCr.toFixed(2)+'Cr + Moomoo ₹'+(moomooL/100).toFixed(2)+'Cr');
+
+  var vestJunUSD=32*adskPrice,vestSepUSD=31*adskPrice,vestTotalUSD=63*adskPrice;
+  setText('vest-jun-val','≈ USD '+Math.round(vestJunUSD).toLocaleString());
+  setText('vest-jun-inr','≈ ₹'+(Math.round(vestJunUSD*USD_INR/100000*10)/10).toFixed(1)+'L');
+  setText('vest-sep-val','≈ USD '+Math.round(vestSepUSD).toLocaleString());
+  setText('vest-sep-inr','≈ ₹'+(Math.round(vestSepUSD*USD_INR/100000*10)/10).toFixed(1)+'L');
+  setText('vest-total-note','Total 2026: 63 RSU ≈ USD '+Math.round(vestTotalUSD).toLocaleString()+' · ₹'+(Math.round(vestTotalUSD*USD_INR/100000*10)/10).toFixed(1)+'L');
+
+  setText('re-total-val','₹'+d.re_total.toFixed(2)+'Cr');
+
+  var totalADSKShares=ESPP_QTY+RSU_VESTED_QTY+MOOMOO_ADSK_QTY;
+  var totalADSKCr=(totalADSKShares*adskPrice*USD_INR/10000000).toFixed(2);
+  setText('obs-adsk-total-shares',totalADSKShares.toLocaleString()+' shares');
+  setText('obs-adsk-total-val','₹'+totalADSKCr+'Cr');
+  setText('inv-sip-val','₹'+Math.round(d.sip_monthly/1000)+'K/mo');
+  setText('inv-lending-sub','₹'+d.lending_inr+'L · ₹'+Math.round(d.lending_mo/1000)+'K/mo');
+
+  renderCharts(d,{reTotalL:reTotalL,etradeL:etradeL,moomooL:moomooL,insuranceL:insuranceL,sipL:sipL,ppfL:ppfL,lendingL:lendingL,assetsL:assetsL,annualBase:annualBase,rsuPerYear:rsuPerYear,passiveAnnL:passiveAnnL,loan_sgd:d.loan_sgd,loan_rate:d.loan_rate});
 }
 
-function setText(id, text) {
-  var el = document.getElementById(id);
-  if (el) el.textContent = text;
+function renderCharts(d,c){
+  if(chartAsset){chartAsset.destroy();chartAsset=null;}
+  if(chartGeo){chartGeo.destroy();chartGeo=null;}
+  if(chartDebt){chartDebt.destroy();chartDebt=null;}
+  if(chartIncome){chartIncome.destroy();chartIncome=null;}
+  var cf="'DM Sans',system-ui,sans-serif";
+  try{chartAsset=new Chart(document.getElementById('assetChart'),{type:'doughnut',data:{labels:['Real Estate','eTrade','Moomoo','SG Insurance','SIP','PPF','Lending'],datasets:[{data:[c.reTotalL,c.etradeL,c.moomooL,c.insuranceL,c.sipL,c.ppfL,c.lendingL],backgroundColor:['#7c6aff','#fbbf24','#f59e0b','#34d399','#fb923c','#38bdf8','#f472b6'],borderColor:'rgba(10,12,16,0.8)',borderWidth:3,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:'#7a839b',font:{size:11,family:cf},padding:10,boxWidth:12}},tooltip:{callbacks:{label:function(ctx){return ' ₹'+ctx.parsed+'L ('+((ctx.parsed/c.assetsL)*100).toFixed(1)+'%)';}}}}}})}catch(e){}
+  var indiaL=c.reTotalL+c.sipL+c.ppfL+c.lendingL,usaL=c.etradeL+c.moomooL,sgL=c.insuranceL,geoTotal=indiaL+usaL+sgL;
+  try{chartGeo=new Chart(document.getElementById('geoChart'),{type:'doughnut',data:{labels:['India','USA','Singapore'],datasets:[{data:[indiaL,usaL,sgL],backgroundColor:['#fb923c','#60a5fa','#34d399'],borderColor:'rgba(10,12,16,0.8)',borderWidth:3,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:'#7a839b',font:{size:13,family:cf},padding:14,boxWidth:14}},tooltip:{callbacks:{label:function(ctx){return ' ₹'+ctx.parsed.toFixed(1)+'L ('+((ctx.parsed/geoTotal)*100).toFixed(1)+'%)';}}}}}})}catch(e){}
+  try{chartDebt=new Chart(document.getElementById('debtChart'),{type:'bar',data:{labels:['Before','After'],datasets:[{label:'Balance (SGD)',data:[42700,c.loan_sgd],yAxisID:'y',backgroundColor:['rgba(248,113,113,0.4)','rgba(248,113,113,0.7)'],borderRadius:8},{label:'Rate %',data:[4.25,c.loan_rate],yAxisID:'y2',backgroundColor:['rgba(251,191,36,0.4)','rgba(52,211,153,0.6)'],borderRadius:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#7a839b',font:{size:11,family:cf}}}},scales:{x:{ticks:{color:'#7a839b'},grid:{color:'rgba(255,255,255,0.04)'}},y:{ticks:{color:'#7a839b',callback:function(v){return 'SGD '+v.toLocaleString();}},grid:{color:'rgba(255,255,255,0.04)'}},y2:{position:'right',ticks:{color:'#7a839b',callback:function(v){return v+'%';}},grid:{display:false}}}}})}catch(e){}
+  var bL=Math.round(c.annualBase*SGD_INR/100000),boL=Math.round(d.bonus*SGD_INR/100000),rL=Math.round(c.rsuPerYear*USD_INR/100000),pL=Math.round(c.passiveAnnL*10)/10;
+  try{chartIncome=new Chart(document.getElementById('incomeChart'),{type:'bar',data:{labels:['Base Salary','Bonus','RSU (avg/yr)','Passive'],datasets:[{label:'Annual (₹ Lakhs)',data:[bL,boL,rL,pL],backgroundColor:['#7c6aff','#fbbf24','#a78bfa','#34d399'],borderRadius:8,borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return ' ₹'+ctx.parsed.y+'L';}}}},scales:{x:{ticks:{color:'#7a839b',font:{size:10,family:cf}},grid:{color:'rgba(255,255,255,0.04)'}},y:{ticks:{color:'#7a839b',callback:function(v){return '₹'+v+'L';}},grid:{color:'rgba(255,255,255,0.04)'}}}}})}catch(e){}
 }
 
-function fmtINR(val) {
-  // Format a ₹ value in lakhs if < 100L, else crores
-  if (val >= 10000000) return '₹' + (val / 10000000).toFixed(2) + 'Cr';
-  if (val >= 100000)   return '₹' + (val / 100000).toFixed(1) + 'L';
-  return '₹' + Math.round(val).toLocaleString();
-}
+function applyEdit(){var d={};Object.keys(EDIT_DEFAULTS).forEach(function(k){d[k]=(k==='loan_start')?getStr(k):getVal(k);});Object.keys(d).forEach(function(k){EDIT_DEFAULTS[k]=d[k];});renderDashboard(d);document.getElementById('edit-overlay').style.display='none';var b=document.getElementById('edit-fab');b.textContent='✅ Saved!';setTimeout(function(){b.textContent='✏️ Edit';},2000);}
+function resetEdit(){Object.keys(EDIT_DEFAULTS).forEach(function(k){var e=document.getElementById('ef-'+k);if(e)e.value=EDIT_DEFAULTS[k];});}
+function downloadEdit(){var d={};Object.keys(EDIT_DEFAULTS).forEach(function(k){d[k]=(k==='loan_start')?getStr(k):getVal(k);});Object.keys(d).forEach(function(k){EDIT_DEFAULTS[k]=d[k];});document.getElementById('edit-overlay').style.display='none';var s=document.documentElement.outerHTML;document.getElementById('edit-overlay').style.display='block';var h=s.replace(/var EDIT_DEFAULTS=\{[^}]+\}/,'var EDIT_DEFAULTS='+JSON.stringify(d));Object.keys(d).forEach(function(k){var r=new RegExp('(id="ef-'+k+'"[^>]*value=")[^"]*(")', 'g');h=h.replace(r,'$1'+d[k]+'$2');});var b=new Blob([h],{type:'text/html'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='wealth-dashboard-'+new Date().toISOString().slice(0,10)+'.html';a.click();}
 
-function calcEMI(principal, annualRate, months) {
-  if (annualRate === 0) return Math.round(principal / months);
-  var r = (annualRate / 100) / 12;
-  return Math.round(principal * r * Math.pow(1 + r, months) / (Math.pow(1 + r, months) - 1));
-}
+async function deployToGitHub(){var token=document.getElementById('ef-gh-token').value.trim();var btn=document.getElementById('deploy-btn');var status=document.getElementById('deploy-status');if(!token){status.style.display='block';status.style.color='#f87171';status.textContent='Paste token first.';return;}try{var d={};Object.keys(EDIT_DEFAULTS).forEach(function(k){d[k]=(k==='loan_start')?getStr(k):getVal(k);});Object.keys(d).forEach(function(k){EDIT_DEFAULTS[k]=d[k];});document.getElementById('edit-overlay').style.display='none';var s=document.documentElement.outerHTML;document.getElementById('edit-overlay').style.display='block';var uh=s.replace(/var EDIT_DEFAULTS=\{[^}]+\}/,'var EDIT_DEFAULTS='+JSON.stringify(d));Object.keys(d).forEach(function(k){var r=new RegExp('(id="ef-'+k+'"[^>]*value=")[^"]*(")', 'g');uh=uh.replace(r,'$1'+d[k]+'$2');});btn.textContent='Deploying...';btn.disabled=true;status.style.display='block';status.style.color='#7a839b';status.textContent='Building...';var enc=btoa(encodeURIComponent(uh).replace(/%([0-9A-F]{2})/g,function(_,p){return String.fromCharCode('0x'+p);}));var O='muthuramanathanm',R='wealth-dashboard',F='index.html',A='https://api.github.com';var H={Authorization:'Bearer '+token,Accept:'application/vnd.github+json','Content-Type':'application/json','X-GitHub-Api-Version':'2022-11-28'};status.textContent='Connecting...';var r1=await fetch(A+'/repos/'+O+'/'+R+'/contents/'+F,{headers:H});if(!r1.ok){var e=await r1.json();throw new Error(e.message||r1.status);}var f1=await r1.json();status.textContent='Pushing...';var r2=await fetch(A+'/repos/'+O+'/'+R+'/contents/'+F,{method:'PUT',headers:H,body:JSON.stringify({message:'Update dashboard '+new Date().toLocaleDateString('en-SG'),content:enc,sha:f1.sha})});var f2=await r2.json();if(!f2.commit)throw new Error(f2.message||'Failed');btn.textContent='✅ Deployed!';status.style.color='#34d399';status.innerHTML='<strong>Done!</strong> <a href="https://muthuramanathanm.github.io/wealth-dashboard/" target="_blank" style="color:#34d399;">Open ↗</a>';setTimeout(function(){btn.textContent='🚀 Deploy';btn.disabled=false;},5000);}catch(err){btn.textContent='🚀 Deploy';btn.disabled=false;status.style.color='#f87171';status.textContent='Error: '+err.message;}}
 
-function payoffDate(months) {
-  var d = new Date();
-  d.setMonth(d.getMonth() + months);
-  return d.toLocaleString('en-SG', { month: 'short', year: 'numeric' });
-}
+var PRICE_SOURCES=[{url:'./price.json?cb='+Date.now(),parse:function(data){return{price:data.adsk,updated:data.updated};}}];
+async function fetchADSKPrice(){var sEl=document.getElementById('price-status'),bEl=document.getElementById('adsk-price-badge'),tEl=document.getElementById('price-updated-time');if(sEl){sEl.textContent='⟳';sEl.style.color='#7a839b';}var result=null;for(var i=0;i<PRICE_SOURCES.length;i++){try{var c=new AbortController();var tm=setTimeout(function(){c.abort();},6000);var res=await fetch(PRICE_SOURCES[i].url,{signal:c.signal});clearTimeout(tm);if(!res.ok)throw new Error('HTTP '+res.status);var data=await res.json();result=PRICE_SOURCES[i].parse(data);if(!result.price||isNaN(result.price))throw new Error('Invalid');break;}catch(e){console.warn('Source '+i+' failed:',e.message);}}if(result&&result.price){var price=parseFloat(result.price);EDIT_DEFAULTS.adsk_price=price;var inp=document.getElementById('ef-adsk_price');if(inp)inp.value=price.toFixed(2);var d={};Object.keys(EDIT_DEFAULTS).forEach(function(k){var el=document.getElementById('ef-'+k);if(k==='loan_start'){d[k]=el?el.value:EDIT_DEFAULTS[k];}else{d[k]=(el&&k!=='adsk_price')?(parseFloat(el.value)||EDIT_DEFAULTS[k]):EDIT_DEFAULTS[k];}});d.adsk_price=price;renderDashboard(d);if(bEl)bEl.textContent='ADSK: USD '+price.toFixed(2);if(sEl){sEl.textContent='● Live';sEl.style.color='#34d399';}if(tEl&&result.updated){var ud=new Date(result.updated);var ago=Math.round((Date.now()-ud.getTime())/60000);var at=ago<60?ago+'m ago':Math.round(ago/60)+'h ago';tEl.textContent='· '+at;}}else{if(sEl){sEl.textContent='○ Offline';sEl.style.color='#f87171';}}return result?result.price:null;}
 
-// ── RENDER DASHBOARD from a data object ───────────────────
-function renderDashboard(d) {
-  var annualBase    = d.base_salary * 12;
-  var totalCash     = annualBase + d.bonus;
-  var rsuPerYear    = d.rsu_grant / 3;
-  var rsuMonthly    = Math.round(rsuPerYear / 12);
-  var withRSU_SGD   = Math.round(totalCash + (rsuPerYear * USD_INR / SGD_INR));
-
-  var emi           = calcEMI(d.loan_sgd, d.loan_rate, d.loan_months);
-  var totalInt      = Math.round(emi * d.loan_months - d.loan_sgd);
-  var liabInrL      = Math.round((d.loan_sgd * SGD_INR) / 100000); // lakhs
-
-  // Assets in lakhs — eTrade = (ESPP + Vested RSU) × ADSK price; Moomoo = 641 × ADSK price
-  var adskPrice     = d.adsk_price || 238.08;
-  var sounPrice     = d.soun_price || SOUN_PRICE_USD;
-  var etradeUSD     = (ESPP_QTY + RSU_VESTED_QTY) * adskPrice;
-  var etradeL       = Math.round(etradeUSD * USD_INR / 100000 * 10) / 10;
-  var etradeCr      = etradeL / 100;
-  var moomooADSKUSD = MOOMOO_ADSK_QTY * adskPrice;
-  var moomooSOUNUSD = MOOMOO_SOUN_QTY * sounPrice;
-  var moomooUSD     = moomooADSKUSD + moomooSOUNUSD;
-  var moomooL       = Math.round(moomooUSD * USD_INR / 100000 * 10) / 10;
-  var reTotalL      = d.re_total * 100;
-  var saxoL         = Math.round((d.saxo_usd * USD_INR) / 100000 * 10) / 10;
-  var insuranceL    = 66.5;
-  var sipL          = 7.5;
-  var ppfL          = 15;
-  var lendingL      = d.lending_inr;
-  var assetsL       = reTotalL + etradeL + moomooL + saxoL + insuranceL + sipL + ppfL + lendingL;
-  var assetsCr      = assetsL / 100;
-  var netWorthCr    = assetsCr - (liabInrL / 100);
-
-  var passiveMo     = d.rental_mo + d.lending_mo;
-  var passiveAnnL   = (passiveMo * 12) / 100000;
-
-  var sgCommit      = emi + PRUDENTIAL_SGD;
-  var sgCommitINRL  = Math.round(sgCommit * SGD_INR / 100000);
-  var indiaCommit   = d.sip_monthly + PPF_INR;
-  var indiaCommitL  = Math.round(indiaCommit / 100000);
-  var totalOutflowL = sgCommitINRL + indiaCommitL;
-
-  var rsuYrINRL     = Math.round(rsuPerYear * USD_INR / 100000 * 10) / 10;
-  var rsuTotalINRL  = Math.round(d.rsu_grant * USD_INR / 100000 * 10) / 10;
-  var withRSU_INRCr = ((totalCash * SGD_INR + rsuPerYear * USD_INR) / 10000000).toFixed(2);
-
-  // ── Header ──────────────────────────────────────────────
-  setText('adsk-price-badge', 'ADSK: USD ' + adskPrice.toFixed(2));
-  setText('header-net-worth',     '₹' + netWorthCr.toFixed(2) + ' Crores');
-  setText('header-net-worth-sub', 'Total Assets ₹' + assetsCr.toFixed(2) + 'Cr \u00b7 Liabilities SGD ' + Math.round(d.loan_sgd/1000) + 'K ≈ ₹' + liabInrL + 'L');
-
-  // ── KPI cards ───────────────────────────────────────────
-  setText('kpi-assets-val',       '₹' + assetsCr.toFixed(2) + 'Cr');
-  setText('kpi-liab-val',         'SGD ' + Math.round(d.loan_sgd/1000) + 'K');
-  setText('kpi-loan-sub',         '≈ ₹' + liabInrL + 'L · Citi SG Loan · ' + d.loan_rate + '%');
-  setText('kpi-passive-val',      '₹' + Math.round(passiveMo/1000) + 'K/mo');
-  setText('kpi-passive-sub',      '₹' + passiveAnnL.toFixed(2) + 'L/year · Rental + Lending');
-  setText('kpi-salary-val',       'SGD ' + d.base_salary.toLocaleString());
-  setText('kpi-annual-val',       'SGD ' + Math.round(totalCash/1000) + 'K');
-  setText('kpi-annual-sub',       'Base + Bonus (excl. RSU)');
-  setText('kpi-commitments-val',  '~₹' + totalOutflowL + 'L/mo');
-
-  // ── Employment income section ────────────────────────────
-  setText('income-base-val',       'SGD ' + d.base_salary.toLocaleString());
-  setText('income-base-sub',       'per month · ≈ SGD ' + (annualBase/1000).toFixed(1) + 'K/yr');
-  setText('income-bonus-val',      'SGD ' + d.bonus.toLocaleString());
-  setText('income-rsu-val',        'USD ' + d.rsu_grant.toLocaleString());
-  setText('income-rsu-sub',        'USD ' + Math.round(rsuPerYear).toLocaleString() + '/yr');
-  setText('income-annual-val',     'SGD ' + (totalCash/1000).toFixed(1) + 'K');
-  setText('income-with-rsu-val',   'SGD ' + Math.round(withRSU_SGD/1000) + 'K');
-  setText('income-with-rsu-sub',   '≈ ₹' + withRSU_INRCr + 'Cr/year total');
-
-  // ── RSU timeline ─────────────────────────────────────────
-  setText('rsu-grant-label', 'USD ' + d.rsu_grant.toLocaleString());
-  setText('rsu-y1-val',  'USD ' + Math.round(rsuPerYear).toLocaleString());
-  setText('rsu-y1-sub',  '≈ ₹' + rsuYrINRL + 'L');
-  setText('rsu-y2-val',  'USD ' + Math.round(rsuPerYear).toLocaleString());
-  setText('rsu-y2-sub',  '≈ ₹' + rsuYrINRL + 'L');
-  setText('rsu-y3-val',  'USD ' + Math.round(rsuPerYear).toLocaleString());
-  setText('rsu-y3-sub',  '≈ ₹' + rsuYrINRL + 'L');
-  setText('rsu-total-val', 'USD ' + d.rsu_grant.toLocaleString());
-  setText('rsu-total-sub', '≈ ₹' + rsuTotalINRL + 'L');
-
-  // ── Cashflow income ──────────────────────────────────────
-  setText('cf-salary-val',      '+SGD ' + d.base_salary.toLocaleString());
-  setText('cf-rental-val',      '+₹' + d.rental_mo.toLocaleString());
-  setText('cf-lending-mo-val',  '+₹' + d.lending_mo.toLocaleString());
-  setText('cf-rsu-vest-val',    '+USD ' + rsuMonthly.toLocaleString());
-  setText('cf-passive-total',   '₹' + passiveMo.toLocaleString() + '/mo');
-  setText('cf-passive-annual',  '₹' + passiveAnnL.toFixed(2) + ' Lakhs');
-
-  // ── Cashflow outflow ─────────────────────────────────────
-  setText('cf-loan-label',       'SGD ' + Math.round(d.loan_sgd/1000) + 'K · ' + d.loan_rate + '% · ' + d.loan_months + 'mo');
-  setText('cf-loan-emi',         emi.toLocaleString());
-  setText('cf-sip-val',          '-₹' + d.sip_monthly.toLocaleString());
-  setText('cf-sg-commitments',   'SGD ' + sgCommit.toLocaleString() + ' ≈ ₹' + sgCommitINRL + 'L');
-  setText('cf-india-commitments','₹' + indiaCommit.toLocaleString());
-  setText('cf-total-outflows',   '~₹' + totalOutflowL + 'L/mo');
-
-  // ── Liabilities ──────────────────────────────────────────
-  setText('liab-new-loan-amt',      'SGD ' + Math.round(d.loan_sgd/1000) + 'K');
-  setText('liab-new-loan-name',     '🏦 New Citi SG Loan — SGD ' + d.loan_sgd.toLocaleString());
-  setText('liab-new-loan-val',      'SGD ' + d.loan_sgd.toLocaleString() + ' ≈ ₹' + liabInrL + 'L');
-  setText('liab-rate-text',         d.loan_rate + '% interest · ' + d.loan_months + ' months · EMI: SGD ' + emi.toLocaleString() + '/mo · Total interest: SGD ' + totalInt.toLocaleString());
-  setText('liab-total-outstanding', 'SGD ' + d.loan_sgd.toLocaleString() + ' ≈ ₹' + liabInrL + 'L');
-  setText('liab-emi-mo',            'SGD ' + emi.toLocaleString() + '/mo');
-  setText('liab-payoff-date',       '~' + payoffDate(d.loan_months));
-  setText('liab-rate-note',         '💡 Better rate vs old loans (' + d.loan_rate + '% vs 3.56–4.94%)');
-  setText('debt-note',              'New liability: SGD ' + Math.round(d.loan_sgd/1000) + 'K · Rate: ' + d.loan_rate + '% vs old 3.56–4.94%');
-
-  // ── Investment cards ─────────────────────────────────────
-  setText('inv-etrade-val',       '₹' + etradeCr.toFixed(2) + 'Cr');
-  setText('inv-etrade-sub',       'ESPP + Vested RSU @ USD ' + Math.round(adskPrice));
-  setText('inv-espp-sub',         '≈ USD ' + Math.round(ESPP_QTY * adskPrice).toLocaleString() + ' · ₹' + Math.round(ESPP_QTY * adskPrice * USD_INR / 100000) + 'L');
-  setText('inv-rsu-sellable-sub', 'Sellable now: ' + RSU_SELLABLE_QTY + ' · ≈ USD ' + Math.round(RSU_SELLABLE_QTY * adskPrice).toLocaleString());
-  setText('inv-moomoo-adsk-sub',  '≈ USD ' + Math.round(moomooADSKUSD).toLocaleString() + ' · ₹' + (moomooADSKUSD * USD_INR / 10000000).toFixed(2) + 'Cr');
-  setText('inv-soun-sub',        '≈ USD ' + Math.round(moomooSOUNUSD) + ' · ₹' + Math.round(moomooSOUNUSD * USD_INR / 1000) + 'K @ USD ' + sounPrice.toFixed(2));
-  // ── ADSK total exposure (observations) ──────────────────
-  var totalADSKShares = ESPP_QTY + RSU_VESTED_QTY + MOOMOO_ADSK_QTY;
-  var totalADSKUSD    = totalADSKShares * adskPrice;
-  var totalADSKCr     = (totalADSKUSD * USD_INR / 10000000).toFixed(2);
-  setText('obs-adsk-total-shares', totalADSKShares.toLocaleString() + ' total ADSK shares');
-  setText('obs-adsk-total-val',    '₹' + totalADSKCr + 'Cr');
-  setText('inv-rsu-grant-val',    'USD ' + d.rsu_grant.toLocaleString());
-  setText('inv-rsu-grant-sub',    '3-yr vest · USD ' + Math.round(rsuPerYear).toLocaleString() + '/yr');
-  setText('inv-saxo-val',         'USD ' + d.saxo_usd.toLocaleString());
-  setText('inv-saxo-val',         '₹' + (moomooL/100).toFixed(2) + 'Cr');
-  setText('inv-saxo-sub',         '641 ADSK + 20 SOUN · ≈ ₹' + moomooL.toFixed(1) + 'L');
-  // Update upcoming vesting boxes with live price
-  var vestJunUSD = 32 * adskPrice, vestSepUSD = 31 * adskPrice, vestTotalUSD = 63 * adskPrice;
-  setText('vest-jun-val',         '17 + 15 · ≈ USD ' + Math.round(vestJunUSD).toLocaleString());
-  setText('vest-sep-val',         '17 + 14 · ≈ USD ' + Math.round(vestSepUSD).toLocaleString());
-  setText('vest-total-note',      'Total 2026 vesting: 63 RSU ≈ USD ' + Math.round(vestTotalUSD).toLocaleString() + ' · ₹' + (Math.round(vestTotalUSD * USD_INR / 100000 * 10)/10).toFixed(1) + 'L');
-  setText('inv-sip-val',          '₹' + Math.round(d.sip_monthly/1000) + 'K/mo');
-  setText('inv-lending-sub',      '₹' + d.lending_inr + 'L · ₹' + Math.round(d.lending_mo/1000) + 'K/mo');
-
-  // ── Charts ───────────────────────────────────────────────
-  renderCharts(d, {
-    reTotalL: reTotalL, etradeL: etradeL, moomooL: moomooL, saxoL: saxoL,
-    insuranceL: insuranceL, sipL: sipL, ppfL: ppfL, lendingL: lendingL,
-    assetsL: assetsL, annualBase: annualBase, rsuPerYear: rsuPerYear,
-    passiveAnnL: passiveAnnL, loan_sgd: d.loan_sgd, loan_rate: d.loan_rate
-  });
-}
-
-function renderCharts(d, c) {
-  // destroy old chart instances if they exist
-  if (chartAsset)  { chartAsset.destroy();  chartAsset  = null; }
-  if (chartGeo)    { chartGeo.destroy();    chartGeo    = null; }
-  if (chartDebt)   { chartDebt.destroy();   chartDebt   = null; }
-  if (chartIncome) { chartIncome.destroy(); chartIncome = null; }
-
-  try {
-    chartAsset = new Chart(document.getElementById('assetChart'), {
-      type: 'doughnut',
-      data: {
-        labels: ['Real Estate','eTrade (ESPP+RSU)','Moomoo (ADSK)','SG Equity','SG Insurance','SIP','PPF','Lending'],
-        datasets: [{
-          data: [c.reTotalL, c.etradeL, c.moomooL, c.saxoL, c.insuranceL, c.sipL, c.ppfL, c.lendingL],
-          backgroundColor: ['#6c63ff','#eab308','#f59e0b','#3b82f6','#22c55e','#f97316','#06b6d4','#ec4899'],
-          borderColor: '#1a1d27', borderWidth: 3, hoverOffset: 8
-        }]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: {
-          legend: { position: 'right', labels: { color: '#94a3b8', font: {size:11}, padding: 10, boxWidth: 12 } },
-          tooltip: { callbacks: { label: function(ctx) { return ' ₹' + ctx.parsed + 'L (' + ((ctx.parsed/c.assetsL)*100).toFixed(1) + '%)'; } } }
-        }
-      }
-    });
-  } catch(e) { console.error('assetChart:', e); }
-
-  // Geography: India = RE + SIP + PPF + Lending, USA = eTrade, SG = Saxo + Insurance
-  var indiaL = c.reTotalL + c.sipL + c.ppfL + c.lendingL;
-  var usaL   = c.etradeL + c.moomooL;
-  var sgL    = c.saxoL + c.insuranceL;
-  var geoTotal = indiaL + usaL + sgL;
-  try {
-    chartGeo = new Chart(document.getElementById('geoChart'), {
-      type: 'doughnut',
-      data: {
-        labels: ['India','USA','Singapore'],
-        datasets: [{
-          data: [indiaL, usaL, sgL],
-          backgroundColor: ['#f97316','#3b82f6','#22c55e'],
-          borderColor: '#1a1d27', borderWidth: 3, hoverOffset: 8
-        }]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: {
-          legend: { position: 'right', labels: { color: '#94a3b8', font: {size:13}, padding: 14, boxWidth: 14 } },
-          tooltip: { callbacks: { label: function(ctx) { return ' ₹' + ctx.parsed.toFixed(1) + 'L (' + ((ctx.parsed/geoTotal)*100).toFixed(1) + '%)'; } } }
-        }
-      }
-    });
-  } catch(e) { console.error('geoChart:', e); }
-
-  try {
-    chartDebt = new Chart(document.getElementById('debtChart'), {
-      type: 'bar',
-      data: {
-        labels: ['Before','After (New)'],
-        datasets: [
-          { label: 'Balance (SGD)', data: [42700, c.loan_sgd], yAxisID: 'y',
-            backgroundColor: ['rgba(239,68,68,0.5)','rgba(239,68,68,0.8)'], borderRadius: 6 },
-          { label: 'Rate %', data: [4.25, c.loan_rate], yAxisID: 'y2',
-            backgroundColor: ['rgba(234,179,8,0.5)','rgba(34,197,94,0.7)'], borderRadius: 6 }
-        ]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { labels: { color: '#94a3b8', font: {size:11} } } },
-        scales: {
-          x: { ticks: {color:'#94a3b8'}, grid: {color:'#2a2d3e'} },
-          y: { ticks: {color:'#94a3b8', callback: function(v){ return 'SGD ' + v.toLocaleString(); }}, grid: {color:'#2a2d3e'} },
-          y2: { position: 'right', ticks: {color:'#94a3b8', callback: function(v){ return v + '%'; }}, grid: {display:false} }
-        }
-      }
-    });
-  } catch(e) { console.error('debtChart:', e); }
-
-  // Income chart: base salary annual (INR L), bonus (INR L), RSU avg/yr (INR L), passive (INR L)
-  var baseSalAnnINRL  = Math.round(c.annualBase * SGD_INR / 100000);
-  var bonusINRL       = Math.round(d.bonus * SGD_INR / 100000);
-  var rsuYrINRL       = Math.round(c.rsuPerYear * USD_INR / 100000);
-  var passiveL        = Math.round(c.passiveAnnL * 10) / 10;
-  try {
-    chartIncome = new Chart(document.getElementById('incomeChart'), {
-      type: 'bar',
-      data: {
-        labels: ['Base Salary','Bonus','RSU (avg/yr)','Passive (India)'],
-        datasets: [{
-          label: 'Annual (₹ Lakhs)',
-          data: [baseSalAnnINRL, bonusINRL, rsuYrINRL, passiveL],
-          backgroundColor: ['#6c63ff','#eab308','#a78bfa','#22c55e'],
-          borderRadius: 8, borderWidth: 0
-        }]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: {
-          legend: {display: false},
-          tooltip: { callbacks: { label: function(ctx){ return ' ₹' + ctx.parsed.y + 'L'; } } }
-        },
-        scales: {
-          x: { ticks: {color:'#94a3b8', font:{size:10}}, grid: {color:'#2a2d3e'} },
-          y: { ticks: {color:'#94a3b8', callback: function(v){ return '₹' + v + 'L'; }}, grid: {color:'#2a2d3e'} }
-        }
-      }
-    });
-  } catch(e) { console.error('incomeChart:', e); }
-}
-
-// ── APPLY EDIT ─────────────────────────────────────────────
-function applyEdit() {
-  var d = {};
-  Object.keys(EDIT_DEFAULTS).forEach(function(k){ d[k] = getVal(k); });
-  renderDashboard(d);
-  document.getElementById('edit-overlay').style.display = 'none';
-  var btn = document.getElementById('edit-fab');
-  btn.textContent = '✅ Saved!';
-  setTimeout(function(){ btn.textContent = '✏️ Edit'; }, 2000);
-}
-
-// ── RESET EDIT ─────────────────────────────────────────────
-function resetEdit() {
-  Object.keys(EDIT_DEFAULTS).forEach(function(k){
-    var el = document.getElementById('ef-' + k);
-    if (el) el.value = EDIT_DEFAULTS[k];
-  });
-}
-
-// ── DOWNLOAD EDIT ──────────────────────────────────────────
-function downloadEdit() {
-  var d = {};
-  Object.keys(EDIT_DEFAULTS).forEach(function(k){ d[k] = getVal(k); });
-  // Bake values into EDIT_DEFAULTS so the downloaded file loads with new defaults
-  Object.keys(d).forEach(function(k){ EDIT_DEFAULTS[k] = d[k]; });
-  document.getElementById('edit-overlay').style.display = 'none';
-  var snap = document.documentElement.outerHTML;
-  document.getElementById('edit-overlay').style.display = 'block';
-  var html = snap.replace(/var EDIT_DEFAULTS = \{[^}]+\}/, 'var EDIT_DEFAULTS = ' + JSON.stringify(d));
-  Object.keys(d).forEach(function(k) {
-    var re = new RegExp('(id="ef-' + k + '"[^>]*value=")[^"]*(")', 'g');
-    html = html.replace(re, '$1' + d[k] + '$2');
-  });
-  var blob = new Blob([html], {type: 'text/html'});
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'finance-dashboard-' + new Date().toISOString().slice(0,10) + '.html';
-  a.click();
-}
-
-// ── DEPLOY TO GITHUB ───────────────────────────────────────
-async function deployToGitHub() {
-  var token = document.getElementById('ef-gh-token').value.trim();
-  var btn = document.getElementById('deploy-btn');
-  var status = document.getElementById('deploy-status');
-  if (!token) {
-    status.style.display = 'block'; status.style.color = '#ef4444';
-    status.textContent = 'Paste your GitHub token first.'; return;
-  }
-  try {
-    var d = {};
-    Object.keys(EDIT_DEFAULTS).forEach(function(k){ d[k] = getVal(k); });
-    Object.keys(d).forEach(function(k){ EDIT_DEFAULTS[k] = d[k]; });
-    document.getElementById('edit-overlay').style.display = 'none';
-    var snap = document.documentElement.outerHTML;
-    document.getElementById('edit-overlay').style.display = 'block';
-    var updatedHtml = snap.replace(/var EDIT_DEFAULTS = \{[^}]+\}/, 'var EDIT_DEFAULTS = ' + JSON.stringify(d));
-    Object.keys(d).forEach(function(k) {
-      var re = new RegExp('(id="ef-' + k + '"[^>]*value=")[^"]*(")', 'g');
-      updatedHtml = updatedHtml.replace(re, '$1' + d[k] + '$2');
-    });
-    btn.textContent = 'Deploying...'; btn.disabled = true;
-    status.style.display = 'block'; status.style.color = '#94a3b8'; status.textContent = 'Step 1/3 - Building file...';
-    var encoded = btoa(encodeURIComponent(updatedHtml).replace(/%([0-9A-F]{2})/g, function(_,p1){ return String.fromCharCode('0x'+p1); }));
-    var OWNER = 'muthuramanathanm', REPO = 'wealth-dashboard', FILE = 'index.html', API = 'https://api.github.com';
-    var H = { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json', 'X-GitHub-Api-Version': '2022-11-28' };
-    status.textContent = 'Step 2/3 - Connecting to GitHub...';
-    var r1 = await fetch(API + '/repos/' + OWNER + '/' + REPO + '/contents/' + FILE, {headers: H});
-    if (!r1.ok) { var e = await r1.json(); throw new Error('Auth failed: ' + (e.message || r1.status)); }
-    var f1 = await r1.json();
-    status.textContent = 'Step 3/3 - Pushing...';
-    var r2 = await fetch(API + '/repos/' + OWNER + '/' + REPO + '/contents/' + FILE, {
-      method: 'PUT', headers: H,
-      body: JSON.stringify({ message: 'Update dashboard ' + new Date().toLocaleDateString('en-SG'), content: encoded, sha: f1.sha })
-    });
-    var f2 = await r2.json();
-    if (!f2.commit) throw new Error(f2.message || 'Push failed - check token has repo scope');
-    btn.textContent = 'Deployed!'; status.style.color = '#22c55e';
-    status.innerHTML = '<strong>Pushed to GitHub!</strong> Wait 1-2 min then <strong>press Cmd+Shift+R</strong> to see changes.<br><a href="https://muthuramanathanm.github.io/wealth-dashboard/" target="_blank" style="color:#22c55e;">Open Dashboard ↗</a>';
-    setTimeout(function(){ btn.textContent = '🚀 Save & Deploy to GitHub Pages'; btn.disabled = false; }, 5000);
-  } catch(err) {
-    btn.textContent = '🚀 Save & Deploy to GitHub Pages'; btn.disabled = false;
-    status.style.color = '#ef4444'; status.textContent = 'Error: ' + err.message;
-    console.error('Deploy error:', err);
-  }
-}
-
-// ── LIVE PRICE FETCH ───────────────────────────────────────
-// Reads price.json from same domain (no CORS) — updated by GitHub Actions every 2h
-var PRICE_SOURCES = [
-  // Same-domain price.json — written by GitHub Actions workflow
-  {
-    url: './price.json?cb=' + Date.now(),
-    parse: function(data) { return data.adsk; }
-  }
-];
-
-async function tryFetchPrice(source) {
-  var controller = new AbortController();
-  var timer = setTimeout(function(){ controller.abort(); }, 6000); // 6s timeout
-  try {
-    var res = await fetch(source.url, { signal: controller.signal });
-    clearTimeout(timer);
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    var data = await res.json();
-    var price = source.parse(data);
-    if (!price || isNaN(price)) throw new Error('Invalid price: ' + price);
-    return parseFloat(price);
-  } catch(e) {
-    clearTimeout(timer);
-    throw e;
-  }
-}
-
-async function fetchADSKPrice() {
-  var statusEl = document.getElementById('price-status');
-  var badgeEl  = document.getElementById('adsk-price-badge');
-  if (statusEl) { statusEl.textContent = '⟳ updating…'; statusEl.style.color = '#94a3b8'; }
-
-  var price = null;
-  for (var i = 0; i < PRICE_SOURCES.length; i++) {
-    try {
-      price = await tryFetchPrice(PRICE_SOURCES[i]);
-      break; // got it
-    } catch(e) {
-      console.warn('Source ' + i + ' failed:', e.message);
-    }
-  }
-
-  if (price) {
-    // Update defaults + input field
-    EDIT_DEFAULTS.adsk_price = price;
-    var inp = document.getElementById('ef-adsk_price');
-    if (inp) inp.value = price.toFixed(2);
-
-    // Merge with any user-edited values (except adsk_price which we just fetched)
-    var d = {};
-    Object.keys(EDIT_DEFAULTS).forEach(function(k) {
-      var el = document.getElementById('ef-' + k);
-      d[k] = (el && k !== 'adsk_price') ? (parseFloat(el.value) || EDIT_DEFAULTS[k]) : EDIT_DEFAULTS[k];
-    });
-    d.adsk_price = price;
-    renderDashboard(d);
-
-    if (badgeEl) badgeEl.textContent = 'ADSK: USD ' + price.toFixed(2);
-    if (statusEl) { statusEl.textContent = '● Live'; statusEl.style.color = '#22c55e'; }
-  } else {
-    if (statusEl) { statusEl.textContent = '○ Offline'; statusEl.style.color = '#ef4444'; }
-  }
-  return price;
-}
-
-// ── INIT ON LOAD ───────────────────────────────────────────
-window.addEventListener('load', function() {
-  // Populate input fields from EDIT_DEFAULTS
-  Object.keys(EDIT_DEFAULTS).forEach(function(k) {
-    var el = document.getElementById('ef-' + k);
-    if (el) el.value = EDIT_DEFAULTS[k];
-  });
-  // Restore saved GitHub token
-  var savedToken = localStorage.getItem('gh_token');
-  if (savedToken) { var te = document.getElementById('ef-gh-token'); if (te) te.value = savedToken; }
-  // Render from defaults first (instant), then fetch live ADSK price
-  renderDashboard(EDIT_DEFAULTS);
-  fetchADSKPrice();
-  // Price fetches on every page load — no auto-refresh needed
-});
+window.addEventListener('load',function(){Object.keys(EDIT_DEFAULTS).forEach(function(k){var e=document.getElementById('ef-'+k);if(e)e.value=EDIT_DEFAULTS[k];});var st=localStorage.getItem('gh_token');if(st){var te=document.getElementById('ef-gh-token');if(te)te.value=st;}renderDashboard(EDIT_DEFAULTS);fetchADSKPrice();});
 </script>
-
-
 </body></html>

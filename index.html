@@ -12,11 +12,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Wealth">
 <meta name="format-detection" content="telephone=no">
-<title>Ram's Wealth Dashboard</title>
+<title>Wealth Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.png">
+<script id="boot-config">window.__ENC__=null;window.__LOCKED__=false;</script>
 <style>
 :root {
   --bg: #080a0e;
@@ -227,9 +230,28 @@ canvas { max-width: 100%; }
   .kpi-card:hover, .card:hover, .re-card:hover, .income-item:hover, .rsu-year:hover { transform: none; }
 }
 
+
+#gate { display:none; position:fixed; inset:0; z-index:20000; background:var(--bg);
+  background-image: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(124,106,255,0.12) 0%, transparent 60%);
+  align-items:center; justify-content:center; padding:24px; }
+.gate-card { width:100%; max-width:340px; text-align:center; background:var(--card); border:1px solid var(--border);
+  border-radius:20px; padding:36px 28px calc(36px + env(safe-area-inset-bottom,0px)); backdrop-filter:blur(16px); box-shadow:var(--shadow); }
+.gate-emoji { font-size:2.4rem; margin-bottom:10px; }
+.gate-card h2 { font-family:var(--font-heading); color:#fff; font-size:1.3rem; font-weight:700; letter-spacing:-0.02em; }
+.gate-card p { color:var(--muted); font-size:0.85rem; margin:8px 0 20px; }
+#gate-pass { width:100%; background:rgba(0,0,0,0.35); border:1px solid var(--border); border-radius:12px;
+  color:#fff; padding:14px 16px; font-size:16px; text-align:center; letter-spacing:2px; font-family:var(--font-body); }
+#gate-pass:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(124,106,255,0.2); }
+.gate-card button { width:100%; margin-top:12px; background:linear-gradient(135deg,#7c6aff,#6c63ff); color:#fff;
+  border:none; border-radius:12px; padding:14px; font-size:0.95rem; font-weight:700; cursor:pointer; font-family:var(--font-heading); }
+#gate-err { color:var(--red); font-size:0.8rem; margin-top:12px; min-height:1em; }
+#edit-fab { display:none; }
+
 </style>
 </head>
 <body>
+<div id="gate"><div class="gate-card"><div class="gate-emoji">🔒</div><h2>Wealth Dashboard</h2><p>Enter your passcode to unlock.</p><input id="gate-pass" type="password" inputmode="numeric" autocomplete="off" placeholder="Passcode" onkeydown="if(event.key===\'Enter\')unlock()"><button onclick="unlock()">Unlock</button><div id="gate-err"></div></div></div>
+<div id="app">
 
 <header>
   <div class="header-left">
@@ -271,6 +293,8 @@ canvas { max-width: 100%; }
   <div class="kpi-card animate-in" style="--accent-color:#fb923c;animation-delay:0.3s"><div class="kpi-label">Monthly Commitments</div><div class="kpi-value" id="kpi-commitments-val" style="color:var(--orange)">~₹5L/mo</div><div class="kpi-sub">SIP + PPF + Insurance + EMI</div><div class="kpi-icon">📤</div></div>
 </div>
 
+<div class="section-title">📈 Net Worth Trend</div>
+<div class="card animate-in" style="margin-bottom:32px;"><h3>Net Worth Over Time</h3><div class="chart-wrap" style="height:240px;"><canvas id="trendChart"></canvas></div><div style="margin-top:12px;font-size:0.74rem;color:var(--muted);text-align:center;" id="trend-note"></div></div>
 <div class="section-title">💼 Employment Income — Autodesk Singapore</div>
 <div class="income-highlight animate-in" style="animation-delay:0.1s">
   <h3>📋 Feb 2026 Payslip + New Compensation Package</h3>
@@ -489,25 +513,26 @@ canvas { max-width: 100%; }
   <div class="ef-row"><label class="ef-label">1 USD = ₹</label><input id="ef-usd_inr" class="ef-input" type="number" step="0.5" value="83"></div>
   <div style="display:flex;gap:10px;margin-top:24px;flex-wrap:wrap;">
     <button onclick="applyEdit()" style="flex:1;background:linear-gradient(135deg,#7c6aff,#6c63ff);color:#fff;border:none;border-radius:12px;padding:13px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:var(--font-heading);">💾 Save &amp; Apply</button>
-    <button onclick="downloadEdit()" style="flex:1;background:rgba(255,255,255,0.04);color:var(--muted);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:13px;font-size:0.88rem;cursor:pointer;font-family:var(--font-heading);">⬇️ Download</button>
+    <button onclick="downloadLocked()" style="flex:1;background:rgba(255,255,255,0.04);color:var(--muted);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:13px;font-size:0.88rem;cursor:pointer;font-family:var(--font-heading);">⬇️ Download (encrypted)</button>
     <button onclick="resetEdit()" style="background:rgba(255,255,255,0.04);color:var(--muted);border:none;border-radius:12px;padding:13px 16px;font-size:0.82rem;cursor:pointer;">↺</button>
   </div>
-  <div style="margin-top:20px;padding-top:18px;border-top:1px solid rgba(255,255,255,0.06);">
+  <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.06);"><button onclick="addSnapshot()" style="width:100%;background:rgba(52,211,153,0.12);color:#34d399;border:1px solid rgba(52,211,153,0.25);border-radius:12px;padding:13px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:var(--font-heading);">📸 Snapshot net worth (this month)</button><div style="font-size:0.7rem;color:var(--muted);margin-top:6px;text-align:center;">Adds today's net worth to the trend chart. Deploy to save it.</div></div><div style="margin-top:20px;padding-top:18px;border-top:1px solid rgba(255,255,255,0.06);">
     <div style="font-family:var(--font-heading);font-size:0.68rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">🚀 Deploy to GitHub Pages</div>
-    <div style="font-size:0.73rem;color:var(--muted);margin-bottom:10px;">Paste GitHub token to deploy. <a href="https://github.com/settings/tokens/new?scopes=repo&amp;description=WealthDashboard" target="_blank" style="color:var(--accent);text-decoration:none;">Generate token ↗</a></div>
+    <div style="font-size:0.73rem;color:var(--muted);margin-bottom:10px;">Sets your passcode, encrypts, and deploys. <a href="https://github.com/settings/tokens/new?scopes=repo&amp;description=WealthDashboard" target="_blank" style="color:var(--accent);text-decoration:none;">Generate token ↗</a></div>
     <input id="ef-gh-token" type="password" placeholder="ghp_xxxxxxxxxxxx" style="width:100%;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.08);border-radius:10px;color:#e2e8f0;padding:9px 12px;font-size:0.83rem;margin-bottom:6px;" oninput="try{localStorage.setItem('gh_token',this.value)}catch(e){}">
     <div style="font-size:0.7rem;color:var(--green);margin-bottom:10px;">🔒 Token stays in browser only</div>
-    <button onclick="deployToGitHub()" id="deploy-btn" style="width:100%;background:linear-gradient(135deg,#34d399,#22c55e);color:#fff;border:none;border-radius:12px;padding:13px;font-size:0.92rem;font-weight:700;cursor:pointer;font-family:var(--font-heading);">🚀 Deploy</button>
+    <button onclick="deployLocked()" id="deploy-btn" style="width:100%;background:linear-gradient(135deg,#34d399,#22c55e);color:#fff;border:none;border-radius:12px;padding:13px;font-size:0.92rem;font-weight:700;cursor:pointer;font-family:var(--font-heading);">🔒 Encrypt & Deploy</button>
     <div id="deploy-status" style="margin-top:8px;font-size:0.76rem;text-align:center;display:none;"></div>
   </div>
 </div>
 </div>
 
+<script type="application/json" id="seed">{"defaults": {"base_salary": 14380, "bonus": 29167, "rsu_grant": 32400, "net_salary": 12119, "adsk_price": 238.08, "soun_price": 6.78, "sip_monthly": 50000, "lending_inr": 10, "loan_sgd": 129000, "loan_rate": 2.05, "loan_months": 24, "loan_start": "2026-04", "re_total": 3.74, "rental_mo": 52000, "lending_mo": 17000, "ppf_monthly": 12500, "prudential_sgd": 522, "sgd_inr": 73, "usd_inr": 83}, "qty": {"espp": 319, "rsuVested": 413, "rsuSellable": 100, "rsuUnvested": 188, "moomooAdsk": 641, "moomooSoun": 20}, "history": [{"d": "2026-06", "nw": 6.5}]}</script>
+</div>
 <script>
-var ESPP_QTY=319,RSU_VESTED_QTY=413,RSU_SELLABLE_QTY=100,RSU_UNVESTED_QTY=188;
-var MOOMOO_ADSK_QTY=641,MOOMOO_SOUN_QTY=20;
-var EDIT_DEFAULTS={"base_salary":14380,"bonus":29167,"rsu_grant":32400,"net_salary":12119,"adsk_price":238.08,"soun_price":6.78,"sip_monthly":50000,"lending_inr":10,"loan_sgd":129000,"loan_rate":2.05,"loan_months":24,"loan_start":"2026-04","re_total":3.74,"rental_mo":52000,"lending_mo":17000,"ppf_monthly":12500,"prudential_sgd":522,"sgd_inr":73,"usd_inr":83};
-var chartAsset=null,chartGeo=null,chartDebt=null,chartIncome=null;
+var ESPP_QTY,RSU_VESTED_QTY,RSU_SELLABLE_QTY,RSU_UNVESTED_QTY,MOOMOO_ADSK_QTY,MOOMOO_SOUN_QTY;
+var EDIT_DEFAULTS={},SESSION_PASS=null;
+var chartAsset=null,chartGeo=null,chartDebt=null,chartIncome=null,chartTrend=null;
 
 function getVal(k){return parseFloat(document.getElementById('ef-'+k).value)||0;}
 function getStr(k){return document.getElementById('ef-'+k).value||'';}
@@ -528,7 +553,7 @@ function renderDashboard(d){
   var moomooL=Math.round(moomooUSD*USD_INR/100000*10)/10;
   var reTotalL=d.re_total*100,insuranceL=66.5,sipL=7.5,ppfL=15,lendingL=d.lending_inr;
   var assetsL=reTotalL+etradeL+moomooL+insuranceL+sipL+ppfL+lendingL,assetsCr=assetsL/100;
-  var netWorthCr=assetsCr-(liabInrL/100);
+  var netWorthCr=assetsCr-(liabInrL/100);window.__lastNW=netWorthCr;
   var passiveMo=d.rental_mo+d.lending_mo,passiveAnnL=(passiveMo*12)/100000;
   var sgCommit=emi+d.prudential_sgd,sgCommitINRL=Math.round(sgCommit*SGD_INR/100000);
   var indiaCommit=d.sip_monthly+d.ppf_monthly,totalOutflowL=sgCommitINRL+Math.round(indiaCommit/100000);
@@ -674,7 +699,7 @@ function renderCharts(d,c){
   try{chartIncome=new Chart(document.getElementById('incomeChart'),{type:'bar',data:{labels:['Base Salary','Bonus','RSU (avg/yr)','Passive'],datasets:[{label:'Annual (₹ Lakhs)',data:[bL,boL,rL,pL],backgroundColor:['#7c6aff','#fbbf24','#a78bfa','#34d399'],borderRadius:8,borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return ' ₹'+ctx.parsed.y+'L';}}}},scales:{x:{ticks:{color:'#7a839b',font:{size:10,family:cf}},grid:{color:'rgba(255,255,255,0.04)'}},y:{ticks:{color:'#7a839b',callback:function(v){return '₹'+v+'L';}},grid:{color:'rgba(255,255,255,0.04)'}}}}})}catch(e){}
 }
 
-function applyEdit(){var d={};Object.keys(EDIT_DEFAULTS).forEach(function(k){d[k]=(k==='loan_start')?getStr(k):getVal(k);});Object.keys(d).forEach(function(k){EDIT_DEFAULTS[k]=d[k];});renderDashboard(d);document.getElementById('edit-overlay').style.display='none';var b=document.getElementById('edit-fab');b.textContent='✅ Saved!';setTimeout(function(){b.textContent='✏️ Edit';},2000);}
+function applyEdit(){var d={};Object.keys(EDIT_DEFAULTS).forEach(function(k){d[k]=(k==='loan_start')?getStr(k):getVal(k);});Object.keys(d).forEach(function(k){EDIT_DEFAULTS[k]=d[k];});renderDashboard(d);writeSeed();renderTrend();document.getElementById('edit-overlay').style.display='none';var b=document.getElementById('edit-fab');b.textContent='✅ Saved!';setTimeout(function(){b.textContent='✏️ Edit';},2000);}
 function resetEdit(){Object.keys(EDIT_DEFAULTS).forEach(function(k){var e=document.getElementById('ef-'+k);if(e)e.value=EDIT_DEFAULTS[k];});}
 function downloadEdit(){var d={};Object.keys(EDIT_DEFAULTS).forEach(function(k){d[k]=(k==='loan_start')?getStr(k):getVal(k);});Object.keys(d).forEach(function(k){EDIT_DEFAULTS[k]=d[k];});document.getElementById('edit-overlay').style.display='none';var s=document.documentElement.outerHTML;document.getElementById('edit-overlay').style.display='block';var h=s.replace(/var EDIT_DEFAULTS=\{[^}]+\}/,'var EDIT_DEFAULTS='+JSON.stringify(d));Object.keys(d).forEach(function(k){var r=new RegExp('(id="ef-'+k+'"[^>]*value=")[^"]*(")', 'g');h=h.replace(r,'$1'+d[k]+'$2');});var b=new Blob([h],{type:'text/html'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='wealth-dashboard-'+new Date().toISOString().slice(0,10)+'.html';a.click();}
 
@@ -683,7 +708,35 @@ async function deployToGitHub(){var token=document.getElementById('ef-gh-token')
 var PRICE_SOURCES=[{url:'./price.json?cb='+Date.now(),parse:function(data){return{price:data.adsk,updated:data.updated};}}];
 async function fetchADSKPrice(){var sEl=document.getElementById('price-status'),bEl=document.getElementById('adsk-price-badge'),tEl=document.getElementById('price-updated-time');if(sEl){sEl.textContent='⟳';sEl.style.color='#7a839b';}var result=null;for(var i=0;i<PRICE_SOURCES.length;i++){try{var c=new AbortController();var tm=setTimeout(function(){c.abort();},6000);var res=await fetch(PRICE_SOURCES[i].url,{signal:c.signal});clearTimeout(tm);if(!res.ok)throw new Error('HTTP '+res.status);var data=await res.json();result=PRICE_SOURCES[i].parse(data);if(!result.price||isNaN(result.price))throw new Error('Invalid');break;}catch(e){console.warn('Source '+i+' failed:',e.message);}}if(result&&result.price){var price=parseFloat(result.price);EDIT_DEFAULTS.adsk_price=price;var inp=document.getElementById('ef-adsk_price');if(inp)inp.value=price.toFixed(2);var d={};Object.keys(EDIT_DEFAULTS).forEach(function(k){var el=document.getElementById('ef-'+k);if(k==='loan_start'){d[k]=el?el.value:EDIT_DEFAULTS[k];}else{d[k]=(el&&k!=='adsk_price')?(parseFloat(el.value)||EDIT_DEFAULTS[k]):EDIT_DEFAULTS[k];}});d.adsk_price=price;renderDashboard(d);if(bEl)bEl.textContent='ADSK: USD '+price.toFixed(2);if(sEl){sEl.textContent='● Live';sEl.style.color='#34d399';}if(tEl&&result.updated){var ud=new Date(result.updated);var ago=Math.round((Date.now()-ud.getTime())/60000);var at=ago<60?ago+'m ago':Math.round(ago/60)+'h ago';tEl.textContent='· '+at;}}else{if(sEl){sEl.textContent='○ Offline';sEl.style.color='#f87171';}}return result?result.price:null;}
 
-window.addEventListener('load',function(){Object.keys(EDIT_DEFAULTS).forEach(function(k){var e=document.getElementById('ef-'+k);if(e)e.value=EDIT_DEFAULTS[k];});var st=null;try{st=localStorage.getItem('gh_token');}catch(e){}if(st){var te=document.getElementById('ef-gh-token');if(te)te.value=st;}renderDashboard(EDIT_DEFAULTS);fetchADSKPrice();var _rzT;window.addEventListener('resize',function(){clearTimeout(_rzT);_rzT=setTimeout(function(){renderDashboard(EDIT_DEFAULTS);},220);});});
+window.addEventListener('load',boot);
+
+/* ---------- crypto + gate + trend (added) ---------- */
+function u8b64(u8){var s='';var CH=0x8000;for(var i=0;i<u8.length;i+=CH){s+=String.fromCharCode.apply(null,u8.subarray(i,i+CH));}return btoa(s);}
+function b64u8(b){var bin=atob(b);var u=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++){u[i]=bin.charCodeAt(i);}return u;}
+async function deriveKey(pass,salt){var km=await crypto.subtle.importKey('raw',new TextEncoder().encode(pass),'PBKDF2',false,['deriveKey']);return crypto.subtle.deriveKey({name:'PBKDF2',salt:salt,iterations:200000,hash:'SHA-256'},km,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);}
+async function encryptData(text,pass){var salt=crypto.getRandomValues(new Uint8Array(16));var iv=crypto.getRandomValues(new Uint8Array(12));var key=await deriveKey(pass,salt);var ct=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv:iv},key,new TextEncoder().encode(text)));var out=new Uint8Array(28+ct.length);out.set(salt,0);out.set(iv,16);out.set(ct,28);return u8b64(out);}
+async function decryptData(b64,pass){var raw=b64u8(b64);var salt=raw.slice(0,16),iv=raw.slice(16,28),ct=raw.slice(28);var key=await deriveKey(pass,salt);var pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:iv},key,ct);return new TextDecoder().decode(pt);}
+
+function writeSeed(){var el=document.getElementById('seed');if(!el)return;el.textContent=JSON.stringify({defaults:EDIT_DEFAULTS,qty:{espp:ESPP_QTY,rsuVested:RSU_VESTED_QTY,rsuSellable:RSU_SELLABLE_QTY,rsuUnvested:RSU_UNVESTED_QTY,moomooAdsk:MOOMOO_ADSK_QTY,moomooSoun:MOOMOO_SOUN_QTY},history:window.__hist||[]}).replace(/</g,'<');}
+
+function renderTrend(){var h=window.__hist||[];var note=document.getElementById('trend-note');if(chartTrend){chartTrend.destroy();chartTrend=null;}var cv=document.getElementById('trendChart');if(!cv)return;if(!h.length){if(note)note.textContent='No snapshots yet — open Edit → 📸 Snapshot to start tracking.';return;}var labels=h.map(function(x){return x.d;});var data=h.map(function(x){return x.nw;});if(note)note.textContent=h.length+' snapshot'+(h.length>1?'s':'')+' · latest ₹'+data[data.length-1].toFixed(2)+'Cr';var cf="'DM Sans',system-ui,sans-serif";try{chartTrend=new Chart(cv,{type:'line',data:{labels:labels,datasets:[{label:'Net Worth',data:data,borderColor:'#34d399',backgroundColor:'rgba(52,211,153,0.12)',fill:true,tension:0.3,pointRadius:4,pointHoverRadius:6,pointBackgroundColor:'#34d399',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return ' ₹'+c.parsed.y.toFixed(2)+'Cr';}}}},scales:{x:{ticks:{color:'#7a839b',font:{size:11,family:cf}},grid:{color:'rgba(255,255,255,0.04)'}},y:{ticks:{color:'#7a839b',callback:function(v){return '₹'+v+'Cr';}},grid:{color:'rgba(255,255,255,0.04)'}}}}});}catch(e){}}
+
+function addSnapshot(){var nw=window.__lastNW;if(nw==null){return;}var d=new Date();var key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');window.__hist=window.__hist||[];var hit=null;for(var i=0;i<window.__hist.length;i++){if(window.__hist[i].d===key)hit=window.__hist[i];}var val=Math.round(nw*100)/100;if(hit){hit.nw=val;}else{window.__hist.push({d:key,nw:val});}window.__hist.sort(function(a,b){return a.d<b.d?-1:(a.d>b.d?1:0);});writeSeed();renderTrend();var b=document.getElementById('edit-fab');alert('Snapshot saved for '+key+': ₹'+val.toFixed(2)+'Cr. Deploy (or Download) to keep it.');}
+
+function initApp(){var seed;try{seed=JSON.parse(document.getElementById('seed').textContent);}catch(e){return;}EDIT_DEFAULTS=seed.defaults;var q=seed.qty||{};ESPP_QTY=q.espp;RSU_VESTED_QTY=q.rsuVested;RSU_SELLABLE_QTY=q.rsuSellable;RSU_UNVESTED_QTY=q.rsuUnvested;MOOMOO_ADSK_QTY=q.moomooAdsk;MOOMOO_SOUN_QTY=q.moomooSoun;window.__hist=seed.history||[];Object.keys(EDIT_DEFAULTS).forEach(function(k){var e=document.getElementById('ef-'+k);if(e)e.value=EDIT_DEFAULTS[k];});var st=null;try{st=localStorage.getItem('gh_token');}catch(e){}if(st){var te=document.getElementById('ef-gh-token');if(te)te.value=st;}var fab=document.getElementById('edit-fab');if(fab)fab.style.display='';renderDashboard(EDIT_DEFAULTS);renderTrend();fetchADSKPrice();var _rzT;window.addEventListener('resize',function(){clearTimeout(_rzT);_rzT=setTimeout(function(){renderDashboard(EDIT_DEFAULTS);renderTrend();},220);});}
+
+function boot(){if(window.__LOCKED__){var g=document.getElementById('gate');if(g)g.style.display='flex';var gp=document.getElementById('gate-pass');if(gp)gp.focus();}else{initApp();}}
+
+async function unlock(){var err=document.getElementById('gate-err');var pass=document.getElementById('gate-pass').value;if(!pass){return;}err.textContent='';try{var html=await decryptData(window.__ENC__,pass);document.getElementById('app').innerHTML=html;SESSION_PASS=pass;document.getElementById('gate').style.display='none';initApp();}catch(e){err.textContent='Wrong passcode — try again.';}}
+
+function getPass(){return new Promise(function(res){if(SESSION_PASS){res(SESSION_PASS);return;}var p=prompt('Set a passcode to encrypt your dashboard. You will need it to open the deployed page. It cannot be recovered, so choose something memorable.');if(!p){res(null);return;}var p2=prompt('Re-enter the same passcode to confirm:');if(p!==p2){alert('Passcodes did not match. Nothing was changed.');res(null);return;}SESSION_PASS=p;res(p);});}
+
+async function buildLockedHTML(pass){writeSeed();var enc=await encryptData(document.getElementById('app').innerHTML,pass);var clone=document.documentElement.cloneNode(true);clone.querySelector('#app').innerHTML='';var bc=clone.querySelector('#boot-config');bc.textContent="window.__ENC__='"+enc+"';window.__LOCKED__=true;";var gp=clone.querySelector('#gate-pass');if(gp)gp.setAttribute('value','');var ge=clone.querySelector('#gate-err');if(ge)ge.textContent='';var tok=clone.querySelector('#ef-gh-token');if(tok)tok.setAttribute('value','');return '<!DOCTYPE html>\n'+clone.outerHTML;}
+
+async function downloadLocked(){var pass=await getPass();if(!pass)return;var h=await buildLockedHTML(pass);var b=new Blob([h],{type:'text/html'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='index.html';a.click();}
+
+async function deployLocked(){var token=document.getElementById('ef-gh-token').value.trim();var btn=document.getElementById('deploy-btn');var status=document.getElementById('deploy-status');if(!token){status.style.display='block';status.style.color='#f87171';status.textContent='Paste a GitHub token first.';return;}var pass=await getPass();if(!pass){return;}try{btn.textContent='Encrypting...';btn.disabled=true;status.style.display='block';status.style.color='#7a839b';status.textContent='Encrypting...';var uh=await buildLockedHTML(pass);var enc=btoa(unescape(encodeURIComponent(uh)));var O='muthuramanathanm',R='wealth-dashboard',F='index.html',A='https://api.github.com';var H={Authorization:'Bearer '+token,Accept:'application/vnd.github+json','Content-Type':'application/json','X-GitHub-Api-Version':'2022-11-28'};status.textContent='Connecting...';var r1=await fetch(A+'/repos/'+O+'/'+R+'/contents/'+F,{headers:H});if(!r1.ok){var e=await r1.json();throw new Error(e.message||r1.status);}var f1=await r1.json();status.textContent='Pushing encrypted build...';var r2=await fetch(A+'/repos/'+O+'/'+R+'/contents/'+F,{method:'PUT',headers:H,body:JSON.stringify({message:'Encrypted dashboard update '+new Date().toLocaleDateString('en-SG'),content:enc,sha:f1.sha})});var f2=await r2.json();if(!f2.commit)throw new Error(f2.message||'Failed');btn.textContent='✅ Deployed!';status.style.color='#34d399';status.innerHTML='<strong>Done — encrypted & live.</strong> <a href="https://muthuramanathanm.github.io/wealth-dashboard/" target="_blank" style="color:#34d399;">Open ↗</a>';setTimeout(function(){btn.textContent='🔒 Encrypt & Deploy';btn.disabled=false;},6000);}catch(err){btn.textContent='🔒 Encrypt & Deploy';btn.disabled=false;status.style.color='#f87171';status.textContent='Error: '+err.message;}}
+
 </script>
 
 </body></html>

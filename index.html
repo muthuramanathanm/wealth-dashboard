@@ -462,4 +462,13 @@ async function deployLocked(){var btn=document.getElementById('deploy-btn');var 
 </script>
 
 
+<script>
+  /* PWA service worker */
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function(){
+      navigator.serviceWorker.register('service-worker.js')
+        .catch(function(e){ console.warn('SW registration failed', e); });
+    });
+  }
+</script>
 </body></html>

@@ -471,4 +471,74 @@ async function deployLocked(){var btn=document.getElementById('deploy-btn');var 
     });
   }
 </script>
+<script id="simple-view-patch">
+(function(){
+  var css=document.createElement('style');
+  css.textContent='body.simple-mode .container > :not(#simple-summary){display:none !important}'+
+    '#simple-summary{margin-bottom:26px}'+
+    '#simple-summary .ss-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}'+
+    '#simple-summary h3{margin-bottom:0}'+
+    '#sv-toggle{background:rgba(124,106,255,0.14);border:1px solid rgba(124,106,255,0.3);color:#a99cff;border-radius:9px;padding:7px 13px;font-size:0.72rem;font-weight:700;cursor:pointer;font-family:var(--font-heading)}'+
+    '#simple-summary .summary-row span:first-child{color:var(--text)}'+
+    '#simple-summary .summary-row span:last-child{font-weight:600;white-space:nowrap}'+
+    '#simple-summary .ss-neg span:last-child{color:var(--red)}'+
+    '#simple-summary .ss-net span:last-child{color:var(--green)}';
+  document.head.appendChild(css);
+
+  function fmtL(l){return l>=100?'₹'+(l/100).toFixed(2)+' Cr':'₹'+(Math.round(l*10)/10)+' L';}
+
+  function build(d){
+    try{
+      var SGD_INR=d.sgd_inr||62,USD_INR=d.usd_inr||83;
+      var adskPrice=d.adsk_price||238.08,sounPrice=d.soun_price||6.78;
+      var etradeL=Math.round((ESPP_QTY+RSU_VESTED_QTY)*adskPrice*USD_INR/100000*10)/10;
+      var moomooL=Math.round((MOOMOO_ADSK_QTY*adskPrice+MOOMOO_SOUN_QTY*sounPrice)*USD_INR/100000*10)/10;
+      var reL=d.re_total*100,insL=66.5,sipL=7.5,ppfL=15,lendL=d.lending_inr;
+      var assetsL=reL+etradeL+moomooL+insL+sipL+ppfL+lendL;
+      var liabL=Math.round(d.loan_sgd*SGD_INR/100000);
+      var rows=[
+        ['🏠 Real Estate',reL],
+        ['📈 US Equity — E*TRADE (ADSK)',etradeL],
+        ['📊 US Equity — Moomoo',moomooL],
+        ['🛡️ Insurance',insL],
+        ['💰 Mutual Fund SIP',sipL],
+        ['🏦 PPF',ppfL],
+        ['🤝 Lending',lendL]
+      ];
+      var h='<div class="ss-head"><h3>Assets at a Glance</h3><button id="sv-toggle" type="button"></button></div>';
+      rows.forEach(function(r){h+='<div class="summary-row"><span>'+r[0]+'</span><span>'+fmtL(r[1])+'</span></div>';});
+      h+='<div class="summary-row total"><span>Total Assets</span><span>'+fmtL(assetsL)+'</span></div>';
+      h+='<div class="summary-row ss-neg"><span>Loan (Citi SG)</span><span>− SGD '+Math.round(d.loan_sgd/1000)+'K ≈ '+fmtL(liabL)+'</span></div>';
+      h+='<div class="summary-row total ss-net"><span>Net Worth</span><span>'+fmtL(assetsL-liabL)+'</span></div>';
+      var card=document.getElementById('simple-summary');
+      if(!card){
+        var cont=document.querySelector('.container');
+        if(!cont)return;
+        card=document.createElement('div');
+        card.id='simple-summary';
+        card.className='card';
+        cont.insertBefore(card,cont.firstChild);
+      }
+      card.innerHTML=h;
+      var pref='1';
+      try{pref=localStorage.getItem('simpleMode')||'1';}catch(e){}
+      if(pref==='1'){document.body.classList.add('simple-mode');}else{document.body.classList.remove('simple-mode');}
+      var btn=document.getElementById('sv-toggle');
+      function lbl(){btn.textContent=document.body.classList.contains('simple-mode')?'Show details':'Simple view';}
+      lbl();
+      btn.onclick=function(){
+        document.body.classList.toggle('simple-mode');
+        try{localStorage.setItem('simpleMode',document.body.classList.contains('simple-mode')?'1':'0');}catch(e){}
+        lbl();
+      };
+    }catch(e){console.log('simple summary failed',e);}
+  }
+
+  if(typeof renderDashboard==='function'&&!renderDashboard.__wrapped){
+    var orig=renderDashboard;
+    window.renderDashboard=function(d){orig(d);build(d);};
+    window.renderDashboard.__wrapped=true;
+  }
+})();
+</script>
 </body></html>
